@@ -11,15 +11,13 @@
     <link href="Content/themes/default/easyui.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript">
         $(document).ready(function () {
-            //alert("document redeay");
-           
+            //alert("document redeay");           
         });
     </script>   
 </head>
 <body>
     <div class="easyui-layout" fit="true" style="width: auto; height: 600px; padding: 0px">
-        <div id="head" region="north" style="padding: 5px; width: auto; height: 60px">
-            good
+        <div id="head" region="north" style="padding: 5px; width: auto; height: 60px">            
         </div>
         <div id="left" region="west"  split="true" style="width: 250px;">
             <div class="easyui-accordion" animate="false" style="width: auto; height: auto;">
