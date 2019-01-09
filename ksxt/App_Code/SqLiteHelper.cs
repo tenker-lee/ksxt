@@ -156,14 +156,11 @@ namespace Utility
         public SQLiteDataReader UpdateValues(string tableName, string[] colNames, string[] colValues, string key, string value, string operation = "=")
         {
             //当字段名称和字段数值不对应时引发异常
-            if (colNames.Length != colValues.Length)
-            {
+            if (colNames.Length != colValues.Length){
                 throw new SQLiteException("colNames.Length!=colValues.Length");
             }
-
             string queryString = "UPDATE " + tableName + " SET " + colNames[0] + "=" + "'" + colValues[0] + "'";
-            for (int i = 1; i < colValues.Length; i++)
-            {
+            for (int i = 1; i < colValues.Length; i++){
                 queryString += ", " + colNames[i] + "=" + "'" + colValues[i] + "'";
             }
             queryString += " WHERE " + key + operation + "'" + value + "'";
