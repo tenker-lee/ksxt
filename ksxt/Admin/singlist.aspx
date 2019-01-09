@@ -14,7 +14,7 @@
     <script>
         $(document).ready(function () {
             $('#tt').datagrid({
-                url: "HandlerSingle.ashx?opt=query1",
+                url: "HandlerSingle.ashx?opt=query",
                 fit: false,
                 autoRowHeight: true,
                 striped: true,
@@ -84,7 +84,7 @@
     </script>
 </head>
 <body>
-    <div id="searchbar" style="text-align: center; padding: 5px">
+    <div id="" style="text-align: center; padding: 5px">
         <span><b>单项选择题库</b></span>
     </div>
     <div id="searchbar" style="border: thin solid #C0C0C0; text-align: right; padding: 20px">

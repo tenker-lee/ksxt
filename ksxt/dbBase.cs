@@ -12,7 +12,7 @@ namespace ksxt
         /// <summary>
         /// 错误信息
         /// </summary>
-        private static string dbError { set; get; }
+        public static string dbError { set; get; }
 
         /// <summary>
         /// 数据连接,一直连接
@@ -27,6 +27,7 @@ namespace ksxt
         /// 数据读取定义
         /// </summary>
         private static SQLiteDataReader dataReader;
+
 
         private static void OpenDataBase()
         {
@@ -60,6 +61,7 @@ namespace ksxt
                 dbError = e.Message;
             }
             dbCommand.Cancel();
+
             return code;
         }
 
@@ -105,9 +107,6 @@ namespace ksxt
                         dr[i] = dataReader.GetValue(i).ToString();
                     }
                     dataTable.Rows.Add(dr);
-
-                    //if (!dataReader.NextResult())
-                    //    break;
                 }
 
                 dataReader.Close();

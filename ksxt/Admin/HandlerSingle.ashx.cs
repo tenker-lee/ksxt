@@ -16,9 +16,6 @@ namespace ksxt.Admin
     {
         public void ProcessRequest(HttpContext context)
         {
-
-            ExecuteQueryData("select * from tb_choice");
-
             PreProcess(context);
         }
         
@@ -34,7 +31,18 @@ namespace ksxt.Admin
 
         override protected void Delete(HttpContext context) { }
 
-        override protected void Search(HttpContext context) { }
+        override protected void Search(HttpContext context) {
+
+            DataTable dt = ExecuteQueryData("select * from tb_choice");
+
+            string dtJson = publicFun.DataTableToJson(dt);
+
+            string listJson = "\"total\":2,\"rows\":";
+
+            listJson += dtJson;
+
+            WriteResponse(context, 0, "ok", listJson);
+        }
 
         override protected void Default(HttpContext context) {
             WriteResponse(context, 0, "null","\"total\":0,\"rows\":[]");
