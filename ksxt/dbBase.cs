@@ -28,7 +28,6 @@ namespace ksxt
         /// </summary>
         private static SQLiteDataReader dataReader;
 
-
         private static void OpenDataBase()
         {
             if (dbConnection == null)
@@ -91,9 +90,7 @@ namespace ksxt
             if (dataReader != null)
             {
                 //DataTable d = dataReader.GetSchemaTable();
-                //dataTable.TableName = dataReader.GetTableName();
                 int iFieldCount = dataReader.FieldCount;
-
                 for(int i = 0; i < iFieldCount; i++)
                 {
                     dataTable.Columns.Add(dataReader.GetName(i));
@@ -101,18 +98,17 @@ namespace ksxt
                 while (dataReader.Read())
                 {
                     DataRow dr =  dataTable.NewRow();
-
                     for (int i = 0; i < iFieldCount; i++)
                     {
                         dr[i] = dataReader.GetValue(i).ToString();
                     }
                     dataTable.Rows.Add(dr);
                 }
-
                 dataReader.Close();
             }
-
             return dataTable;
         }
+
+
     }
 }

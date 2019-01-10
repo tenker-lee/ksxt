@@ -60,6 +60,14 @@ namespace ksxt
             context.Response.Write(stringBuilder.ToString());
         }
 
+        protected string ReadFormStr(HttpContext context,string itemName)
+        {
+            if (context.Request.Form[itemName] == null)
+                return "";
+            else
+                return context.Request.Form[itemName];
+        }
+
         protected abstract void Add(HttpContext context);
 
         protected abstract void Edit(HttpContext context);

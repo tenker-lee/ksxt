@@ -9,6 +9,7 @@ using System.Data;
 
 namespace ksxt.Admin
 {
+
     /// <summary>
     /// HandlerSingle 的摘要说明
     /// </summary>
@@ -21,19 +22,50 @@ namespace ksxt.Admin
         
         public void CheckSession(HttpContext context)
         {
-            string str = context.Session["logonUser"].ToString();
-            return;
+            
         }
 
-        override protected void Add(HttpContext context) { }
+        override protected void Add(HttpContext context)
+        {
+            string hid = ReadFormStr(context, "hid");
+            string level = ReadFormStr(context, "level"); 
+            string title = ReadFormStr(context, "singleTitle"); 
+            string selectA = ReadFormStr(context, "selectA");
+            string selectB = ReadFormStr(context, "selectB"); 
+            string selectC = ReadFormStr(context, "selectC"); 
+            string selectD = ReadFormStr(context, "selectD"); 
+            string answer = ReadFormStr(context, "singleAnswer");            
 
-        override protected void Edit(HttpContext context) { }
+            WriteResponse(context, 0, "操作成功","");
+        }
 
-        override protected void Delete(HttpContext context) { }
+        override protected void Edit(HttpContext context)
+        {
 
-        override protected void Search(HttpContext context) {
+            string id = ReadFormStr(context, "singleId");
+            string level = ReadFormStr(context, "level");
+            string title = ReadFormStr(context, "singleTitle");
+            string selectA = ReadFormStr(context, "selectA");
+            string selectB = ReadFormStr(context, "selectB");
+            string selectC = ReadFormStr(context, "selectC");
+            string selectD = ReadFormStr(context, "selectD");
+            string answer = ReadFormStr(context, "singleAnswer");
 
-            DataTable dt = ExecuteQueryData("select * from tb_choice");
+            WriteResponse(context, 0, "操作成功", "");
+        }
+
+        override protected void Delete(HttpContext context)
+        {
+            string id = ReadFormStr(context, "singleId");
+
+
+            WriteResponse(context, 0, "操作成功", "");
+        }
+
+        override protected void Search(HttpContext context)
+        {
+
+            DataTable dt = ExecuteQueryData("select * from tb_choice");            
 
             string dtJson = publicFun.DataTableToJson(dt);
 
