@@ -13,7 +13,6 @@ namespace ksxt
         /// 错误信息
         /// </summary>
         public static string dbError { set; get; }
-
         /// <summary>
         /// 数据连接,一直连接
         /// </summary>
@@ -22,7 +21,6 @@ namespace ksxt
         /// SQL命令定义
         /// </summary>
         private static SQLiteCommand dbCommand;
-
         /// <summary>
         /// 数据读取定义
         /// </summary>
@@ -48,7 +46,7 @@ namespace ksxt
         public static int ExecuteNoQuery(string queryString)
         {
             OpenDataBase();
-            int code = 0;
+            int code = -1;
             try
             {
                 dbCommand = dbConnection.CreateCommand();

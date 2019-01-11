@@ -3,36 +3,48 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Text;
+using System.Reflection;
 
 namespace ksxt
 {
     public abstract class HandleBase:dbBase
     {
+        protected string logonUser { set; get; } = "";
+        protected string logonUserType { set; get; } = "";
+
         protected void PreProcess(HttpContext context)
         {
+            if (!checkPermission(context))
+                WriteResponse(context ,- 1, "权限验证失败", "");
             string opt = context.Request.QueryString["opt"];
             if (opt == null)
                 opt = "";
-            if (opt == "query")
-            {
+            if (opt == "query")          
                 Search(context);
-            }
             else if (opt == "add")
-            {
                 Add(context);
-            }
             else if (opt == "edit")
-            {
                 Edit(context);
-            }
             else if (opt == "del")
-            {
                 Delete(context);
-            }
             else
             {
-                Default(context);
+                Type thisType = this.GetType();
+                MethodInfo method = thisType.GetMethod(opt,BindingFlags.IgnoreCase|BindingFlags.Instance|BindingFlags.NonPublic|BindingFlags.Public);
+                if (method == null){
+                    Default(context);
+                }
+                else{
+                    method.Invoke(this, new object[] { context});
+                }
             }
+        }
+
+        protected bool checkPermission(HttpContext context)
+        {
+            logonUser = context.Session["logonUser"]==null?"": context.Session["logonUser"].ToString();
+            logonUserType = context.Session["logonUserType"] == null ? "" : context.Session["logonUser"].ToString();
+            return true;
         }
 
         protected void WriteResponse(HttpContext context,int stateCode, string msg, string usrStr)

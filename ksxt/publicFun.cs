@@ -84,7 +84,7 @@ namespace ksxt
         public static string[] StringToArry(string str)
         {
             if (str == "")
-                return null;
+                return new string[1];
             string[] strArry = str.Split(',');
             if (strArry.Length == 0)
             {
@@ -93,18 +93,8 @@ namespace ksxt
                 return resutlArry;
             }
             else
-            {
-                string[] resutlArry = new string[strArry.Length];
-                for (int i = 0; i < strArry.Length; i++)
-                {
-                    if (IsNumeric(strArry[i]))
-                    {
-                        resutlArry[i] = strArry[i];
-                    }
-                    else
-                        resutlArry[i] = "-1";
-                }
-                return resutlArry;
+            {                                
+                return strArry;
             }
         }
 
