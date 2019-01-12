@@ -106,7 +106,5 @@ namespace ksxt
             }
             return dataTable;
         }
-
-
     }
 }

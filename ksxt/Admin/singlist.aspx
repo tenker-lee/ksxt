@@ -16,13 +16,14 @@
             $('#tt').datagrid({
                 url: "HandlerSingle.ashx?opt=query",
                 fit: false,
-                autoRowHeight: true,
+                autoRowHeight: false,
                 striped: true,
                 pageNumber: 1,
                 pageSize: 10,
                 singleSelect: true,
                 pagination: true,
                 rownumbers: true,
+                nowrap: false,
                 onSelect: function (rowIndex, rowData) {
                     //alert(rowIndex);
                     //alert(rowData["id"]);
@@ -56,9 +57,9 @@
             $('#win').window('close'); Search();
         }
         function ClearForm() {
-            $('#ff').form('clear');
+            //$('#ff').form('clear');
             //$("input[value='1']").attr('checked', 'checked');            
-            $('#f_level').combobox('select', 0);
+            //$('#f_level').combobox('select', 0);
         }
         function CheckForm() {
             return true;
@@ -75,7 +76,7 @@
                 },
                 success: function (data) {
                     var result = JSON.parse(data);
-                    $.messager.alert('Warning', result.msg);
+                    $.messager.alert('警告', result.msg);
                     if (result.stateCode == 0) {                        
                         ClearForm();
                     } 
@@ -98,7 +99,7 @@
                 },
                 success: function (data) {
                     var result = JSON.parse(data);
-                    $.messager.alert('Warning', result.msg);
+                    $.messager.alert('警告', result.msg);
                     if (result.stateCode == 0) {
                         hideAddPannel();
                     } 
@@ -108,18 +109,29 @@
         }
         function DelData() {
             var selrow = $('#tt').datagrid('getSelected');
-            //alert(selrow.v_id);
-            $.ajax({
+            if (null == selrow) {
+                $.messager.alert('警告', "未选择要删除项!!!!");
+                return;
+            }
+            $.messager.confirm('警告', '是否删除 id=' + selrow.v_id + ' 项', function (b) {
+	        if(b){
+		        // exit action;
+                $.ajax({
                 url: 'HandlerSingle.ashx?opt=del',
                 type: "POST",
                 data: { "delid": selrow.v_id },
                 success: function (data) {
-                    var v = JSON.parse(data);
-                    alert(v.msg);
-                    Search();
-                }
-            });
+                            var v = JSON.parse(data);
+                            //alert(v.msg);
+                            Search();
+                    }
+                });
+	          }
+            });            
         }
+        function formatOper(val,row,index){  
+                return '<a href="#" class="easyui-linkbutton" iconcls="icon-add" plain="true" onclick="showAddPannel()">添加</a>';  
+    } 
     </script>
 </head>
 <body>
@@ -136,26 +148,29 @@
         <a href="#" class="easyui-linkbutton" iconcls="icon-edit" plain="true" onclick="ModifyData()">修改</a>
         <a href="#" class="easyui-linkbutton" iconcls="icon-remove" plain="true" onclick="DelData()">删除</a>
     </div>
-    <table id="tt" class="easyui-datagrid" style="width: auto;height:600px" multiple="false">
-        <thead>
-            <tr>
-                <th field="ck" checkbox="true"></th>
-                <th field="v_id">编号</th>
-                <th field="v_level" width="80">难度等级</th>
-                <th field="v_title" align="center" >题目</th>
-                <th field="v_select_arry" align="left">选项</th>
-                <th field="v_answer_arry" align="center" width="50">答案</th>
-                <th field="v_create_name" align="center" width="100">创建人</th>
-                <th field="v_create_time" align="center" width="160">创建时间</th>
-            </tr>
-        </thead>
-    </table>
+    <div style="width: auto;height:500px;overflow:scroll;">
+        <table id="tt" class="easyui-datagrid" style="width: auto;" multiple="false">
+            <thead>
+                <tr>
+                    <th field="ck" checkbox="true"></th>
+                    <th field="v_id">编号</th>
+                    <th field="v_level" width="80">难度等级</th>
+                    <th field="v_title" width="300">题目</th>
+                    <th field="v_select_arry" align="left" >选项</th>
+                    <th field="v_answer_arry" align="center" width="50">答案</th>
+                    <th field="v_create_name" align="center" width="80">创建人</th>
+                    <th field="v_create_time" align="center" width="120">创建时间</th>
+                    <th field="v_oporate"  data-options="formatter:formatOper" align="center" >操作</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
     <div id="win" class="easyui-window" hidden="true" style="width: 600px; height: 550px" data-options="modal:true">
         <form id="ff" method="post">
             <div style="text-align: center; padding: 10px; margin-top: 10px; vertical-align: middle;">
                 <input id="f_id" name="f_id" type="hidden" value="" />
                 <label for="f_title">题 目:</label>
-                <input id="f_title" name="f_title" class="easyui-textbox" data-options="multiline:true" style="width: 371px; height: 95px;">
+                <input id="f_title" name="f_title" class="easyui-textbox" data-options="multiline:true" style="width: 371px; height: 50px;">
             </div>
             <div style="text-align: center; vertical-align:central; padding: 10px">
                 <label for="f_level">困难等级</label>             
