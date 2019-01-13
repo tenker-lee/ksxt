@@ -65,14 +65,13 @@
             return true;
         }
         function Search() {
-            //alert("search");
             $('#tt').datagrid('reload');
         }
         function SubmitToSvr() {
             $('#ff').form('submit', {
                 url: "HandlerSingle.ashx?opt=add",
                 onSubmit: function () {
-                    return CheckForm();	// 返回false终止表单提交
+                    return CheckForm();
                 },
                 success: function (data) {
                     var result = JSON.parse(data);
@@ -80,8 +79,6 @@
                     if (result.stateCode == 0) {                        
                         ClearForm();
                     } 
-                    //alert((data));
-                    //$.messager.progress('close');	// 如果提交成功则隐藏进度条
                 }
             });
         }
@@ -95,7 +92,6 @@
                         param.edit_id = selrow.v_id;
                     else
                         return false;
-                    //return isValid;	
                 },
                 success: function (data) {
                     var result = JSON.parse(data);
@@ -103,7 +99,6 @@
                     if (result.stateCode == 0) {
                         hideAddPannel();
                     } 
-                    //alert((data));
                 }
             });
         }
@@ -115,7 +110,6 @@
             }
             $.messager.confirm('警告', '是否删除 id=' + selrow.v_id + ' 项', function (b) {
 	        if(b){
-		        // exit action;
                 $.ajax({
                 url: 'HandlerSingle.ashx?opt=del',
                 type: "POST",
@@ -130,8 +124,22 @@
             });            
         }
         function formatOper(val,row,index){  
-                return '<a href="#" class="easyui-linkbutton" iconcls="icon-add" plain="true" onclick="showAddPannel()">添加</a>';  
-    } 
+                return "<a href=\"#\" class=\"easyui-linkbutton\" data-options=\"iconCls:'icon-add',plain:true\" onclick=\"\">添加</a>";  
+        } 
+        function test() {
+            $.ajax({
+                url: 'HandlerSingle.ashx?opt=SearchById',
+                type: "POST",
+                data: { "s_id": 19},
+                success: function (data) {
+                            //var v = JSON.parse(data);
+                            alert(data);
+                    }
+                });
+        }
+        function AddToPaper(id) {
+            alert("add to paper");
+        }
     </script>
 </head>
 <body>
@@ -141,41 +149,37 @@
     <div id="searchbar" style="border: thin solid #C0C0C0; text-align: right; padding: 20px">
         <a id="btn" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="Search()">查询&刷新</a>
     </div>
-    <br />
-    <br />
-    <div id="toolbar" style="text-align: right; display: inline">
-        <a href="#" class="easyui-linkbutton" iconcls="icon-add" plain="true" onclick="showAddPannel()">添加</a>
-        <a href="#" class="easyui-linkbutton" iconcls="icon-edit" plain="true" onclick="ModifyData()">修改</a>
-        <a href="#" class="easyui-linkbutton" iconcls="icon-remove" plain="true" onclick="DelData()">删除</a>
+    <div id="toolbar" style="text-align: left;">
+        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true"  onclick="showAddPannel()">添加</a>
+        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="ModifyData()">修改</a>
+        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true"  onclick="DelData()">删除</a>
     </div>
-    <div style="width: auto;height:500px;overflow:scroll;">
-        <table id="tt" class="easyui-datagrid" style="width: auto;" multiple="false">
-            <thead>
-                <tr>
-                    <th field="ck" checkbox="true"></th>
-                    <th field="v_id">编号</th>
-                    <th field="v_level" width="80">难度等级</th>
-                    <th field="v_title" width="300">题目</th>
-                    <th field="v_select_arry" align="left" >选项</th>
-                    <th field="v_answer_arry" align="center" width="50">答案</th>
-                    <th field="v_create_name" align="center" width="80">创建人</th>
-                    <th field="v_create_time" align="center" width="120">创建时间</th>
-                    <th field="v_oporate"  data-options="formatter:formatOper" align="center" >操作</th>
-                </tr>
-            </thead>
-        </table>
-    </div>
-    <div id="win" class="easyui-window" hidden="true" style="width: 600px; height: 550px" data-options="modal:true">
+    <table id="tt" class="easyui-datagrid" style="width: auto;" data-options="">
+        <thead>
+            <tr>
+                <th data-options="field:'ck',checkbox:true" ></th>
+                <th data-options="field:'v_id'">编号</th>
+                <th data-options="field:'v_level',width:80" >难度等级</th>
+                <th data-options="field:'v_title',width:300">题目</th>
+                <th data-options="field:'v_select_arry',align:'left'">选项</th>
+                <th data-options="field:'v_answer_arry', align:'center',width:50">答案</th>
+                <th data-options="field:'v_create_name', align:'center',width:80">创建人</th>
+                <th data-options="field:'v_create_time', align:'center',width:120">创建时间</th>
+                <th data-options="field:'v_oporate',formatter:formatOper, align:'center'">操作</th>
+            </tr>
+        </thead>
+    </table>
+    <div id="win" class="easyui-window" style="width: 600px; height: 550px" data-options="modal:true">
         <form id="ff" method="post">
             <div style="text-align: center; padding: 10px; margin-top: 10px; vertical-align: middle;">
                 <input id="f_id" name="f_id" type="hidden" value="" />
                 <label for="f_title">题 目:</label>
-                <input id="f_title" name="f_title" class="easyui-textbox" data-options="multiline:true" style="width: 371px; height: 50px;">
+                <input id="f_title" name="f_title" class="easyui-textbox" data-options="multiline:true" style="width: 371px; height: 50px;"/>
             </div>
             <div style="text-align: center; vertical-align:central; padding: 10px">
-                <label for="f_level">困难等级</label>             
-                <select id="f_level" name="f_level" class="easyui-combobox" style="width:80px" >
-                    <option value="0" selected="true">请选择</option>
+                <label for="f_level">难度等级</label>             
+                <select id="f_level" name="f_level" class="easyui-combobox" data-options="select:0"  style="width:80px" >
+                    <option value="0" >请选择难度等级</option>
                     <option value="1">初级</option>
                     <option value="2">中级</option>
                     <option value="3">高级</option>
@@ -183,26 +187,26 @@
             </div>
             <div style="text-align: center; padding: 10px">
                 <label for="selectA">选项A:</label>
-                <input id="selectA" name="f_selectA" class="easyui-textbox" data-options="multiline:true" style="width: 371px; height: 45px">
+                <input id="selectA" name="f_selectA" class="easyui-textbox" data-options="multiline:true" style="width: 371px; height: 45px"/>
             </div>
             <div style="text-align: center; padding: 10px">
                 <label for="f_selectB">选项B:</label>
-                <input id="f_selectB" name="f_selectB" class="easyui-textbox" data-options="multiline:true" style="width: 371px; height: 45px">
+                <input id="f_selectB" name="f_selectB" class="easyui-textbox" data-options="multiline:true" style="width: 371px; height: 45px"/>
             </div>
             <div style="text-align: center; padding: 10px">
                 <label for="f_selectC">选项C:</label>
-                <input id="f_selectC" name="f_selectC" class="easyui-textbox" data-options="multiline:true" style="width: 371px; height: 45px">
+                <input id="f_selectC" name="f_selectC" class="easyui-textbox" data-options="multiline:true" style="width: 371px; height: 45px"/>
             </div>
             <div style="text-align: center; padding: 10px">
                 <label for="f_selectD">选项D:</label>
-                <input id="f_selectD" name="f_selectD" class="easyui-textbox" data-options="multiline:true" style="width: 371px; height: 45px">
+                <input id="f_selectD" name="f_selectD" class="easyui-textbox" data-options="multiline:true" style="width: 371px; height: 45px"/>
             </div>
             <div style="text-align: center; padding: 10px">
                 <label for="f_singleAnswer">答案:</label>
-                <input  type="radio"  name="f_singleAnswer" value="0">A</input>
-                <input  type="radio"  name="f_singleAnswer" value="1">B</input>
-                <input  type="radio"  name="f_singleAnswer" value="2">C</input>
-                <input  type="radio"  name="f_singleAnswer" value="3">D</input>
+                <input  type="radio"  name="f_singleAnswer" value="0"/>A
+                <input  type="radio"  name="f_singleAnswer" value="1"/>B
+                <input  type="radio"  name="f_singleAnswer" value="2"/>C
+                <input  type="radio"  name="f_singleAnswer" value="3"/>D
             </div>
             <div style="text-align: center; padding: 10px">
                 <a id="btnClear" href="#" class="easyui-linkbutton" onclick="ClearForm()" data-options="iconCls:'icon-cancel'">重置</a>&nbsp;&nbsp;&nbsp;&nbsp; 

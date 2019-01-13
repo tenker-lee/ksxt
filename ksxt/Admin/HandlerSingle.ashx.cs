@@ -23,8 +23,6 @@ namespace ksxt.Admin
 
         override protected void Add(HttpContext context)
         {
-            string hid = ReadFormStr(context, "hid");
-
             string level = ReadFormStr(context, "f_level"); 
             string title = ReadFormStr(context, "f_title"); 
             string selectA = ReadFormStr(context, "f_selectA");
@@ -101,6 +99,7 @@ namespace ksxt.Admin
             DataTable dt = ExecuteQueryData("select * from tb_choice");
             //视图
             DataTable dtView = new DataTable();
+
             dtView.Columns.Add("v_id");
             dtView.Columns.Add("v_level");
             dtView.Columns.Add("v_title");
@@ -182,7 +181,37 @@ namespace ksxt.Admin
 
         void SearchById(HttpContext context)
         {
-            WriteResponse(context, 0, "ok", "");
+            string s_id = ReadFormStr(context, "s_id");
+            if (s_id == "")
+            {
+                WriteResponse(context, -1, "查询失败", "");
+                return;
+            }
+            string title = "";
+            string level = "";
+            string[] s_arry = { "", "", "", "" };
+            string[] s_answer = { "", "", "", "" };
+
+            string responseFormat = "\"title\":\"{0}\",\"level\":\"{1}\",\"s_a\":\"{2}\",\"s_b\":\"{3}\",\"s_c\":\"{4}\",\"s_d\":\"{5}\",\"s_answer\":\"{6}\"";
+
+            DataTable dataTable = ExecuteQueryData("select * from tb_choice where id=" + s_id);
+
+            if (dataTable.Rows.Count > 0)
+            {
+                title = dataTable.Rows[0]["title"].ToString();
+                level = dataTable.Rows[0]["level"].ToString();
+
+                string selects = dataTable.Rows[0]["select_arry"].ToString();
+                s_arry = publicFun.StringToArry(selects); ;
+
+                string answers = dataTable.Rows[0]["answer_arry"].ToString();
+                s_answer = publicFun.StringToArry(answers);
+               
+            }
+
+            string json = string.Format(responseFormat, title, level, s_arry[0], s_arry[1], s_arry[2], s_arry[3], s_answer[0]);
+
+            WriteResponse(context, 0, "操作成功", json);
         }
 
         public bool IsReusable
