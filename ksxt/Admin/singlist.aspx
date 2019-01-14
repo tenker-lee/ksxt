@@ -49,9 +49,39 @@
                 closed: true
             });
         });
-        function showAddPannel() {
+        function showAddPannel(opt) {
+            if (opt == "edit") {
+                $('#btnType').val("edit");
+                var selrow = $('#tt').datagrid('getSelected');
+                if (null == selrow) {
+                    $.messager.alert('警告', "未选择要编辑项!!!!");
+                    return;
+                }
+                else {
+                    $.ajax({
+                        url: 'HandlerSingle.ashx?opt=SearchById',
+                        type: "POST",
+                        data: { "s_id": selrow.v_id },
+                        success: function (data) {
+                            var v = JSON.parse(data);
+                            //alert(v);
+                            $('#f_level').combobox("setValue", v.level);
+                            $('#f_title').textbox("setValue", v.title);
+                            $('#f_selectA').textbox("setValue", v.s_a);
+                            $('#f_selectB').textbox("setValue", v.s_b);
+                            $('#f_selectC').textbox("setValue", v.s_c);
+                            $('#f_selectD').textbox("setValue", v.s_d);
+                            $("input:radio[name='f_singleAnswer'][value='" + v.s_answer + "']").prop("checked", "checked");
+                        }
+                    });
+                }
+                $('#win').window({ title: "编辑(单选题)" });
+            }
+            else {
+                $('#btnType').val("");
+                $('#win').window({ title: "添加(单选题)" });
+            }
             $('#win').window('open');
-            //$('#tt').datagrid('load',{code: '01',name: 'name01'});
         }
         function hideAddPannel() {
             $('#win').window('close'); Search();
@@ -66,6 +96,15 @@
         }
         function Search() {
             $('#tt').datagrid('reload');
+        }
+        function Confirm() {
+            //alert($('#btnType').val());
+            if ($('#btnType').val() == "edit") {
+                ModifyData();
+            }
+            else {
+                SubmitToSvr();
+            }
         }
         function SubmitToSvr() {
             $('#ff').form('submit', {
@@ -95,7 +134,13 @@
                 },
                 success: function (data) {
                     var result = JSON.parse(data);
-                    $.messager.alert('警告', result.msg);
+                    //$.messager.alert('警告', result.msg);
+                    $.messager.show({
+	                    title:'提示',
+	                    msg:result.msg,
+	                    timeout:5000,
+	                    showType:'slide'
+                    });
                     if (result.stateCode == 0) {
                         hideAddPannel();
                     } 
@@ -124,18 +169,7 @@
             });            
         }
         function formatOper(val,row,index){  
-                return "<a href=\"#\" class=\"easyui-linkbutton\" data-options=\"iconCls:'icon-add',plain:true\" onclick=\"\">添加</a>";  
-        } 
-        function test() {
-            $.ajax({
-                url: 'HandlerSingle.ashx?opt=SearchById',
-                type: "POST",
-                data: { "s_id": 19},
-                success: function (data) {
-                            //var v = JSON.parse(data);
-                            alert(data);
-                    }
-                });
+                return "<a href=\"#\" class=\"easyui-linkbutton\" data-options=\"iconCls:'icon-add',plain:false\" onclick=\"\">添加</a>";  
         }
         function AddToPaper(id) {
             alert("add to paper");
@@ -150,9 +184,9 @@
         <a id="btn" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="Search()">查询&刷新</a>
     </div>
     <div id="toolbar" style="text-align: left;">
-        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true"  onclick="showAddPannel()">添加</a>
-        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="ModifyData()">修改</a>
-        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true"  onclick="DelData()">删除</a>
+        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true"  onclick="showAddPannel('')">添加</a>
+        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="showAddPannel('edit')">修改</a>
+        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true"  onclick="DelData()">删除</a>
     </div>
     <table id="tt" class="easyui-datagrid" style="width: auto;" data-options="">
         <thead>
@@ -187,7 +221,7 @@
             </div>
             <div style="text-align: center; padding: 10px">
                 <label for="selectA">选项A:</label>
-                <input id="selectA" name="f_selectA" class="easyui-textbox" data-options="multiline:true" style="width: 371px; height: 45px"/>
+                <input id="f_selectA" name="f_selectA" class="easyui-textbox" data-options="multiline:true" style="width: 371px; height: 45px"/>
             </div>
             <div style="text-align: center; padding: 10px">
                 <label for="f_selectB">选项B:</label>
@@ -209,8 +243,9 @@
                 <input  type="radio"  name="f_singleAnswer" value="3"/>D
             </div>
             <div style="text-align: center; padding: 10px">
+                <input id="btnType" type="hidden" value="" />
                 <a id="btnClear" href="#" class="easyui-linkbutton" onclick="ClearForm()" data-options="iconCls:'icon-cancel'">重置</a>&nbsp;&nbsp;&nbsp;&nbsp; 
-                <a id="btnConfirm" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" onclick="SubmitToSvr()">确定</a>&nbsp;&nbsp;&nbsp;&nbsp; 
+                <a id="btnConfirm" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" onclick="Confirm()">确定</a>&nbsp;&nbsp;&nbsp;&nbsp; 
                 <a id="btnCancel" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="hideAddPannel()">取消</a>&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
         </form>

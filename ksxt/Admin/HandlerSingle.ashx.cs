@@ -6,7 +6,6 @@ using System.Web.SessionState;
 using Newtonsoft.Json.Linq;
 using ksxt;
 using System.Data;
-using System.Reflection;
 
 namespace ksxt.Admin
 {
@@ -53,6 +52,7 @@ namespace ksxt.Admin
         override protected void Edit(HttpContext context)
         {
             string edit_id = ReadFormStr(context, "edit_id");
+
             string level = ReadFormStr(context, "f_level");
             string title = ReadFormStr(context, "f_title");
             string selectA = ReadFormStr(context, "f_selectA");
@@ -182,6 +182,7 @@ namespace ksxt.Admin
         void SearchById(HttpContext context)
         {
             string s_id = ReadFormStr(context, "s_id");
+
             if (s_id == "")
             {
                 WriteResponse(context, -1, "查询失败", "");
@@ -205,8 +206,7 @@ namespace ksxt.Admin
                 s_arry = publicFun.StringToArry(selects); ;
 
                 string answers = dataTable.Rows[0]["answer_arry"].ToString();
-                s_answer = publicFun.StringToArry(answers);
-               
+                s_answer = publicFun.StringToArry(answers);               
             }
 
             string json = string.Format(responseFormat, title, level, s_arry[0], s_arry[1], s_arry[2], s_arry[3], s_answer[0]);

@@ -46,6 +46,7 @@ namespace ksxt
         public static int ExecuteNoQuery(string queryString)
         {
             OpenDataBase();
+
             int code = -1;
             try
             {
@@ -65,6 +66,7 @@ namespace ksxt
         public static SQLiteDataReader ExecuteQuery(string queryString)
         {
             OpenDataBase();
+
             try
             {
                 dbCommand = dbConnection.CreateCommand();

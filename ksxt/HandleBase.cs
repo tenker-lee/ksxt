@@ -10,6 +10,7 @@ namespace ksxt
     public abstract class HandleBase:dbBase
     {
         protected string logonUser { set; get; } = "";
+
         protected string logonUserType { set; get; } = "";
 
         protected void PreProcess(HttpContext context)
