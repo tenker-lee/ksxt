@@ -84,8 +84,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Admin\fillinglist.aspx" />
     <Content Include="Admin\index.aspx" />
+    <Content Include="Admin\judgelist.aspx" />
+    <Content Include="Admin\paperlist.aspx" />
+    <Content Include="Admin\qalist.aspx" />
     <Content Include="Admin\singlist.aspx" />
+    <Content Include="Admin\userlist.aspx" />
     <Content Include="Content\themes\black\accordion.css" />
     <Content Include="Content\themes\black\calendar.css" />
     <Content Include="Content\themes\black\combo.css" />
@@ -424,7 +429,14 @@
     <Content Include="Content\themes\material\images\Thumbs.db" />
     <Content Include="Admin\HandlerSingle.ashx" />
     <Content Include="App_Data\ksxt.db" />
+    <Content Include="Admin\HandlerFilling.ashx" />
+    <Content Include="Admin\HandlerJudge.ashx" />
+    <Content Include="Admin\HandlerQA.ashx" />
+    <Content Include="Admin\HandlerUser.ashx" />
+    <Content Include="Admin\HandlerPaper.ashx" />
+    <Content Include="HandlerPublicFun.ashx" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
+    <Content Include="logon.aspx" />
     <Content Include="Scripts\easyloader.js" />
     <Content Include="Scripts\jquery-2.1.0.js" />
     <Content Include="Scripts\jquery-2.1.0.min.js" />
@@ -462,8 +474,30 @@
     <Content Include="WebForm1.aspx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Admin\fillinglist.aspx.cs">
+      <DependentUpon>fillinglist.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\fillinglist.aspx.designer.cs">
+      <DependentUpon>fillinglist.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\HandlerFilling.ashx.cs">
+      <DependentUpon>HandlerFilling.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\HandlerJudge.ashx.cs">
+      <DependentUpon>HandlerJudge.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\HandlerPaper.ashx.cs">
+      <DependentUpon>HandlerPaper.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\HandlerQA.ashx.cs">
+      <DependentUpon>HandlerQA.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Admin\HandlerSingle.ashx.cs">
       <DependentUpon>HandlerSingle.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\HandlerUser.ashx.cs">
+      <DependentUpon>HandlerUser.ashx</DependentUpon>
     </Compile>
     <Compile Include="Admin\index.aspx.cs">
       <DependentUpon>index.aspx</DependentUpon>
@@ -472,12 +506,40 @@
     <Compile Include="Admin\index.aspx.designer.cs">
       <DependentUpon>index.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Admin\judgelist.aspx.cs">
+      <DependentUpon>judgelist.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\judgelist.aspx.designer.cs">
+      <DependentUpon>judgelist.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\paperlist.aspx.cs">
+      <DependentUpon>paperlist.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\paperlist.aspx.designer.cs">
+      <DependentUpon>paperlist.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\qalist.aspx.cs">
+      <DependentUpon>qalist.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\qalist.aspx.designer.cs">
+      <DependentUpon>qalist.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Admin\singlist.aspx.cs">
       <DependentUpon>singlist.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Admin\singlist.aspx.designer.cs">
       <DependentUpon>singlist.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\userlist.aspx.cs">
+      <DependentUpon>userlist.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\userlist.aspx.designer.cs">
+      <DependentUpon>userlist.aspx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
@@ -487,6 +549,16 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="HandleBase.cs" />
+    <Compile Include="HandlerPublicFun.ashx.cs">
+      <DependentUpon>HandlerPublicFun.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="logon.aspx.cs">
+      <DependentUpon>logon.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="logon.aspx.designer.cs">
+      <DependentUpon>logon.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="App_Code\SqLiteHelper.cs" />
     <Compile Include="publicFun.cs" />
