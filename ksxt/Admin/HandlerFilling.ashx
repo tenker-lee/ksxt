@@ -1,1 +1,1 @@
-﻿<%@ WebHandler Language="C#" CodeBehind="HandlerFilling.ashx.cs" Class="ksxt.Admin.Handler1" %>
+﻿<%@ WebHandler Language="C#" CodeBehind="HandlerFilling.ashx.cs" Class="ksxt.Admin.HandlerFilling" %>

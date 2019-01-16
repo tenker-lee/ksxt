@@ -23,12 +23,20 @@ namespace ksxt.Admin
             string type = ReadFormStr(context, "f_type");
             string name = ReadFormStr(context, "f_name");
             string password = ReadFormStr(context, "f_password");
+            string password_confirm = ReadFormStr(context, "f_password_confirm");
+            
             string department = ReadFormStr(context, "f_department");
             string job = ReadFormStr(context, "f_job");
 
             if (type == "" || name == "" || password == "")
             {
                 WriteResponse(context, -1, "输出参数有误", "");
+                return;
+            }
+
+            if(password != password_confirm)
+            {
+                WriteResponse(context, -1, "两次输入密码不一致", "");
                 return;
             }
 
@@ -90,7 +98,6 @@ namespace ksxt.Admin
         protected override void Search(HttpContext context)
         {
             DataTable dt = ExecuteQueryData("select * from tb_users");
-
             //视图
             DataTable dtView = new DataTable();
             dtView.Columns.Add("v_id");
@@ -106,7 +113,7 @@ namespace ksxt.Admin
             {
                 DataRow newDr = dtView.NewRow();
                 newDr["v_id"] = dr["id"];          
-                newDr["v_type"] = dr["type"];
+                newDr["v_type"] = dr["type"].ToString()==""?"普通":"管理员";
                 newDr["v_name"] = dr["name"];
                 newDr["v_password"] = dr["password"];
                 newDr["v_department"] = dr["department"];
@@ -123,6 +130,37 @@ namespace ksxt.Admin
             listJson += dtJson;
 
             WriteResponse(context, 0, "查询成功", listJson);
+        }
+
+        void SearchById(HttpContext context)
+        {
+            string s_id = ReadFormStr(context, "s_id");
+
+            if (s_id == "")
+            {
+                WriteResponse(context, -1, "查询失败", "");
+                return;
+            }
+            string type = "";
+            string name = "";
+            string department = "";
+            string job = "";
+
+            string responseFormat = "\"type\":\"{0}\",\"name\":\"{1}\",\"department\":\"{2}\",\"job\":\"{3}\"";
+
+            DataTable dataTable = ExecuteQueryData("select * from tb_users where id=" + s_id);
+
+            if (dataTable.Rows.Count > 0)
+            {
+                type = dataTable.Rows[0]["type"].ToString();
+                name = dataTable.Rows[0]["name"].ToString();
+                department = dataTable.Rows[0]["department"].ToString();
+                job = dataTable.Rows[0]["job_title"].ToString();
+            }
+
+            string json = string.Format(responseFormat, type, name, department,job);
+
+            WriteResponse(context, 0, "操作成功", json);
         }
 
         protected override void Default(HttpContext context)

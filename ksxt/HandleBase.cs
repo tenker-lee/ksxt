@@ -70,6 +70,10 @@ namespace ksxt
 
             stringBuilder.Append("}");
 
+            stringBuilder.Replace("\r\n", "<br/>");
+            stringBuilder.Replace("\r", "<br/>");
+            stringBuilder.Replace("\n", "<br/>");
+
             context.Response.Write(stringBuilder.ToString());
         }
 

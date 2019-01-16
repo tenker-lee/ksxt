@@ -118,7 +118,7 @@ namespace ksxt.Admin
                 newDr["v_title"] = dr["title"];
 
                 string anserSel = dr["answer_arry"].ToString();               
-                newDr["v_answer"] = anserSel;
+                newDr["v_answer"] = anserSel=="0"?"错误":"正确";
 
                 newDr["v_create_name"] = dr["create_name"];
                 newDr["v_create_time"] = dr["create_time"];

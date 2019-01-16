@@ -124,7 +124,7 @@ namespace ksxt.Admin
             if (code >= 0)
                 WriteResponse(context, 0, "操作成功", "");
             else
-                WriteResponse(context, code, dbError, "");
+                WriteResponse(context, code,dbError, "");
         }
 
         protected override void Search(HttpContext context)
@@ -158,7 +158,7 @@ namespace ksxt.Admin
 
                 string anserSel = dr["answer_arry"].ToString();
                 string[] arryAswer = publicFun.StringToArry(anserSel);
-                anserSel = "";                
+                //anserSel = "";                
                 if (anserSel.Length != 0 && anserSel[anserSel.Length-1]==',')
                     anserSel = anserSel.Remove(anserSel.Length - 1);
                 newDr["v_answer_arry"] = anserSel;
