@@ -19,8 +19,9 @@
             <div class="easyui-accordion" data-options="animate:false"  style="width: auto; height: auto;">
                 <div title="帐户管理" data-options="collapsible:false,iconcls:'icon-ok'"  style="overflow: auto; padding: 10px;">
                     <h3 style="color: #0099FF;">Accordion for jQuery</h3>
-                    <p>Accordion is a part of easyui framework for jQuery. It lets you define your accordion component on web page more easily.</p>
-                </div>
+                    <ul>
+                        <li style="height: 20px"><a href="#">帐户管理</a></li>
+                    </ul>                </div>
                 <div title="题库管理" data-options="closed:false,iconcls:'icon-reload'" style="padding: 5px; overflow: auto;">
                     <ul>
                         <li style="height: 20px"><a href="#">选择题</a></li>
@@ -47,16 +48,7 @@
             </div>
         </div>
         <div id="center" data-options="region:'center',fit:true" style="padding: 0px;">
-            <div class="easyui-tabs" data-options="fit:true"  style="width: auto; height: 100px;">
-                <div title="First Tab" style="padding: 10px;">
-                    First Tab
-                </div>
-                <div title="Second Tab" data-options="closable:true" style="padding: 10px;">
-                    Second Tab
-                </div>
-                <div title="Third Tab" data-options="iconcls:'icon-reload',closable:true" style="padding: 10px;">
-                    Third Tab
-                </div>
+            <div class="easyui-tabs" data-options="fit:true"  style="width: auto; height: 100px;">               
             </div>
         </div>
     </div>

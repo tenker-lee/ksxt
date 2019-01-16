@@ -40,7 +40,7 @@
                 }
             });
             $('#win').window({
-                title: "添加&编辑(单选题)",
+                title: "添加&编辑",
                 collapsible: false,
                 minimizable: false,
                 maximizable: false,
@@ -70,11 +70,11 @@
                         }
                     });
                 }
-                $('#win').window({ title: "编辑(单选题)" });
+                $('#win').window({ title: "编辑" });
             }
             else {
                 $('#btnType').val("");
-                $('#win').window({ title: "添加(单选题)" });
+                $('#win').window({ title: "添加" });
             }
             $('#win').window('open');
         }
@@ -82,7 +82,7 @@
             $('#win').window('close'); Search();
         }
         function ClearForm() {
-            //$('#ff').form('clear');
+            $('#ff').form('clear');
             //$("input[value='1']").attr('checked', 'checked');            
             //$('#f_level').combobox('select', 0);
         }
@@ -93,7 +93,6 @@
             $('#tt').datagrid('reload');
         }
         function Confirm() {
-            //alert($('#btnType').val());
             if ($('#btnType').val() == "edit") {
                 ModifyData();
             }
