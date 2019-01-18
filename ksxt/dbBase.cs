@@ -81,6 +81,29 @@ namespace ksxt
             return dataReader;
         }
 
+        public static int ExecuteTransaction(string [] sqlStrings)
+        {
+            OpenDataBase();
+
+            try
+            {
+                SQLiteTransaction sQLiteTransaction = dbConnection.BeginTransaction();
+                dbCommand = dbConnection.CreateCommand();
+                foreach (string sql in sqlStrings)
+                {
+                    dbCommand.CommandText = sql;
+                    dbCommand.ExecuteNonQuery();
+                }
+                sQLiteTransaction.Commit();                
+            }
+            catch (Exception e)
+            {
+                dbError = e.Message;
+                return -1;
+            }
+            return 0;
+        }
+
         public static DataTable ExecuteQueryData(string queryString)
         {
             DataTable dataTable = new DataTable();
@@ -108,5 +131,23 @@ namespace ksxt
             }
             return dataTable;
         }
+
+        public static int ExecuteQueryDataCount(string queryString)
+        {
+            int nCount = 0;
+
+            SQLiteDataReader dataReader = ExecuteQuery(queryString);
+
+            if (dataReader != null)
+            {               
+                while (dataReader.Read())
+                {
+                    nCount++;
+                }
+                dataReader.Close();
+            }
+            return nCount;
+        }
+        
     }
 }
