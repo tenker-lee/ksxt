@@ -16,7 +16,7 @@ namespace ksxt
         protected void PreProcess(HttpContext context)
         {
             if (!checkPermission(context))
-                WriteResponse(context ,- 1, "权限验证失败", "");
+                WriteResponse(context ,-2, "权限验证失败", "");
             string opt = context.Request.QueryString["opt"];
             if (opt == null)
                 opt = "";

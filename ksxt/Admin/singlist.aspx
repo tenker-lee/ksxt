@@ -160,9 +160,16 @@
                 type: "POST",
                 data: { "delid": selrow.v_id },
                 success: function (data) {
-                            var v = JSON.parse(data);
-                            //alert(v.msg);
-                            Search();
+                    var result = JSON.parse(data);
+                    if (result.stateCode == 0) {
+                        $.messager.show({
+                            title: '提示',
+                            msg: result.msg,
+                            timeout: 5000,
+                            showType: 'slide'
+                        });
+                        Search();
+                        }
                     }
                 });
 	          }

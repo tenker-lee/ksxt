@@ -197,12 +197,12 @@
             <div style="text-align: center; padding: 10px; margin-top: 10px; vertical-align: middle;">
                 <label for="f_title">开始时间:</label>
                 <input class="easyui-datetimebox" name="f_start_time"
-                    data-options="required:true,showSeconds:false" style="width: 150px">
+                    data-options="required:true,showSeconds:false" style="width: 150px"/>
             </div>
             <div style="text-align: center; padding: 10px; margin-top: 10px; vertical-align: middle;">
                 <label for="f_title">结束时间:</label>
                 <input class="easyui-datetimebox" name="f_end_time"
-                    data-options="required:true,showSeconds:false"  style="width: 150px">
+                    data-options="required:true,showSeconds:false"  style="width: 150px"/>
             </div>
             <div style="text-align: center; padding: 10px">
                 <div>
