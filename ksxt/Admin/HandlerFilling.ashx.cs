@@ -199,6 +199,7 @@ namespace ksxt.Admin
                 WriteResponse(context, -1, "查询失败", "");
                 return;
             }
+
             string title = "";
             string level = "";
             string[] s_answer = { "", "", "", "" };
@@ -213,7 +214,12 @@ namespace ksxt.Admin
                 level = dataTable.Rows[0]["level"].ToString();
 
                 string answers = dataTable.Rows[0]["answer_arry"].ToString();
-                s_answer = publicFun.StringToArry(answers);
+                string []arry = publicFun.StringToArry(answers);
+
+                for(int i = 0; i < arry.Length; i++)
+                {
+                    s_answer[i] = arry[i];
+                }
             }
 
             string json = string.Format(responseFormat, title, level, s_answer[0], s_answer[1], s_answer[2], s_answer[3]);

@@ -166,9 +166,7 @@
     </script>
 </head>
 <body>
-    <div id="" style="text-align: center; padding: 5px">
-    </div>
-    <div id="searchbar" style="border: thin solid #C0C0C0; text-align: right; padding: 20px">
+    <div id="searchbar" style="border: thin solid #C0C0C0; text-align: right; padding: 5px">
         <a id="btn" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="Search()">查询&刷新</a>
     </div>
     <div id="toolbar" style="text-align: left;">

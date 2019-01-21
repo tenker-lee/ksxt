@@ -171,9 +171,7 @@
     </script>
 </head>
 <body>
-    <div id="" style="text-align: center; padding: 5px">
-    </div>
-    <div id="searchbar" style="border: thin solid #C0C0C0; text-align: right; padding: 10px">
+    <div id="searchbar" style="border: thin solid #C0C0C0; text-align: right; padding: 5px">
         <a id="btn" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="Search()">查询&刷新</a>
     </div>
     <div id="toolbar" style="text-align: left;">
@@ -187,7 +185,7 @@
                 <th data-options="field:'ck',checkbox:true" ></th>
                 <th data-options="field:'v_id'">编号</th>
                 <th data-options="field:'v_level',width:80" >难度等级</th>
-                <th data-options="field:'v_title',width:300">题目</th>
+                <th data-options="field:'v_title',width:350">题目</th>
                 <th data-options="field:'v_answer_arry', align:'center'">答案</th>
                 <th data-options="field:'v_create_name', align:'center',width:80">创建人</th>
                 <th data-options="field:'v_create_time', align:'center',width:120">创建时间</th>
@@ -204,7 +202,7 @@
             </div>
             <div style="text-align: center; vertical-align:central; padding: 10px">
                 <label for="f_level">难度等级</label>             
-                <select id="f_level" name="f_level" class="easyui-combobox" data-options="select:0"  style="width:80px" >
+                <select id="f_level" name="f_level" class="easyui-combobox" data-options="select:0"  style="width:120px" >
                     <option value="0" >请选择难度等级</option>
                     <option value="1">初级</option>
                     <option value="2">中级</option>

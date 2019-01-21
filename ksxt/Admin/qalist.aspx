@@ -168,9 +168,7 @@
     </script>
 </head>
 <body>
-    <div id="" style="text-align: center; padding: 5px">
-    </div>
-    <div id="searchbar" style="border: thin solid #C0C0C0; text-align: right; padding: 20px">
+    <div id="searchbar" style="border: thin solid #C0C0C0; text-align: right; padding: 5px">
         <a id="btn" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="Search()">查询&刷新</a>
     </div>
     <div id="toolbar" style="text-align: left;">
@@ -197,7 +195,7 @@
             <div style="text-align: center; padding: 10px; margin-top: 10px; vertical-align: middle;">
                 <input id="f_id" name="f_id" type="hidden" value="" />
                 <label for="f_title">题 目:</label>
-                <input id="f_title" name="f_title" class="easyui-textbox" data-options="multiline:true" style="width: 371px; height: 50px;"/>
+                <input id="f_title" name="f_title" class="easyui-textbox" data-options="multiline:true" style="width: 371px; height: 100px;"/>
             </div>
             <div style="text-align: center; vertical-align:central; padding: 10px">
                 <label for="f_level">难度等级</label>             
@@ -210,7 +208,7 @@
             </div>          
             <div style="text-align: center; padding: 10px">
                 <label for="f_answer">答案:</label>
-                <input id="f_answer" name="f_answer" class="easyui-textbox" data-options="multiline:true" style="width: 371px; height: 80px;"/>
+                <input id="f_answer" name="f_answer" class="easyui-textbox" data-options="multiline:true" style="width: 371px; height: 120px;"/>
             </div>
             <div style="text-align: center; padding: 10px">
                 <div><input id="btnType" type="hidden" value="" /></div>

@@ -25,11 +25,8 @@
                 rownumbers: true,
                 nowrap: false,
                 onSelect: function (rowIndex, rowData) {
-                    //alert(rowIndex);
-                    //alert(rowData["id"]);
                 },
                 onLoadSuccess: function (data) {
-                    //alert(JSON.stringify(data));                    
                 }
             });            
             $('#win').window({
@@ -59,7 +56,7 @@
                             var v = JSON.parse(data);
                             $('#f_level').combobox("setValue", v.level);
                             $('#f_title').textbox("setValue", v.title);
-                            $("input:radio[name='f_answer'][value='" + v.s_answer + "']").prop("checked", "checked");
+                            $("input:radio[name='f_answer'][value='" + v.answer + "']").prop("checked", "checked");
                         }
                     });
                 }
@@ -168,9 +165,7 @@
     </script>
 </head>
 <body>
-    <div id="" style="text-align: center; padding: 5px">
-    </div>
-    <div id="searchbar" style="border: thin solid #C0C0C0; text-align: right; padding: 20px">
+    <div id="searchbar" style="border: thin solid #C0C0C0; text-align: right; padding: 5px">
         <a id="btn" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="Search()">查询&刷新</a>
     </div>
     <div id="toolbar" style="text-align: left;">
@@ -201,7 +196,7 @@
             </div>
             <div style="text-align: center; vertical-align:central; padding: 10px">
                 <label for="f_level">难度等级</label>             
-                <select id="f_level" name="f_level" class="easyui-combobox" data-options="select:0"  style="width:80px" >
+                <select id="f_level" name="f_level" class="easyui-combobox" data-options="select:0"  style="width:120px" >
                     <option value="0" >请选择难度等级</option>
                     <option value="1">初级</option>
                     <option value="2">中级</option>

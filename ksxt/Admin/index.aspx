@@ -54,8 +54,8 @@
     </script>
 </head>
 <body class="easyui-layout">
-        <div id="head" data-options="region:'north'" style="padding: 5px; width: auto; height: 60px"></div>
-        <div id="left" data-options="region:'west',split:true" style="width: 250px;">
+        <div id="head" data-options="region:'north'" style="padding: 5px; width: auto; height: 40px"></div>
+        <div id="left" data-options="region:'west',split:true" style="width: 130px;">
             <div class="easyui-accordion" data-options="animate:true" style="width: auto; height: auto;">
                 <div title="帐户管理" data-options="collapsible:true,iconcls:'icon-reload'" style="overflow: auto; padding: 10px;">
                     <ul>
