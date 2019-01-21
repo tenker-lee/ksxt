@@ -30,6 +30,12 @@ namespace ksxt.Admin
                 return;
             }
 
+            if (ExecuteQueryDataCount("select * from tb_qa where title='" + title + "'") > 0)
+            {
+                WriteResponse(context, -1, "数据重复", "");
+                return;
+            }
+
             string sqlFormat = @"insert into tb_qa(level,title,answer,create_name,create_time)values(
                                                         '{0}','{1}','{2}','{3}','{4}')";
             string sql = string.Format(sqlFormat, level, title, answer, logonUser, publicFun.GetDateString(DateTime.Now));
@@ -90,7 +96,13 @@ namespace ksxt.Admin
 
         protected override void Search(HttpContext context)
         {
-            DataTable dt = ExecuteQueryData("select * from tb_qa");
+            int page = publicFun.StringToInt(ReadFormStr(context, "page"));
+            int rows = publicFun.StringToInt(ReadFormStr(context, "rows"));
+            DataTable dt;
+            if (page > 0 && rows > 0)
+                dt = ExecuteQueryData("select * from tb_qa limit " + rows + " offset " + (page - 1) * rows);
+            else
+                dt = ExecuteQueryData("select * from tb_qa");
             //视图
             DataTable dtView = new DataTable();
             dtView.Columns.Add("v_id");
@@ -127,12 +139,13 @@ namespace ksxt.Admin
             //转JSON
             string dtJson = publicFun.DataTableToJson(dtView);
 
-            string listJson = "\"total\":" + dt.Rows.Count + ",\"rows\":";
+            string listJson = "\"total\":" + ExecuteQueryDataCount("select * from tb_qa") + ",\"rows\":";
 
             listJson += dtJson;
 
             WriteResponse(context, 0, "查询成功", listJson);
         }
+
         void SearchById(HttpContext context)
         {
             string s_id = ReadFormStr(context, "s_id");

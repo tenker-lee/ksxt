@@ -31,14 +31,7 @@
                 onLoadSuccess: function (data) {
                     //alert(JSON.stringify(data));                    
                 }
-            });
-            var pager = $('#tt').datagrid('getPager');
-            pager.pagination({
-                onSelectPage: function (pageNum, pageSize) {
-                    //alert(pageNum);
-                    //alert(pageSize);
-                }
-            });
+            });            
             $('#win').window({
                 title: "添加&编辑",
                 collapsible: false,
@@ -63,14 +56,13 @@
                         type: "POST",
                         data: { "s_id": selrow.v_id },
                         success: function (data) {
-                            var v = JSON.parse(data);
-                            //alert(v);
-                            $('#f_level').combobox("setValue", v.level);
-                            $('#f_title').textbox("setValue", v.title);
-                            $('#f_answerA').textbox("setValue", v.a_a);
-                            $('#f_answerB').textbox("setValue", v.a_b);
-                            $('#f_answerC').textbox("setValue", v.a_c);
-                            $('#f_answerD').textbox("setValue", v.a_d);
+                            var result = JSON.parse(data);
+                            $('#f_level').combobox("setValue", result.level);
+                            $('#f_title').textbox("setValue",  result.title);
+                            $('#f_answerA').textbox("setValue", result.a_a);
+                            $('#f_answerB').textbox("setValue", result.a_b);
+                            $('#f_answerC').textbox("setValue", result.a_c);
+                            $('#f_answerD').textbox("setValue", result.a_d);
                         }
                     });
                 }
@@ -86,9 +78,7 @@
             $('#win').window('close'); Search();
         }
         function ClearForm() {
-            //$('#ff').form('clear');
-            //$("input[value='1']").attr('checked', 'checked');            
-            //$('#f_level').combobox('select', 0);
+            $('#ff').form('clear');
         }
         function CheckForm() {
             return true;
@@ -97,7 +87,6 @@
             $('#tt').datagrid('reload');
         }
         function Confirm() {
-            //alert($('#btnType').val());
             if ($('#btnType').val() == "edit") {
                 ModifyData();
             }
@@ -115,7 +104,7 @@
                     var result = JSON.parse(data);
                     $.messager.alert('警告', result.msg);
                     if (result.stateCode == 0) {                        
-                        ClearForm();
+                        //ClearForm();
                     } 
                 }
             });
@@ -158,9 +147,15 @@
                 type: "POST",
                 data: { "delid": selrow.v_id },
                     success: function (data) {
-                        //alert(data);
-                        var v = JSON.parse(data);
-                        //alert(v.msg);   
+                        var result = JSON.parse(data);
+                        if (result.stateCode == 0) {
+                            $.messager.show({
+                                title: '提示',
+                                msg: result.msg,
+                                timeout: 5000,
+                                showType: 'slide'
+                            });
+                        }
                         Search();
                     }
                 });
@@ -177,7 +172,6 @@
 </head>
 <body>
     <div id="" style="text-align: center; padding: 5px">
-        <span><b>填空题题库</b></span>
     </div>
     <div id="searchbar" style="border: thin solid #C0C0C0; text-align: right; padding: 10px">
         <a id="btn" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="Search()">查询&刷新</a>

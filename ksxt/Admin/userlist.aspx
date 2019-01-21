@@ -31,14 +31,7 @@
                 onLoadSuccess: function (data) {
                     //alert(JSON.stringify(data));                    
                 }
-            });
-            var pager = $('#tt').datagrid('getPager');
-            pager.pagination({
-                onSelectPage: function (pageNum, pageSize) {
-                    //alert(pageNum);
-                    //alert(pageSize);
-                }
-            });
+            });          
             $('#win').window({
                 title: "添加&编辑",
                 collapsible: false,
@@ -83,9 +76,7 @@
             $('#win').window('close'); Search();
         }
         function ClearForm() {
-            //$('#ff').form('clear');
-            //$("input[value='1']").attr('checked', 'checked');            
-            //$('#f_level').combobox('select', 0);
+            $('#ff').form('clear');
         }
         function CheckForm() {
             return true;
@@ -94,7 +85,6 @@
             $('#tt').datagrid('reload');
         }
         function Confirm() {
-            //alert($('#btnType').val());
             if ($('#btnType').val() == "edit") {
                 ModifyData();
             }
@@ -112,7 +102,7 @@
                     var result = JSON.parse(data);
                     $.messager.alert('警告', result.msg);
                     if (result.stateCode == 0) {
-                        ClearForm();
+                       // ClearForm();
                     }
                 }
             });
@@ -130,7 +120,6 @@
                 },
                 success: function (data) {
                     var result = JSON.parse(data);
-                    //$.messager.alert('警告', result.msg);
                     $.messager.show({
                         title: '提示',
                         msg: result.msg,
@@ -156,7 +145,15 @@
                         type: "POST",
                         data: { "delid": selrow.v_id },
                         success: function (data) {
-                            var v = JSON.parse(data);
+                            var result = JSON.parse(data);
+                            if (result.stateCode == 0) {
+                                $.messager.show({
+                                    title: '提示',
+                                    msg: result.msg,
+                                    timeout: 5000,
+                                    showType: 'slide'
+                                });
+                            }
                             Search();
                         }
                     });
@@ -178,13 +175,12 @@
         }
         .auto-style2 {
             width: 657px;
-            height: 400px;
+            height: 350px;
         }
     </style>
 </head>
 <body>
     <div id="" style="text-align: center; padding: 5px">
-        <span><b>帐号管理</b></span>
     </div>
     <div id="searchbar" style="border: thin solid #C0C0C0; text-align: right; padding: 20px">
         <a id="btn" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="Search()">查询&刷新</a>
@@ -255,8 +251,6 @@
                         <input id="f_job" name="f_job" class="easyui-textbox" data-options="multiline:false" style="width: 100px;" /></td>
                 </tr>
             </table>
-            <div style="text-align: left; padding: 10px; padding-left: 100px;">                
-            </div>
             <div style="text-align: center; padding: 10px">
                 <input id="btnType" type="hidden" value="" />
                 <a id="btnClear" href="#" class="easyui-linkbutton" onclick="ClearForm()" data-options="iconCls:'icon-cancel'">重置</a>&nbsp;&nbsp;&nbsp;&nbsp; 

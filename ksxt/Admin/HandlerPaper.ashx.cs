@@ -21,18 +21,35 @@ namespace ksxt.Admin
         protected override void Add(HttpContext context)
         {
             string title = ReadFormStr(context, "f_title");
+            string choice_score = ReadFormStr(context, "f_choice_score");
+            string filling_score = ReadFormStr(context, "f_filling_score");
+            string judge_score = ReadFormStr(context, "f_judge_score");
+            string qa_score = ReadFormStr(context, "f_qa_score");
             string start_time = ReadFormStr(context, "f_start_time");
             string end_time = ReadFormStr(context, "f_end_time");
 
             if (title == "" || start_time == "" || end_time == "")
             {
-                WriteResponse(context, -1, "输出参数有误", "");
+                WriteResponse(context, -1, "输入参数有误", "");
                 return;
             }
 
-            string sqlFormat = @"insert into tb_papers(title,start_time,end_time,create_name,create_time)values(
-                                                        '{0}','{1}','{2}','{3}','{4}')";
-            string sql = string.Format(sqlFormat, title, start_time, end_time, logonUser, publicFun.GetDateString(DateTime.Now));
+            if (choice_score == "" || filling_score == "" || judge_score == "" || qa_score=="")
+            {
+                WriteResponse(context, -1, "输入参数有误", "");
+                return;
+            }
+            if (ExecuteQueryDataCount("select * from tb_papers where title='" + title + "'") > 0)
+            {
+                WriteResponse(context, -1, "数据重复", "");
+                return;
+            }
+
+            string sqlFormat = @"insert into tb_papers(title,choice_score,filling_score,judge_score,qa_score,start_time,end_time,create_name,create_time)values(
+                                                        '{0}',{1},{2},{3},{4},'{5}','{6}','{7}','{8}')";
+            string sql = string.Format(sqlFormat, title, 
+                                       publicFun.StringToInt(choice_score), publicFun.StringToInt(filling_score), publicFun.StringToInt(judge_score), publicFun.StringToInt(qa_score),
+                start_time, end_time, logonUser, publicFun.GetDateString(DateTime.Now));
 
             int code = ExecuteNoQuery(sql);
 
@@ -47,17 +64,29 @@ namespace ksxt.Admin
             string edit_id = ReadFormStr(context, "edit_id");
 
             string title = ReadFormStr(context, "f_title");
+            string choice_score = ReadFormStr(context, "f_choice_score");
+            string filling_score = ReadFormStr(context, "f_filling_score");
+            string judge_score = ReadFormStr(context, "f_judge_score");
+            string qa_score = ReadFormStr(context, "f_qa_score");
             string start_time = ReadFormStr(context, "f_start_time");
             string end_time = ReadFormStr(context, "f_end_time");
 
             if (title == "" || start_time == "" || end_time == "")
             {
-                WriteResponse(context, -1, "输出参数有误", "");
+                WriteResponse(context, -1, "输入参数有误", "");
                 return;
             }
-            string sqlFormat = @"update tb_papers set title='{0}',start_time='{1}',end_time='{2}',create_name='{3}',create_time='{4}' where id={5}";
 
-            string sql = string.Format(sqlFormat, title, start_time,end_time, logonUser, publicFun.GetDateString(DateTime.Now), edit_id);
+            if (choice_score == "" || filling_score == "" || judge_score == "" || qa_score == "")
+            {
+                WriteResponse(context, -1, "输入参数有误", "");
+                return;
+            }
+
+            string sqlFormat = @"update tb_papers set title='{0}',choice_score={1},filling_score={2},judge_score={3},qa_score={4},start_time='{5}',end_time='{6}',create_name='{7}',create_time='{8}' where id={9}";
+
+            string sql = string.Format(sqlFormat, title, publicFun.StringToInt(choice_score), publicFun.StringToInt(filling_score), publicFun.StringToInt(judge_score), publicFun.StringToInt(qa_score),
+                start_time,end_time, logonUser, publicFun.GetDateString(DateTime.Now), edit_id);
 
             int code = ExecuteNoQuery(sql);
 
@@ -84,11 +113,22 @@ namespace ksxt.Admin
 
         protected override void Search(HttpContext context)
         {
-            DataTable dt = ExecuteQueryData("select * from tb_papers");
+            int page = publicFun.StringToInt(ReadFormStr(context, "page"));
+            int rows = publicFun.StringToInt(ReadFormStr(context, "rows"));
+            DataTable dt;
+            if (page > 0 && rows > 0)
+                dt = ExecuteQueryData("select * from tb_papers limit " + rows + " offset " + (page - 1) * rows);
+            else
+                dt = ExecuteQueryData("select * from tb_papers");
+
             //视图
             DataTable dtView = new DataTable();
             dtView.Columns.Add("v_id");
             dtView.Columns.Add("v_title");
+            dtView.Columns.Add("v_choice_score");
+            dtView.Columns.Add("v_filling_score");
+            dtView.Columns.Add("v_judge_score");
+            dtView.Columns.Add("v_qa_score");
             dtView.Columns.Add("v_start_time");
             dtView.Columns.Add("v_end_time");
             dtView.Columns.Add("v_create_name");
@@ -100,6 +140,10 @@ namespace ksxt.Admin
                 newDr["v_id"] = dr["id"];           
 
                 newDr["v_title"] = dr["title"];
+                newDr["v_choice_score"] = dr["choice_score"];
+                newDr["v_filling_score"] = dr["filling_score"];
+                newDr["v_judge_score"] = dr["judge_score"];
+                newDr["v_qa_score"] = dr["qa_score"];
                 newDr["v_start_time"] = dr["start_time"];
                 newDr["v_end_time"] = dr["end_time"];
 
@@ -111,7 +155,7 @@ namespace ksxt.Admin
             //转JSON
             string dtJson = publicFun.DataTableToJson(dtView);
 
-            string listJson = "\"total\":" + dt.Rows.Count + ",\"rows\":";
+            string listJson = "\"total\":" + ExecuteQueryDataCount("select * from tb_papers") + ",\"rows\":";
 
             listJson += dtJson;
 
@@ -128,21 +172,29 @@ namespace ksxt.Admin
                 return;
             }
             string title = "";
+            string choice_score="";
+            string filling_score = "";
+            string judge_score = "";
+            string qa_score = "";
             string start_time = "";
             string end_time = "";
 
-            string responseFormat = "\"title\":\"{0}\",\"start_time\":\"{1}\",\"end_time\":\"{2}\"";
+            string responseFormat = "\"title\":\"{0}\",\"choice_score\":{1},\"filling_score\":{2},\"judge_score\":{3},\"qa_score\":{4},\"start_time\":\"{5}\",\"end_time\":\"{6}\"";
 
             DataTable dataTable = ExecuteQueryData("select * from tb_papers where id=" + s_id);
 
             if (dataTable.Rows.Count > 0)
             {
                 title = dataTable.Rows[0]["title"].ToString();
+                choice_score = dataTable.Rows[0]["choice_score"].ToString();
+                filling_score = dataTable.Rows[0]["filling_score"].ToString();
+                judge_score = dataTable.Rows[0]["judge_score"].ToString();
+                qa_score = dataTable.Rows[0]["qa_score"].ToString();
                 start_time = dataTable.Rows[0]["start_time"].ToString();
                 end_time = dataTable.Rows[0]["end_time"].ToString();
             }
 
-            string json = string.Format(responseFormat, title, start_time, end_time);
+            string json = string.Format(responseFormat, title, choice_score, filling_score, judge_score, qa_score,start_time, end_time);
 
             WriteResponse(context, 0, "操作成功", json);
         }

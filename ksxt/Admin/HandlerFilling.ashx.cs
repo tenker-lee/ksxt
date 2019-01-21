@@ -34,9 +34,16 @@ namespace ksxt.Admin
                 WriteResponse(context, -1, "输出参数有误", "");
                 return;
             }
+
             if (answerA == "" && answerB == "" && answerC == "" && answerD == "")
             {
                 WriteResponse(context, -1, "输出参数有误", "");
+                return;
+            }
+
+            if (ExecuteQueryDataCount("select * from tb_filling where title='"+title+"'") > 0)
+            {
+                WriteResponse(context, -1, "数据重复", "");
                 return;
             }
 
@@ -129,10 +136,15 @@ namespace ksxt.Admin
 
         protected override void Search(HttpContext context)
         {
-            DataTable dt = ExecuteQueryData("select * from tb_filling");
+            int page = publicFun.StringToInt(ReadFormStr(context, "page"));
+            int rows = publicFun.StringToInt(ReadFormStr(context, "rows"));
+            DataTable dt;
+            if(page > 0  && rows > 0)            
+                dt = ExecuteQueryData("select * from tb_filling limit "+ rows + " offset "+ (page - 1)* rows);
+            else
+                dt = ExecuteQueryData("select * from tb_filling");
             //视图
             DataTable dtView = new DataTable();
-
             dtView.Columns.Add("v_id");
             dtView.Columns.Add("v_level");
             dtView.Columns.Add("v_title");
@@ -158,7 +170,7 @@ namespace ksxt.Admin
 
                 string anserSel = dr["answer_arry"].ToString();
                 string[] arryAswer = publicFun.StringToArry(anserSel);
-                //anserSel = "";                
+
                 if (anserSel.Length != 0 && anserSel[anserSel.Length-1]==',')
                     anserSel = anserSel.Remove(anserSel.Length - 1);
                 newDr["v_answer_arry"] = anserSel;
@@ -171,7 +183,7 @@ namespace ksxt.Admin
             //转JSON
             string dtJson = publicFun.DataTableToJson(dtView);
 
-            string listJson = "\"total\":" + dt.Rows.Count + ",\"rows\":";
+            string listJson = "\"total\":" + ExecuteQueryDataCount("select * from tb_filling")/*dt.Rows.Count*/ + ",\"rows\":";
 
             listJson += dtJson;
 

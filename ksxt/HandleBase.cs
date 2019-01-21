@@ -45,10 +45,15 @@ namespace ksxt
         {
             logonUser = context.Session["logonUser"]==null?"": context.Session["logonUser"].ToString();
             logonUserType = context.Session["logonUserType"] == null ? "" : context.Session["logonUser"].ToString();
+            if (logonUserType != "2")
+            {
+                WriteResponse(context,-2, "权限错误,无法进行操作", "");
+                //return false;
+            }
             return true;
         }
 
-        protected void WriteResponse(HttpContext context,int stateCode, string msg, string usrStr)
+        protected void WriteResponse(HttpContext context,int stateCode, string msg="操作成功", string usrStr="")
         {
             StringBuilder stringBuilder = new StringBuilder();
             context.Response.Clear();

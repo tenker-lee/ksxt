@@ -29,7 +29,13 @@ namespace ksxt.Admin
             {
                 WriteResponse(context, -1, "输出参数有误", "");
                 return;
-            }            
+            }
+
+            if (ExecuteQueryDataCount("select * from tb_judge where title='" + title + "'") > 0)
+            {
+                WriteResponse(context, -1, "数据重复", "");
+                return;
+            }
 
             string sqlFormat = @"insert into tb_judge(level,title,answer_arry,create_name,create_time)values(
                                                         '{0}','{1}','{2}','{3}','{4}')";            
@@ -91,7 +97,14 @@ namespace ksxt.Admin
 
         protected override void Search(HttpContext context)
         {
-            DataTable dt = ExecuteQueryData("select * from tb_judge");
+            int page = publicFun.StringToInt(ReadFormStr(context, "page"));
+            int rows = publicFun.StringToInt(ReadFormStr(context, "rows"));
+            DataTable dt;
+            if (page > 0 && rows > 0)
+                dt = ExecuteQueryData("select * from tb_judge limit " + rows + " offset " + (page - 1) * rows);
+            else
+                dt = ExecuteQueryData("select * from tb_judge");
+
             //视图
             DataTable dtView = new DataTable();
             dtView.Columns.Add("v_id");
@@ -128,12 +141,13 @@ namespace ksxt.Admin
             //转JSON
             string dtJson = publicFun.DataTableToJson(dtView);
 
-            string listJson = "\"total\":" + dt.Rows.Count + ",\"rows\":";
+            string listJson = "\"total\":" + ExecuteQueryDataCount("select * from tb_judge")/*dt.Rows.Count*/ + ",\"rows\":";
 
             listJson += dtJson;
 
             WriteResponse(context, 0, "查询成功", listJson);
         }
+
         void SearchById(HttpContext context)
         {
             string s_id = ReadFormStr(context, "s_id");

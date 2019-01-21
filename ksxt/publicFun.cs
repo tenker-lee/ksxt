@@ -7,8 +7,60 @@ using System.Text;
 
 namespace ksxt
 {
+
     public class publicFun
     {
+
+        public static bool ArryCompare(string arryStr1,string arryStr2)
+        {
+            bool bret = false;
+
+            string[] arry1 = arryStr1.Split(',');
+            string[] arry2 = arryStr2.Split(',');
+
+            List<string> list1 = new List<string>();
+            List<string> list2 = new List<string>();
+
+            foreach (string s1 in arry1)
+            {
+                if (s1.Trim() != "")
+                {
+                    if(!list1.Contains(s1.Trim()))
+                        list1.Add(s1.Trim());
+                }
+            }
+            foreach (string s2 in arry2)
+            {
+                if (s2.Trim() != "")
+                {
+                    if(!list2.Contains(s2.Trim()))
+                        list2.Add(s2.Trim());
+                }
+            }
+
+            list1.Sort();
+            list2.Sort();
+
+            if (list1.SequenceEqual(list2))
+                bret = true;
+
+            return bret;
+        }
+
+        public static int StringToInt(string value,int default_v = 0)
+        {
+            int iOut;
+
+            if (int.TryParse(value, out iOut))
+            {
+                return iOut;
+            }
+            else
+            {
+                return default_v;
+            }
+        }
+
         public static string DataTableToJson(DataTable dt)
         {        
             if (dt.Rows.Count == 0)
@@ -131,6 +183,7 @@ namespace ksxt
             strArry.Remove(strArry.Length - 1);
             return strArry;
         }
+
     }
 
 }

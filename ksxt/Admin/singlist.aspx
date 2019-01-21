@@ -31,14 +31,7 @@
                 onLoadSuccess: function (data) {
                     //alert(JSON.stringify(data));                    
                 }
-            });
-            var pager = $('#tt').datagrid('getPager');
-            pager.pagination({
-                onSelectPage: function (pageNum, pageSize) {
-                    //alert(pageNum);
-                    //alert(pageSize);
-                }
-            });
+            });           
             $('#win').window({
                 title: "添加&编辑(单选题)",
                 collapsible: false,
@@ -63,15 +56,14 @@
                         type: "POST",
                         data: { "s_id": selrow.v_id },
                         success: function (data) {
-                            var v = JSON.parse(data);
-                            //alert(v);
-                            $('#f_level').combobox("setValue", v.level);
-                            $('#f_title').textbox("setValue", v.title);
-                            $('#f_selectA').textbox("setValue", v.s_a);
-                            $('#f_selectB').textbox("setValue", v.s_b);
-                            $('#f_selectC').textbox("setValue", v.s_c);
-                            $('#f_selectD').textbox("setValue", v.s_d);
-                            $("input:radio[name='f_singleAnswer'][value='" + v.s_answer + "']").prop("checked", "checked");
+                            var result = JSON.parse(data);
+                            $('#f_level').combobox("setValue", result.level);
+                            $('#f_title').textbox("setValue", result.title);
+                            $('#f_selectA').textbox("setValue", result.s_a);
+                            $('#f_selectB').textbox("setValue", result.s_b);
+                            $('#f_selectC').textbox("setValue", result.s_c);
+                            $('#f_selectD').textbox("setValue", result.s_d);
+                            $("input:radio[name='f_singleAnswer'][value='" + result.s_answer + "']").prop("checked", "checked");
                         }
                     });
                 }
@@ -87,9 +79,7 @@
             $('#win').window('close'); Search();
         }
         function ClearForm() {
-            //$('#ff').form('clear');
-            //$("input[value='1']").attr('checked', 'checked');            
-            //$('#f_level').combobox('select', 0);
+            $('#ff').form('clear');
         }
         function CheckForm() {
             return true;
@@ -98,7 +88,6 @@
             $('#tt').datagrid('reload');
         }
         function Confirm() {
-            //alert($('#btnType').val());
             if ($('#btnType').val() == "edit") {
                 ModifyData();
             }
@@ -116,7 +105,7 @@
                     var result = JSON.parse(data);
                     $.messager.alert('警告', result.msg);
                     if (result.stateCode == 0) {                        
-                        ClearForm();
+                        //ClearForm();
                     } 
                 }
             });
@@ -134,7 +123,6 @@
                 },
                 success: function (data) {
                     var result = JSON.parse(data);
-                    //$.messager.alert('警告', result.msg);
                     $.messager.show({
 	                    title:'提示',
 	                    msg:result.msg,
@@ -185,7 +173,6 @@
 </head>
 <body>
     <div id="" style="text-align: center; padding: 5px">
-        <span><b>单项选择题库</b></span>
     </div>
     <div id="searchbar" style="border: thin solid #C0C0C0; text-align: right; padding: 20px">
         <a id="btn" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="Search()">查询&刷新</a>

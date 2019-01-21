@@ -36,6 +36,12 @@ namespace ksxt.Admin
                 return;
             }
 
+            if (ExecuteQueryDataCount("select * from tb_choice where title='" + title + "'") > 0)
+            {
+                WriteResponse(context, -1, "数据重复", "");
+                return;
+            }
+
             string sqlFormat = @"insert into tb_choice(level,title,select_arry,answer_arry,create_name,create_time)values(
                                                         '{0}','{1}','{2}','{3}','{4}','{5}')";
             string selectStrs = selectA +","+ selectB + "," + selectC + "," + selectD;
@@ -96,10 +102,15 @@ namespace ksxt.Admin
 
         override protected void Search(HttpContext context)
         {
-            DataTable dt = ExecuteQueryData("select * from tb_choice");
+            int page = publicFun.StringToInt(ReadFormStr(context, "page"));
+            int rows = publicFun.StringToInt(ReadFormStr(context, "rows"));
+            DataTable dt;
+            if (page > 0 && rows > 0)
+                dt = ExecuteQueryData("select * from tb_choice limit " + rows + " offset " + (page - 1) * rows);
+            else
+                dt = ExecuteQueryData("select * from tb_choice");
             //视图
             DataTable dtView = new DataTable();
-
             dtView.Columns.Add("v_id");
             dtView.Columns.Add("v_level");
             dtView.Columns.Add("v_title");
@@ -168,7 +179,7 @@ namespace ksxt.Admin
             //转JSON
             string dtJson = publicFun.DataTableToJson(dtView);
 
-            string listJson = "\"total\":"+dt.Rows.Count+",\"rows\":";
+            string listJson = "\"total\":"+ ExecuteQueryDataCount("select * from tb_choice") +",\"rows\":";
 
             listJson += dtJson;
 

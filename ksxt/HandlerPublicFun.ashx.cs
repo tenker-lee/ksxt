@@ -14,6 +14,13 @@ namespace ksxt
     /// </summary>
     public class HandlerPublicFun : dbBase,IHttpHandler, IRequiresSessionState
     {
+        protected string ReadFormStr(HttpContext context, string itemName)
+        {
+            if (context.Request.Form[itemName] == null)
+                return "";
+            else
+                return context.Request.Form[itemName];
+        }
 
         public void ProcessRequest(HttpContext context)
         {
@@ -35,7 +42,7 @@ namespace ksxt
             WriteResponse(context, 0, "查询成功", "\"now\":\""+dateStr+"\"");
         }
 
-        private void WriteResponse(HttpContext context, int stateCode, string msg, string usrStr)
+        private void WriteResponse(HttpContext context, int stateCode, string msg="操作成功", string usrStr="")
         {
             StringBuilder stringBuilder = new StringBuilder();
             context.Response.Clear();
@@ -74,6 +81,74 @@ namespace ksxt
             if (context.Request.QueryString["logonUserType"] != null)
                 context.Session["logonUserType"] = context.Request.QueryString["logonUserType"].ToString();
             WriteResponse(context, 0, "操作成功", "");
+        }
+
+        private void UpdateChoiceAnswers(HttpContext context) {
+
+            string choices = ReadFormStr(context,"answer");
+            string userid = ReadFormStr(context, "userid");
+            string paperid = ReadFormStr(context, "paperid");
+
+            string sqlFormat = "update tb_check_paper set choices=\"{0}\" where user_id={1} and paper_id={2}";
+
+            string sql = string.Format(sqlFormat,choices,userid,paperid);
+
+            int code = ExecuteNoQuery(sql);
+            if(code < 0)
+                WriteResponse(context, -1, dbError);
+            else
+                WriteResponse(context, 0);
+        }
+
+        private void UpdateFillingAnswers(HttpContext context) {
+
+            string answer = ReadFormStr(context, "answer");
+            string userid = ReadFormStr(context, "userid");
+            string paperid = ReadFormStr(context, "paperid");
+
+            string sqlFormat = "update tb_check_paper set fillings=\"{0}\" where user_id={1} and paper_id={2}";
+
+            string sql = string.Format(sqlFormat, answer, userid, paperid);
+
+            int code = ExecuteNoQuery(sql);
+            if (code < 0)
+                WriteResponse(context, -1, dbError);
+            else
+                WriteResponse(context, 0);
+        }
+
+        private void UpdateJudgeAnswers(HttpContext context) {
+
+            string answer = ReadFormStr(context, "answer");
+            string userid = ReadFormStr(context, "userid");
+            string paperid = ReadFormStr(context, "paperid");
+
+            string sqlFormat = "update tb_check_paper set judges=\"{0}\" where user_id={1} and paper_id={2}";
+
+            string sql = string.Format(sqlFormat, answer, userid, paperid);
+
+            int code = ExecuteNoQuery(sql);
+            if (code < 0)
+                WriteResponse(context, -1,dbError);
+            else
+                WriteResponse(context, 0);
+        }
+
+        private void UpdateQaAnswers(HttpContext context) {
+
+            string answer = ReadFormStr(context, "answer");
+            string userid = ReadFormStr(context, "userid");
+            string paperid = ReadFormStr(context, "paperid");
+
+            string sqlFormat = "update tb_check_paper set qas=\"{0}\" where user_id={1} and paper_id={2}";
+
+            string sql = string.Format(sqlFormat, answer, userid, paperid);
+
+            int code = ExecuteNoQuery(sql);
+            if (code < 0)
+                WriteResponse(context, -1, dbError);
+            else
+                WriteResponse(context, 0);
         }
 
         private void test(HttpContext context)
