@@ -136,18 +136,25 @@ namespace ksxt
         public static string[] StringToArry(string str)
         {
             if (str == "")
-                return new string[1];
+                return new string[1] { "" };
+
             string[] strArry = str.Split(',');
-            if (strArry.Length == 0)
+
+            List<string> list = new List<string>();
+
+            foreach (string s1 in strArry)
             {
-                string[] resutlArry = new string[1];
-                resutlArry[0] = str;
-                return resutlArry;
+                if (s1.Trim() != "")
+                {
+                    if (!list.Contains(s1.Trim()))
+                        list.Add(s1.Trim());
+                }
             }
-            else
-            {                                
-                return strArry;
-            }
+
+            list.Sort();
+
+            return list.ToArray();
+            
         }
 
         public static string[] StringToNumArry(string str)
@@ -178,9 +185,12 @@ namespace ksxt
             string strArry = "";
             foreach (string item in arry)
             {
-                strArry += item + ",";
+                if(item!="" && item!=null)
+                    strArry += item + ",";
             }
-            strArry.Remove(strArry.Length - 1);
+            if(strArry[strArry.Length-1]==',')
+                strArry = strArry.Remove(strArry.Length - 1);
+
             return strArry;
         }
 
