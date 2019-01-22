@@ -25,11 +25,8 @@
                 rownumbers: true,
                 nowrap: false,
                 onSelect: function (rowIndex, rowData) {
-                    //alert(rowIndex);
-                    //alert(rowData["id"]);
                 },
                 onLoadSuccess: function (data) {
-                    //alert(JSON.stringify(data));                    
                 }
             });          
             $('#win').window({

@@ -151,13 +151,34 @@ namespace ksxt
                 WriteResponse(context, 0);
         }
 
-        private void test(HttpContext context)
+        private void ChangePassword(HttpContext context)
         {
-            Thread.Sleep(3000);
+            string user = ReadFormStr(context, "user");
+            string old_pass = ReadFormStr(context, "old_pass");
+            string new_pass = ReadFormStr(context, "new_pass");
+            string new_pass_confirm = ReadFormStr(context, "new_pass_confirm");
 
-            int c = ExecuteQueryDataCount("select * from tb_choice");
+            if(user == "" || old_pass == "" || new_pass == "")
+            {
+                WriteResponse(context, -1, "输入参数错误");
+                return;
+            }
 
-            WriteResponse(context, 0, "操作成功", c.ToString());
+            if(new_pass != new_pass_confirm)
+            {
+                WriteResponse(context, -1, "密码验证失败");
+                return;
+            }
+
+            string sqlFormat = "update tb_users set password=\"{0}\" where name=\"{1}\" and password=\"{2}\"";
+
+            string sql = string.Format(sqlFormat, new_pass, user, old_pass);
+
+            int code = ExecuteNoQuery(sql);
+            if (code < 0)
+                WriteResponse(context, -1, dbError);
+            else
+                WriteResponse(context, 0);
         }
 
         public bool IsReusable

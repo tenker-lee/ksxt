@@ -12,10 +12,10 @@
     <link href="../Content/themes/default/easyui.css" rel="stylesheet" type="text/css" />
     <link href="../Content/themes/icon.css" rel="stylesheet" type="text/css" />
     <style type="text/css">
-        a:link { color: #444} /* 未被访问的链接*/
-        a:visited { color: #444} /* 已被访问过的链接*/
-        a:hover {color: #444} /* 鼠标悬浮在上的链接*/
-        a:active {color: #444} /* 鼠标点中激活链接*/
+        a:link { color: #0094ff} /* 未被访问的链接*/
+        a:visited { color: #0094ff} /* 已被访问过的链接*/
+        a:hover {color: #0094ff} /* 鼠标悬浮在上的链接*/
+        a:active {color: #0094ff} /* 鼠标点中激活链接*/
     </style>
     <script  type="text/javascript">
         $(document).ready(function () {            
@@ -54,7 +54,18 @@
     </script>
 </head>
 <body class="easyui-layout">
-        <div id="head" data-options="region:'north'" style="padding: 5px; width: auto; height: 40px"></div>
+        <div id="head" data-options="region:'north'" style="padding: 5px; width: auto; height: 40px">
+            <table style="width: 100%;">
+                <tr>
+                    <td style="width:50%">&nbsp;</td>
+                    <td  style="text-align:right;padding-right:40px;vertical-align:central;font:300" >&nbsp;
+                        <b>帐号:</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="#">修改密码</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a  href="#" >退出</a>
+                    </td>                   
+                </tr>                
+            </table>
+        </div>
         <div id="left" data-options="region:'west',split:true" style="width: 130px;">
             <div class="easyui-accordion" data-options="animate:true" style="width: auto; height: auto;">
                 <div title="帐户管理" data-options="collapsible:true,iconcls:'icon-reload'" style="overflow: auto; padding: 10px;">
@@ -92,6 +103,6 @@
         <div id="center" data-options="region:'center'">
             <div class="easyui-tabs"  id="panel" style="width:100%;height:100%" >
             </div>
-        </div>
+        </div>    
 </body>
 </html>

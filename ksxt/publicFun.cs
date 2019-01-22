@@ -157,25 +157,20 @@ namespace ksxt
             
         }
 
-        public static string[] StringToNumArry(string str)
+        public static int[] StringToNumArry(string str)
         {
-            int iCount = 0;
             string[] arry = StringToArry(str);
             if (arry == null)
-                return null;
-            string[] resutlArry = new string[arry.Length];
+                return new int[1] { 0 };
+            int[] resutlArry = new int[arry.Length];
             for (int i = 0; i < arry.Length; i++)
             {
                 if (IsNumeric(arry[i]))
-                {
-                    iCount++;
-                    resutlArry[i] = arry[i];
-                }
-            }
-            if (iCount == resutlArry.Length)
-                return resutlArry;
-            else
-                return null;
+                    resutlArry[i] = int.Parse(arry[i]);
+                else
+                    resutlArry[i] = 0;
+            }            
+            return resutlArry;           
         }
 
         public static string ArryToString(string[] arry)

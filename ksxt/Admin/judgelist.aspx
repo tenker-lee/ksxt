@@ -266,7 +266,7 @@
             </tr>
         </thead>
     </table>
-    <div id="win" class="easyui-window" style="width: 600px; height: 550px" data-options="modal:true">
+    <div id="win" class="easyui-window" style="width: 600px; height: 400px" data-options="modal:true">
         <form id="ff" method="post">
             <div style="text-align: center; padding: 10px; margin-top: 10px; vertical-align: middle;">
                 <input id="f_id" name="f_id" type="hidden" value="" />

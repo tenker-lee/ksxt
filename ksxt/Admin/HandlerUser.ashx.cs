@@ -12,7 +12,6 @@ namespace ksxt.Admin
     /// </summary>
     public class HandlerUser : HandleBase, IHttpHandler, IRequiresSessionState
     {
-
         public void ProcessRequest(HttpContext context)
         {
             PreProcess(context);
@@ -70,7 +69,7 @@ namespace ksxt.Admin
 
             if (type == "" || name == "" || password == "")
             {
-                WriteResponse(context, -1, "输出参数有误", "");
+                WriteResponse(context, -1, "输入参数有误", "");
                 return;
             }
 
@@ -125,7 +124,7 @@ namespace ksxt.Admin
             {
                 DataRow newDr = dtView.NewRow();
                 newDr["v_id"] = dr["id"];          
-                newDr["v_type"] = dr["type"].ToString()==""?"普通":"管理员";
+                newDr["v_type"] = dr["type"].ToString()=="1"? "管理员" : "普通";
                 newDr["v_name"] = dr["name"];
                 newDr["v_password"] = dr["password"];
                 newDr["v_department"] = dr["department"];
