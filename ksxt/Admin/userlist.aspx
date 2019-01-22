@@ -195,7 +195,7 @@
                 <th data-options="field:'v_department',align:'left'">部门</th>
                 <th data-options="field:'v_job', align:'center'">职位</th>
                 <th data-options="field:'v_create_name', align:'center',width:80">创建人</th>
-                <th data-options="field:'v_create_time', align:'center',width:120">创建时间</th>
+                <th data-options="field:'v_create_time', align:'center',width:150">创建时间</th>
             </tr>
         </thead>
     </table>
