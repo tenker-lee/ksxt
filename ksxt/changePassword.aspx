@@ -25,7 +25,7 @@
                         <asp:Label ID="Label1" runat="server" Text="旧密码:"></asp:Label>
                     </td>
                     <td style="text-align: left">
-                        <asp:TextBox ID="txtOldPass" runat="server" Width="192px"></asp:TextBox>
+                        <asp:TextBox ID="txtOldPass" runat="server" Width="192px" TextMode="Password"></asp:TextBox>
                     </td>
                 </tr>
                 <tr>

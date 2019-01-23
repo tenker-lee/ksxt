@@ -553,15 +553,15 @@
       <DependentUpon>changePassword.aspx</DependentUpon>
     </Compile>
     <Compile Include="Controllers\ValuesController.cs" />
-    <Compile Include="CustomPage.cs">
+    <Compile Include="CsCode\CustomPage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="dbBase.cs" />
-    <Compile Include="dbModels.cs" />
+    <Compile Include="CsCode\dbBase.cs" />
+    <Compile Include="CsCode\dbModels.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="HandleBase.cs" />
+    <Compile Include="CsCode\HandleBase.cs" />
     <Compile Include="HandlerPublicFun.ashx.cs">
       <DependentUpon>HandlerPublicFun.ashx</DependentUpon>
     </Compile>
@@ -581,7 +581,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="App_Code\SqLiteHelper.cs" />
-    <Compile Include="publicFun.cs" />
+    <Compile Include="CsCode\publicFun.cs" />
     <Compile Include="ShowPaper.aspx.cs">
       <DependentUpon>ShowPaper.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

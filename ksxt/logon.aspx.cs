@@ -16,7 +16,6 @@ namespace ksxt
             if(txtName.Text.Trim()=="" || txtPassword.Text.Trim() == "")
             {
                // Response.Write("<script>alert('请先登录系统!!!')</script>");
-
                 return;
             }
 

@@ -44,8 +44,10 @@ namespace ksxt
         protected bool checkPermission(HttpContext context)
         {
             logonUser = context.Session["logonUser"]==null?"": context.Session["logonUser"].ToString();
+
             logonUserType = context.Session["logonUserType"] == null ? "" : context.Session["logonUser"].ToString();
-            if (logonUserType != "2")
+
+            if (logonUserType != "1")
             {
                 WriteResponse(context,-2, "权限错误,无法进行操作", "");
                 //return false;
