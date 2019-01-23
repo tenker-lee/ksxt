@@ -5,13 +5,16 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace ksxt.Admin
+namespace ksxt
 {
-    public partial class index : CustomPage
+    public partial class logout : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
-        {          
-            labName.Text = logonUser;
+        {
+            Session["logonUser"] = "";
+            Session["logonUserType"] = "";
+
+            Response.Redirect("~/logon.aspx");
         }
     }
 }

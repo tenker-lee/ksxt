@@ -22,6 +22,7 @@
             $("a[name='addPanel']").click(function () {
                 addPanel(this.text, this.hreflang);
             });
+            //$("#changePass").attr("target", "_blank"); 
         });
         function addPanel(title,url) {
             if ($("#panel").tabs("exists", title)) {
@@ -59,9 +60,9 @@
                 <tr>
                     <td style="width:50%">&nbsp;</td>
                     <td  style="text-align:right;padding-right:40px;vertical-align:central;font:300" >&nbsp;
-                        <b>帐号:</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <a href="#">修改密码</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <a  href="#" >退出</a>
+                        <b>帐号:&nbsp;&nbsp;&nbsp;&nbsp;</b><asp:Label ID="labName" runat="server" Text=""></asp:Label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a  id="changePass" target="_blank" href="../changePassword.aspx">修改密码</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a  href="../logout.aspx" >退出</a>
                     </td>                   
                 </tr>                
             </table>

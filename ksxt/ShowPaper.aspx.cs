@@ -9,7 +9,7 @@ using System.Data;
 namespace ksxt
 {
 
-    public partial class ShowPaper : System.Web.UI.Page
+    public partial class ShowPaper : CustomPage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
