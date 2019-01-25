@@ -171,7 +171,7 @@ namespace ksxt.Admin
                 level = dataTable.Rows[0]["level"].ToString();
 
                 string answers = dataTable.Rows[0]["answer_arry"].ToString();
-                s_answer = answers;// publicFun.StringToArry(answers);
+                s_answer = answers;
             }
 
             string json = string.Format(responseFormat, title, level, s_answer);

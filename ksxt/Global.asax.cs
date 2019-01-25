@@ -17,13 +17,7 @@ namespace ksxt
         public override void Init()
         {
             base.Init();
-
-            BeginRequest += WebApiApplication_BeginRequest;
         }
-
-        private void WebApiApplication_BeginRequest(object sender, EventArgs e)
-        {
-            //throw new NotImplementedException();
-        }
+       
     }
 }

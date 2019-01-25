@@ -45,6 +45,13 @@ namespace ksxt.Admin
                 return;
             }
 
+            TimeSpan timeSpan =  publicFun.GetDateTimeFromStr(end_time) - publicFun.GetDateTimeFromStr(start_time);
+            if (timeSpan.TotalMinutes > 120 || timeSpan.TotalMinutes < 30)
+            {
+                WriteResponse(context, -1, "时间在[30-120]分钟之间", "");
+                return;
+            }
+
             string sqlFormat = @"insert into tb_papers(title,choice_score,filling_score,judge_score,qa_score,start_time,end_time,create_name,create_time)values(
                                                         '{0}',{1},{2},{3},{4},'{5}','{6}','{7}','{8}')";
             string sql = string.Format(sqlFormat, title, 

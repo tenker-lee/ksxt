@@ -11,6 +11,12 @@
     <script src="../Scripts/locale/easyui-lang-zh_CN.js"></script>
     <link href="../Content/themes/default/easyui.css" rel="stylesheet" type="text/css" />
     <link href="../Content/themes/icon.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        a:link { color: #0094ff} /* 未被访问的链接*/
+        a:visited { color: #0094ff} /* 已被访问过的链接*/
+        a:hover {color: #0094ff} /* 鼠标悬浮在上的链接*/
+        a:active {color: #0094ff} /* 鼠标点中激活链接*/
+    </style>
     <script>
         $(document).ready(function () {
             $('#tt').datagrid({
@@ -160,6 +166,12 @@
                 }
             });
         }
+        function formatOper(val, row, index) {
+            //alert(row.v_id);
+            var str = "<a target=\"_blank\" href=\"../ShowPaper.aspx?paperid=" + row.v_id + "\">详细</a>";
+            str = str + "&nbsp&nbsp&nbsp";
+            return str;
+        }        
     </script>
 </head>
 <body>
@@ -176,7 +188,7 @@
             <tr>
                 <th data-options="field:'ck',checkbox:true"></th>
                 <th data-options="field:'v_id'">编号</th>
-                <th data-options="field:'v_title',width:300">题目</th>
+                <th data-options="field:'v_title',width:200">题目</th>
                 <th data-options="field:'v_choice_score',width:75">单选分值</th>
                 <th data-options="field:'v_filling_score',width:75">填空分值</th>
                 <th data-options="field:'v_judge_score',width:75">判断分值</th>
@@ -185,6 +197,7 @@
                 <th data-options="field:'v_end_time', align:'center',width:120">结束时间</th>
                 <th data-options="field:'v_create_name', align:'center',width:80">创建人</th>
                 <th data-options="field:'v_create_time', align:'center',width:120">创建时间</th>
+                <th data-options="field:'v_oporate',formatter:formatOper, align:'center'">操作</th>
             </tr>
         </thead>
     </table>

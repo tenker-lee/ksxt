@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Web;
 using System.Web.SessionState;
-using System.Threading;
 
 namespace ksxt
 {
@@ -85,16 +82,25 @@ namespace ksxt
 
         private void UpdateChoiceAnswers(HttpContext context) {
 
-            string choices = ReadFormStr(context,"answer");
+            string answer = ReadFormStr(context,"answer");
             string userid = ReadFormStr(context, "userid");
             string paperid = ReadFormStr(context, "paperid");
+            string titileid = ReadFormStr(context, "titleid");
 
-            string sqlFormat = "update tb_check_paper set choices=\"{0}\" where user_id={1} and paper_id={2}";
-
-            string sql = string.Format(sqlFormat,choices,userid,paperid);
+            string sqlFormat = "delete from tb_answer_list where user_id={0} and paper_id={1} and title_id={2}";
+            string sql = string.Format(sqlFormat, userid, paperid, titileid);
 
             int code = ExecuteNoQuery(sql);
             if(code < 0)
+            {
+                WriteResponse(context, -1, dbError);
+                return;
+            }
+
+            sqlFormat = "insert into tb_answer_list(paper_id,user_id,title_id,type,value)values({0},{1},{2},'choice','{3}')";
+            sql = string.Format(sqlFormat, paperid,userid, titileid,answer);
+            code = ExecuteNoQuery(sql);
+            if (code < 0)
                 WriteResponse(context, -1, dbError);
             else
                 WriteResponse(context, 0);
@@ -105,12 +111,21 @@ namespace ksxt
             string answer = ReadFormStr(context, "answer");
             string userid = ReadFormStr(context, "userid");
             string paperid = ReadFormStr(context, "paperid");
+            string titileid = ReadFormStr(context, "titleid");
 
-            string sqlFormat = "update tb_check_paper set fillings=\"{0}\" where user_id={1} and paper_id={2}";
-
-            string sql = string.Format(sqlFormat, answer, userid, paperid);
+            string sqlFormat = "delete from tb_answer_list where user_id={0} and paper_id={1} and title_id={2}";
+            string sql = string.Format(sqlFormat, userid, paperid, titileid);
 
             int code = ExecuteNoQuery(sql);
+            if (code < 0)
+            {
+                WriteResponse(context, -1, dbError);
+                return;
+            }
+
+            sqlFormat = "insert into tb_answer_list(paper_id,user_id,title_id,type,value)values({0},{1},{2},'filling','{3}')";
+            sql = string.Format(sqlFormat, paperid, userid, titileid, answer);
+            code = ExecuteNoQuery(sql);
             if (code < 0)
                 WriteResponse(context, -1, dbError);
             else
@@ -122,14 +137,23 @@ namespace ksxt
             string answer = ReadFormStr(context, "answer");
             string userid = ReadFormStr(context, "userid");
             string paperid = ReadFormStr(context, "paperid");
+            string titileid = ReadFormStr(context, "titleid");
 
-            string sqlFormat = "update tb_check_paper set judges=\"{0}\" where user_id={1} and paper_id={2}";
-
-            string sql = string.Format(sqlFormat, answer, userid, paperid);
+            string sqlFormat = "delete from tb_answer_list where user_id={0} and paper_id={1} and title_id={2}";
+            string sql = string.Format(sqlFormat, userid, paperid, titileid);
 
             int code = ExecuteNoQuery(sql);
             if (code < 0)
-                WriteResponse(context, -1,dbError);
+            {
+                WriteResponse(context, -1, dbError);
+                return;
+            }
+
+            sqlFormat = "insert into tb_answer_list(paper_id,user_id,title_id,type,value)values({0},{1},{2},'judge','{3}')";
+            sql = string.Format(sqlFormat, paperid, userid, titileid, answer);
+            code = ExecuteNoQuery(sql);
+            if (code < 0)
+                WriteResponse(context, -1, dbError);
             else
                 WriteResponse(context, 0);
         }
@@ -139,12 +163,21 @@ namespace ksxt
             string answer = ReadFormStr(context, "answer");
             string userid = ReadFormStr(context, "userid");
             string paperid = ReadFormStr(context, "paperid");
+            string titileid = ReadFormStr(context, "titleid");
 
-            string sqlFormat = "update tb_check_paper set qas=\"{0}\" where user_id={1} and paper_id={2}";
-
-            string sql = string.Format(sqlFormat, answer, userid, paperid);
+            string sqlFormat = "delete from tb_answer_list where user_id={0} and paper_id={1} and title_id={2}";
+            string sql = string.Format(sqlFormat, userid, paperid, titileid);
 
             int code = ExecuteNoQuery(sql);
+            if (code < 0)
+            {
+                WriteResponse(context, -1, dbError);
+                return;
+            }
+
+            sqlFormat = "insert into tb_answer_list(paper_id,user_id,title_id,type,value)values({0},{1},{2},'qa','{3}')";
+            sql = string.Format(sqlFormat, paperid, userid, titileid, answer);
+            code = ExecuteNoQuery(sql);
             if (code < 0)
                 WriteResponse(context, -1, dbError);
             else

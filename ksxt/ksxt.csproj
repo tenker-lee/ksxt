@@ -557,7 +557,6 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CsCode\dbBase.cs" />
-    <Compile Include="CsCode\dbModels.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -580,7 +579,6 @@
       <DependentUpon>logout.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="App_Code\SqLiteHelper.cs" />
     <Compile Include="CsCode\publicFun.cs" />
     <Compile Include="ShowPaper.aspx.cs">
       <DependentUpon>ShowPaper.aspx</DependentUpon>
@@ -609,6 +607,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Code\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <PropertyGroup>
