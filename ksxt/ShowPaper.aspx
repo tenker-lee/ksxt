@@ -47,7 +47,7 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <div style="width: 700px; margin: 0 auto; padding: 2px" class="table-c">
+        <div style="width: 800px; margin: 0 auto; padding: 2px" class="table-c">
             <table style="margin: 0 auto; background-color: whitesmoke; width: 100%" border="0" cellspacing="0" cellpadding="0">
                 <tr>
                     <td colspan="9" style="text-align: center">
@@ -144,7 +144,10 @@
                                 <td style="text-align: center"><%# Eval("id") %></td>
                                 <td><%# Eval("title") %></td>
                                 <td>
-                                    <input id="choice_<%# Eval("id") %>_answer_0" name="choice_<%# Eval("id") %>_answer" type="radio" value="0" />A:<%# ReadArryString(Eval("select_arry").ToString(),0) %><br /><input id="choice_<%# Eval("id") %>_answer_1" name="choice_<%# Eval("id") %>_answer" type="radio" value="1" />B:<%# ReadArryString(Eval("select_arry").ToString(),1) %><br /><input id="choice_<%# Eval("id") %>_answer_2" name="choice_<%# Eval("id") %>_answer" type="radio" value="2" />C:<%# ReadArryString(Eval("select_arry").ToString(),2) %><br /><input id="choice_<%# Eval("id") %>_answer_3" name="choice_<%# Eval("id") %>_answer" type="radio" value="3" />D:<%# ReadArryString(Eval("select_arry").ToString(),3) %></td>
+                                    <input id="choice_<%# Eval("id") %>_answer_0" name="choice_<%# Eval("id") %>_answer" type="radio" value="0" /><label for="choice_<%# Eval("id") %>_answer_0">A:<%# ReadArryString(Eval("select_arry").ToString(),0) %></label> <br />
+                                    <input id="choice_<%# Eval("id") %>_answer_1" name="choice_<%# Eval("id") %>_answer" type="radio" value="1" /><label for="choice_<%# Eval("id") %>_answer_1">B:<%# ReadArryString(Eval("select_arry").ToString(),1) %></label><br />
+                                    <input id="choice_<%# Eval("id") %>_answer_2" name="choice_<%# Eval("id") %>_answer" type="radio" value="2" /><label for="choice_<%# Eval("id") %>_answer_2">C:<%# ReadArryString(Eval("select_arry").ToString(),2) %></label><br />
+                                    <input id="choice_<%# Eval("id") %>_answer_3" name="choice_<%# Eval("id") %>_answer" type="radio" value="3" /><label for="choice_<%# Eval("id") %>_answer_3">D:<%# ReadArryString(Eval("select_arry").ToString(),3) %></label></td>
                             </tr>
                         </ItemTemplate>
                         <FooterTemplate>
@@ -167,8 +170,8 @@
                                 <td style="text-align: center"><%# Eval("id") %></td>
                                 <td><%# Eval("title") %></td>
                                 <td>
-                                    <input id="judge_<%# Eval("id") %>_answer_0" name="judge_<%# Eval("id") %>_answer" type="radio" value="0" />错误<br />
-                                    <input id="judge_<%# Eval("id") %>_answer_1" name="judge_<%# Eval("id") %>_answer" type="radio" value="1" />正确<br />
+                                    <input id="judge_<%# Eval("id") %>_answer_0" name="judge_<%# Eval("id") %>_answer" type="radio" value="0" /><label for="judge_<%# Eval("id") %>_answer_0">错误</label><br />
+                                    <input id="judge_<%# Eval("id") %>_answer_1" name="judge_<%# Eval("id") %>_answer" type="radio" value="1" /><label for="judge_<%# Eval("id") %>_answer_1">正确</label><br />
                                 </td>
                             </tr>
                         </ItemTemplate>
@@ -180,10 +183,10 @@
                 <div title="填空" data-options="collapsible:true,iconcls:'icon-reload'" style="padding: 10px;">
                     <asp:Repeater ID="repFilling" runat="server">
                         <HeaderTemplate>
-                            <table style="width: 97%; margin: 0 auto" border="0" cellspacing="0" cellpadding="0">
+                            <table style="width: 99%; margin: 0 auto" border="0" cellspacing="0" cellpadding="0">
                                 <thead>
                                     <td class="auto-style9" style="text-align: center">编号</td>
-                                    <td style="width: 40%; text-align: center">题目</td>
+                                    <td style="width: 40%;text-align: center">题目</td>
                                     <td style="text-align: center">选项</td>
                                 </thead>
                         </HeaderTemplate>
@@ -192,7 +195,7 @@
                                 <td style="text-align: center"><%# Eval("id") %></td>
                                 <td><%# Eval("title") %></td>
                                 <td>
-                                    <%#fillingHtml(int.Parse(Eval("id").ToString()),Eval("answer_arry").ToString())%> 
+                                    &nbsp<%#fillingHtml(int.Parse(Eval("id").ToString()),Eval("answer_arry").ToString())%> 
                                 </td>
                             </tr>
                         </ItemTemplate>

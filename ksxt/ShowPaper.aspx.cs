@@ -78,10 +78,9 @@ namespace ksxt
         {
             string [] arry = publicFun.StringToArry(strArry);
             string htmlStr = ""; 
-
             for (int i = 0; i < arry.Length; i++)
             {
-                htmlStr += "<input class=\"easyui-textbox\" data-options\"width: 60\" id=\"filling_"+id+"_answer_"+i+"\" name=\"_answer_2\" type=\"text\" />&nbsp;";
+                htmlStr += "<input class=\"easyui-textbox\" style=\"margin: 2px 2px 2px 2px;width:80px\" id=\"filling_" + id+"_answer_"+i+ "\" name=\"_answer_2\" type=\"text\"/>&nbsp";
             }
             return htmlStr;
         }
