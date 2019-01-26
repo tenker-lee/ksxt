@@ -188,14 +188,14 @@
             <tr>
                 <th data-options="field:'ck',checkbox:true"></th>
                 <th data-options="field:'v_id'">编号</th>
-                <th data-options="field:'v_title',width:200">题目</th>
-                <th data-options="field:'v_choice_score',width:75">单选分值</th>
-                <th data-options="field:'v_filling_score',width:75">填空分值</th>
-                <th data-options="field:'v_judge_score',width:75">判断分值</th>
-                <th data-options="field:'v_qa_score',width:75">简答分值</th>
-                <th data-options="field:'v_start_time', align:'center',width:120">开始时间</th>
-                <th data-options="field:'v_end_time', align:'center',width:120">结束时间</th>
-                <th data-options="field:'v_create_name', align:'center',width:80">创建人</th>
+                <th data-options="field:'v_title'">题目</th>
+                <th data-options="field:'v_choice_score', align:'center'">单选分值</th>
+                <th data-options="field:'v_filling_score', align:'center'">填空分值</th>
+                <th data-options="field:'v_judge_score', align:'center'">判断分值</th>
+                <th data-options="field:'v_qa_score', align:'center'">简答分值</th>
+                <th data-options="field:'v_start_time', align:'center',width:100">开始时间</th>
+                <th data-options="field:'v_end_time', align:'center',width:100">结束时间</th>
+                <th data-options="field:'v_create_name', align:'center',width:70">创建人</th>
                 <th data-options="field:'v_create_time', align:'center',width:120">创建时间</th>
                 <th data-options="field:'v_oporate',formatter:formatOper, align:'center'">操作</th>
             </tr>

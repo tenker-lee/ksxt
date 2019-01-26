@@ -10,7 +10,7 @@
     <script src="Scripts/jquery.easyui-1.4.5.js"></script>
     <script src="Scripts/locale/easyui-lang-zh_CN.js"></script>
     <link href="Content/themes/default/easyui.css" rel="stylesheet" type="text/css" />
-    <link href="Content/themes/icon.css" rel="stylesheet" type="text/css"/>
+    <link href="Content/themes/icon.css" rel="stylesheet" type="text/css" />
     <style type="text/css">
         .table-c table {
             border-right: 1px solid #95B8E7;
@@ -29,6 +29,10 @@
         .auto-style7 {
             height: 20px;
         }
+
+        .auto-style9 {
+            width: 34px;
+        }
     </style>
     <script type="text/javascript">
         function closeWin() {
@@ -36,9 +40,9 @@
             window.close();
         }
         $(document).ready(function () {
-            
-        });       
-         
+
+        });
+
     </script>
 </head>
 <body>
@@ -57,8 +61,7 @@
                     <td style="text-align: center" class="auto-style7">总分</td>
                     <td style="text-align: center" rowspan="5">&nbsp;</td>
                     <td style="text-align: center" colspan="3">考试时间</td>
-                    <td style="text-align: center" rowspan="2">
-                        &nbsp;</td>
+                    <td style="text-align: center">提交时间</td>
                 </tr>
                 <tr>
                     <td class="auto-style5" style="text-align: right">单项选择</td>
@@ -74,6 +77,7 @@
                     <td style="text-align: center" colspan="3">
                         <asp:Label ID="labTime" runat="server" Text="时间"></asp:Label>
                     </td>
+                    <td style="text-align: center">&nbsp;</td>
                 </tr>
                 <tr>
                     <td class="auto-style5" style="text-align: right">判断</td>
@@ -126,22 +130,106 @@
             </table>
             <div class="easyui-accordion" data-options="animate:true" style="width: 100%; height: auto;">
                 <div title="单选" data-options="collapsible:true,iconcls:'icon-reload'" style="padding: 10px;">
-                    
+                    <asp:Repeater ID="repChoice" runat="server">
+                        <HeaderTemplate>
+                            <table style="width: 97%; margin: 0 auto" border="0" cellspacing="0" cellpadding="0">
+                                <thead>
+                                    <td class="auto-style9" style="text-align: center">编号</td>
+                                    <td style="width: 40%; text-align: center">题目</td>
+                                    <td style="text-align: center">选项</td>
+                                </thead>
+                        </HeaderTemplate>
+                        <ItemTemplate>
+                            <tr>
+                                <td style="text-align: center"><%# Eval("id") %></td>
+                                <td><%# Eval("title") %></td>
+                                <td>
+                                    <input id="choice_<%# Eval("id") %>_answer_0" name="choice_<%# Eval("id") %>_answer" type="radio" value="0" />A:<%# ReadArryString(Eval("select_arry").ToString(),0) %><br /><input id="choice_<%# Eval("id") %>_answer_1" name="choice_<%# Eval("id") %>_answer" type="radio" value="1" />B:<%# ReadArryString(Eval("select_arry").ToString(),1) %><br /><input id="choice_<%# Eval("id") %>_answer_2" name="choice_<%# Eval("id") %>_answer" type="radio" value="2" />C:<%# ReadArryString(Eval("select_arry").ToString(),2) %><br /><input id="choice_<%# Eval("id") %>_answer_3" name="choice_<%# Eval("id") %>_answer" type="radio" value="3" />D:<%# ReadArryString(Eval("select_arry").ToString(),3) %></td>
+                            </tr>
+                        </ItemTemplate>
+                        <FooterTemplate>
+                            </table>
+                        </FooterTemplate>
+                    </asp:Repeater>
                 </div>
                 <div title="判断" data-options="collapsible:true,iconcls:'icon-reload'" style="padding: 10px;">
-                   
+                    <asp:Repeater ID="repJudge" runat="server">
+                        <HeaderTemplate>
+                            <table style="width: 97%; margin: 0 auto" border="0" cellspacing="0" cellpadding="0">
+                                <thead>
+                                    <td class="auto-style9" style="text-align: center">编号</td>
+                                    <td style="width: 40%; text-align: center">题目</td>
+                                    <td style="text-align: center">选项</td>
+                                </thead>
+                        </HeaderTemplate>
+                        <ItemTemplate>
+                            <tr>
+                                <td style="text-align: center"><%# Eval("id") %></td>
+                                <td><%# Eval("title") %></td>
+                                <td>
+                                    <input id="judge_<%# Eval("id") %>_answer_0" name="judge_<%# Eval("id") %>_answer" type="radio" value="0" />错误<br />
+                                    <input id="judge_<%# Eval("id") %>_answer_1" name="judge_<%# Eval("id") %>_answer" type="radio" value="1" />正确<br />
+                                </td>
+                            </tr>
+                        </ItemTemplate>
+                        <FooterTemplate>
+                            </table>
+                        </FooterTemplate>
+                    </asp:Repeater>
                 </div>
                 <div title="填空" data-options="collapsible:true,iconcls:'icon-reload'" style="padding: 10px;">
-                    
+                    <asp:Repeater ID="repFilling" runat="server">
+                        <HeaderTemplate>
+                            <table style="width: 97%; margin: 0 auto" border="0" cellspacing="0" cellpadding="0">
+                                <thead>
+                                    <td class="auto-style9" style="text-align: center">编号</td>
+                                    <td style="width: 40%; text-align: center">题目</td>
+                                    <td style="text-align: center">选项</td>
+                                </thead>
+                        </HeaderTemplate>
+                        <ItemTemplate>
+                            <tr>
+                                <td style="text-align: center"><%# Eval("id") %></td>
+                                <td><%# Eval("title") %></td>
+                                <td>
+                                    <%#fillingHtml(int.Parse(Eval("id").ToString()),Eval("answer_arry").ToString())%> 
+                                </td>
+                            </tr>
+                        </ItemTemplate>
+                        <FooterTemplate>
+                            </table>
+                        </FooterTemplate>
+                    </asp:Repeater>
                 </div>
                 <div title="简答" data-options="collapsible:true,iconcls:'icon-reload'" style="padding: 10px;">
-                    
+                    <asp:Repeater ID="repQa" runat="server">
+                        <HeaderTemplate>
+                            <table style="width: 97%; margin: 0 auto" border="0" cellspacing="0" cellpadding="0">
+                                <thead>
+                                    <td class="auto-style9" style="text-align: center">编号</td>
+                                    <td style="width: 50%; text-align: center">题目</td>
+                                    <td style="text-align: center">选项</td>
+                                </thead>
+                        </HeaderTemplate>
+                        <ItemTemplate>
+                            <tr>
+                                <td style="text-align: center"><%# Eval("id") %></td>
+                                <td><%# Eval("title") %></td>
+                                <td>
+                                    <textarea style="width: 98%; height: 100%" id="qa_<%# Eval("id") %>_answer"></textarea>
+                                </td>
+                            </tr>
+                        </ItemTemplate>
+                        <FooterTemplate>
+                            </table>
+                        </FooterTemplate>
+                    </asp:Repeater>
                 </div>
             </div>
-            <div style="margin: 0 auto; width: 100%; text-align: center;padding:5px;margin-top:5px">
-                <a id="btnConfirm"  class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="#" onclick="">提交</a>&nbsp;&nbsp;&nbsp;&nbsp;
-                                <a id="btnClose"  class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="#" onclick="closeWin()">关闭</a>
-
+            <div style="margin: 0 auto; width: 100%; text-align: center; padding: 5px; margin-top: 5px">
+                <a id="btnConfirm" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="#" onclick="">提交adding: 5px; margin-top: 5px">
+                <a id="btnConfirm" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="#" onclick="">提交</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a id="btnClose" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="#" onclick="closeWin()">关闭</a>
             </div>
         </div>
     </form>

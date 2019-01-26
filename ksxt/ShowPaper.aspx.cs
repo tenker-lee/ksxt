@@ -9,7 +9,7 @@ using System.Data;
 namespace ksxt
 {
 
-    public partial class ShowPaper : CustomPage/*System.Web.UI.Page*/
+    public partial class ShowPaper : CustomPage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -56,12 +56,52 @@ namespace ksxt
 
             DataTable dt_singles = GetChoices(singles);
 
+            repChoice.DataSource = dt_singles;
+            repChoice.DataBind();
+
             DataTable dt_judges = GetJudges(judges);
 
+            repJudge.DataSource = dt_judges;
+            repJudge.DataBind();
+
             DataTable dt_fillings = GetFillings(fillings);
+            repFilling.DataSource = dt_fillings;
+            repFilling.DataBind();
 
             DataTable dt_qas = GetQas(qas);
+            repQa.DataSource = dt_qas;
+            repQa.DataBind();                        
 
+        }
+
+        protected string fillingHtml(int id,string strArry)
+        {
+            string [] arry = publicFun.StringToArry(strArry);
+            string htmlStr = ""; 
+
+            for (int i = 0; i < arry.Length; i++)
+            {
+                htmlStr += "<input class=\"easyui-textbox\" data-options\"width: 60\" id=\"filling_"+id+"_answer_"+i+"\" name=\"_answer_2\" type=\"text\" />&nbsp;";
+            }
+            return htmlStr;
+        }
+
+        protected string[] strToArry(string strArry)
+        {
+            return publicFun.StringToArry(strArry);
+        }
+
+        protected string ReadArryString(string strArry,int index)
+        {
+            return ReadArryString(publicFun.StringToArry(strArry), index);
+        }
+
+        protected string ReadArryString(string[] arry,int index)
+        {
+            if (index > arry.Length - 1)
+                return "";
+            else
+                return arry[index];
         }
 
         protected string intArryToStr(int [] arry)
