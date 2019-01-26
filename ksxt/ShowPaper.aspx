@@ -230,7 +230,6 @@
                 </div>
             </div>
             <div style="margin: 0 auto; width: 100%; text-align: center; padding: 5px; margin-top: 5px">
-                <a id="btnConfirm" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="#" onclick="">提交adding: 5px; margin-top: 5px">
                 <a id="btnConfirm" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="#" onclick="">提交</a>&nbsp;&nbsp;&nbsp;&nbsp;
                 <a id="btnClose" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="#" onclick="closeWin()">关闭</a>
             </div>
