@@ -51,7 +51,7 @@
             <table style="margin: 0 auto; background-color: whitesmoke; width: 100%" border="0" cellspacing="0" cellpadding="0">
                 <tr>
                     <td colspan="9" style="text-align: center">
-                        <asp:Label ID="Label1" runat="server" Text="标题"></asp:Label>
+                        <asp:Label ID="lab_title" runat="server" Text="标题"></asp:Label>
                     </td>
                 </tr>
                 <tr>
@@ -137,17 +137,27 @@
                                     <td class="auto-style9" style="text-align: center">编号</td>
                                     <td style="width: 40%; text-align: center">题目</td>
                                     <td style="text-align: center">选项</td>
+                                    <td style="text-align: center; width: 30px">得分</td>
                                 </thead>
                         </HeaderTemplate>
                         <ItemTemplate>
                             <tr>
-                                <td style="text-align: center"><%# Eval("id") %></td>
+                                <td rowspan="2" style="text-align: center"><%# Eval("id") %></td>
                                 <td><%# Eval("title") %></td>
                                 <td>
-                                    <input id="choice_<%# Eval("id") %>_answer_0" name="choice_<%# Eval("id") %>_answer" type="radio" value="0" /><label for="choice_<%# Eval("id") %>_answer_0">A:<%# ReadArryString(Eval("select_arry").ToString(),0) %></label> <br />
+                                    <input id="choice_<%# Eval("id") %>_answer_0" name="choice_<%# Eval("id") %>_answer" type="radio" value="0" /><label for="choice_<%# Eval("id") %>_answer_0">A:<%# ReadArryString(Eval("select_arry").ToString(),0) %></label>
+                                    <br />
                                     <input id="choice_<%# Eval("id") %>_answer_1" name="choice_<%# Eval("id") %>_answer" type="radio" value="1" /><label for="choice_<%# Eval("id") %>_answer_1">B:<%# ReadArryString(Eval("select_arry").ToString(),1) %></label><br />
                                     <input id="choice_<%# Eval("id") %>_answer_2" name="choice_<%# Eval("id") %>_answer" type="radio" value="2" /><label for="choice_<%# Eval("id") %>_answer_2">C:<%# ReadArryString(Eval("select_arry").ToString(),2) %></label><br />
-                                    <input id="choice_<%# Eval("id") %>_answer_3" name="choice_<%# Eval("id") %>_answer" type="radio" value="3" /><label for="choice_<%# Eval("id") %>_answer_3">D:<%# ReadArryString(Eval("select_arry").ToString(),3) %></label></td>
+                                    <input id="choice_<%# Eval("id") %>_answer_3" name="choice_<%# Eval("id") %>_answer" type="radio" value="3" /><label for="choice_<%# Eval("id") %>_answer_3">D:<%# ReadArryString(Eval("select_arry").ToString(),3) %></label>
+                                </td>
+                                <td>
+                                    <input class="easyui-textbox" style="width: 30px; margin: 2px 2px 2px 2px;" id="choice_<%# Eval("id") %>_score" name="choice_<%# Eval("id") %>_score" type="text" />
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">参考答案:<%# choiceAnswerTochar( Eval("answer_arry").ToString()) %></td>
                             </tr>
                         </ItemTemplate>
                         <FooterTemplate>
@@ -163,16 +173,24 @@
                                     <td class="auto-style9" style="text-align: center">编号</td>
                                     <td style="width: 40%; text-align: center">题目</td>
                                     <td style="text-align: center">选项</td>
+                                    <td style="text-align: center; width: 30px">得分</td>
                                 </thead>
                         </HeaderTemplate>
                         <ItemTemplate>
                             <tr>
-                                <td style="text-align: center"><%# Eval("id") %></td>
+                                <td rowspan="2" style="text-align: center"><%# Eval("id") %></td>
                                 <td><%# Eval("title") %></td>
                                 <td>
                                     <input id="judge_<%# Eval("id") %>_answer_0" name="judge_<%# Eval("id") %>_answer" type="radio" value="0" /><label for="judge_<%# Eval("id") %>_answer_0">错误</label><br />
                                     <input id="judge_<%# Eval("id") %>_answer_1" name="judge_<%# Eval("id") %>_answer" type="radio" value="1" /><label for="judge_<%# Eval("id") %>_answer_1">正确</label><br />
                                 </td>
+                                <td>
+                                    <input class="easyui-textbox" style="width: 30px; margin: 2px 2px 2px 2px;" id="judge_<%# Eval("id") %>_score" name="judge_<%# Eval("id") %>_score" type="text" />
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">参考答案:<%# Eval("answer_arry").ToString() == "1" ? "正确" : "错误"  %></td>
                             </tr>
                         </ItemTemplate>
                         <FooterTemplate>
@@ -186,17 +204,23 @@
                             <table style="width: 99%; margin: 0 auto" border="0" cellspacing="0" cellpadding="0">
                                 <thead>
                                     <td class="auto-style9" style="text-align: center">编号</td>
-                                    <td style="width: 40%;text-align: center">题目</td>
+                                    <td style="width: 40%; text-align: center">题目</td>
                                     <td style="text-align: center">选项</td>
+                                    <td style="text-align: center; width: 30px">得分</td>
                                 </thead>
                         </HeaderTemplate>
                         <ItemTemplate>
                             <tr>
-                                <td style="text-align: center"><%# Eval("id") %></td>
+                                <td rowspan="2" style="text-align: center"><%# Eval("id") %></td>
                                 <td><%# Eval("title") %></td>
-                                <td>
-                                    &nbsp<%#fillingHtml(int.Parse(Eval("id").ToString()),Eval("answer_arry").ToString())%> 
+                                <td>&nbsp<%#fillingHtml(int.Parse(Eval("id").ToString()),Eval("answer_arry").ToString())%> 
                                 </td>
+                                <td>
+                                    <input class="easyui-textbox" style="width: 30px; margin: 2px 2px 2px 2px;" id="filling_<%# Eval("id") %>_score" name="filling_<%# Eval("id") %>_score" type="text" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">参考答案:<%# Eval("answer_arry") %></td>
                             </tr>
                         </ItemTemplate>
                         <FooterTemplate>
@@ -212,15 +236,23 @@
                                     <td class="auto-style9" style="text-align: center">编号</td>
                                     <td style="width: 50%; text-align: center">题目</td>
                                     <td style="text-align: center">选项</td>
+                                    <td style="text-align: center; width: 30px">得分</td>
                                 </thead>
                         </HeaderTemplate>
                         <ItemTemplate>
                             <tr>
-                                <td style="text-align: center"><%# Eval("id") %></td>
+                                <td rowspan="2" style="text-align: center"><%# Eval("id") %></td>
                                 <td><%# Eval("title") %></td>
                                 <td>
-                                    <textarea style="width: 98%; height: 100%" id="qa_<%# Eval("id") %>_answer"></textarea>
+                                    <textarea  rows="10" style="width: 98%; height: 100%" id="qa_<%# Eval("id") %>_answer"></textarea>
                                 </td>
+                                <td>
+                                    <input class="easyui-textbox" style="width: 30px; margin: 2px 2px 2px 2px;" id="qa_<%# Eval("id") %>_score" name="qa_<%# Eval("id") %>_score" type="text" />
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">参考答案:<%# Eval("answer") %></td>
                             </tr>
                         </ItemTemplate>
                         <FooterTemplate>

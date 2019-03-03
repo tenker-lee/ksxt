@@ -8,6 +8,7 @@ using System.Data;
 
 namespace ksxt.Admin
 {
+
     /// <summary>
     /// Handler1 的摘要说明
     /// </summary>
@@ -138,6 +139,7 @@ namespace ksxt.Admin
         {
             int page = publicFun.StringToInt(ReadFormStr(context, "page"));
             int rows = publicFun.StringToInt(ReadFormStr(context, "rows"));
+
             DataTable dt;
             if(page > 0  && rows > 0)            
                 dt = ExecuteQueryData("select * from tb_filling limit "+ rows + " offset "+ (page - 1)* rows);

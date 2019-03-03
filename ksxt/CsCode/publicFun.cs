@@ -94,6 +94,8 @@ namespace ksxt
 
                 //重新一行
                 stringBuilder_rows.Clear();
+
+                
             }
 
             if (stringBuilder[stringBuilder.Length - 1] == ','){
@@ -136,7 +138,7 @@ namespace ksxt
         public static string[] StringToArry(string str)
         {
             if (str == "")
-                return new string[1] { "" };
+                return new string[0];
 
             string[] strArry = str.Split(',');
 
@@ -161,7 +163,7 @@ namespace ksxt
         {
             string[] arry = StringToArry(str);
             if (arry == null)
-                return new int[1] { 0 };
+                return new int[0];
             int[] resutlArry = new int[arry.Length];
             for (int i = 0; i < arry.Length; i++)
             {
