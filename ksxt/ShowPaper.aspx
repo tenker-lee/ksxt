@@ -40,8 +40,26 @@
             window.close();
         }
         $(document).ready(function () {
+            //选择框
+            $("input[type=radio]").click(function () {
+                //选项题
+                alert($(this).attr('id'));
 
-        });
+                //$(this).attr('checked', false);
+            });
+            //填空 评分
+            $(".easyui-textbox").textbox({
+                onChange: function () {
+                    alert($(this).attr('id'));
+                }
+            });
+            //选择框
+           $('textarea').bind('input propertychange', function(){  
+               var length = $(this).val();
+               //alert(length);
+            });  
+            
+        });       
 
     </script>
 </head>
@@ -145,14 +163,16 @@
                                 <td rowspan="2" style="text-align: center"><%# Eval("id") %></td>
                                 <td><%# Eval("title") %></td>
                                 <td>
-                                    <input id="choice_<%# Eval("id") %>_answer_0" name="choice_<%# Eval("id") %>_answer" type="radio" value="0" /><label for="choice_<%# Eval("id") %>_answer_0">A:<%# ReadArryString(Eval("select_arry").ToString(),0) %></label>
+                                    <input id="paper_<%=paper_id %>_choice_<%# Eval("id") %>_answer_0" name="choice_<%# Eval("id") %>_answer" type="radio" value="0"  /><label for="paper_<%=paper_id %>_choice_<%# Eval("id") %>_answer_0">A:<%# ReadArryString(Eval("select_arry").ToString(),0) %></label>
                                     <br />
-                                    <input id="choice_<%# Eval("id") %>_answer_1" name="choice_<%# Eval("id") %>_answer" type="radio" value="1" /><label for="choice_<%# Eval("id") %>_answer_1">B:<%# ReadArryString(Eval("select_arry").ToString(),1) %></label><br />
-                                    <input id="choice_<%# Eval("id") %>_answer_2" name="choice_<%# Eval("id") %>_answer" type="radio" value="2" /><label for="choice_<%# Eval("id") %>_answer_2">C:<%# ReadArryString(Eval("select_arry").ToString(),2) %></label><br />
-                                    <input id="choice_<%# Eval("id") %>_answer_3" name="choice_<%# Eval("id") %>_answer" type="radio" value="3" /><label for="choice_<%# Eval("id") %>_answer_3">D:<%# ReadArryString(Eval("select_arry").ToString(),3) %></label>
+                                    <input id="paper_<%=paper_id %>_choice_<%# Eval("id") %>_answer_1"  name="choice_<%# Eval("id") %>_answer" type="radio" value="1"  /><label for="paper_<%=paper_id %>_choice_<%# Eval("id") %>_answer_1">B:<%# ReadArryString(Eval("select_arry").ToString(),1) %></label>
+                                    <br />
+                                    <input id="paper_<%=paper_id %>_choice_<%# Eval("id") %>_answer_2"  name="choice_<%# Eval("id") %>_answer" type="radio" value="2"  /><label for="paper_<%=paper_id %>_choice_<%# Eval("id") %>_answer_2">C:<%# ReadArryString(Eval("select_arry").ToString(),2) %></label>
+                                    <br />
+                                    <input id="paper_<%=paper_id %>_choice_<%# Eval("id") %>_answer_3"  name="choice_<%# Eval("id") %>_answer" type="radio" value="3"  /><label for="paper_<%=paper_id %>_choice_<%# Eval("id") %>_answer_3">D:<%# ReadArryString(Eval("select_arry").ToString(),3) %></label>
                                 </td>
                                 <td>
-                                    <input class="easyui-textbox" style="width: 30px; margin: 2px 2px 2px 2px;" id="choice_<%# Eval("id") %>_score" name="choice_<%# Eval("id") %>_score" type="text" />
+                                    <input class="easyui-textbox" style="width: 30px; margin: 2px 2px 2px 2px;" id="paper_<%=paper_id %>_choice_<%# Eval("id") %>_score"  type="text" />
 
                                 </td>
                             </tr>
@@ -181,11 +201,11 @@
                                 <td rowspan="2" style="text-align: center"><%# Eval("id") %></td>
                                 <td><%# Eval("title") %></td>
                                 <td>
-                                    <input id="judge_<%# Eval("id") %>_answer_0" name="judge_<%# Eval("id") %>_answer" type="radio" value="0" /><label for="judge_<%# Eval("id") %>_answer_0">错误</label><br />
-                                    <input id="judge_<%# Eval("id") %>_answer_1" name="judge_<%# Eval("id") %>_answer" type="radio" value="1" /><label for="judge_<%# Eval("id") %>_answer_1">正确</label><br />
+                                    <input id="paper_<%=paper_id %>_judge_<%# Eval("id") %>_answer_0" name="judge_<%# Eval("id") %>_answer" type="radio" value="0" /><label for="paper_<%=paper_id %>_judge_<%# Eval("id") %>_answer_0">错误</label><br />
+                                    <input id="paper_<%=paper_id %>_judge_<%# Eval("id") %>_answer_1" name="judge_<%# Eval("id") %>_answer" type="radio" value="1" /><label for="paper_<%=paper_id %>_judge_<%# Eval("id") %>_answer_1">正确</label><br />
                                 </td>
                                 <td>
-                                    <input class="easyui-textbox" style="width: 30px; margin: 2px 2px 2px 2px;" id="judge_<%# Eval("id") %>_score" name="judge_<%# Eval("id") %>_score" type="text" />
+                                    <input class="easyui-textbox" style="width: 30px; margin: 2px 2px 2px 2px;" id="paper_<%=paper_id %>_judge_<%# Eval("id") %>_score" type="text" />
 
                                 </td>
                             </tr>
@@ -216,7 +236,7 @@
                                 <td>&nbsp<%#fillingHtml(int.Parse(Eval("id").ToString()),Eval("answer_arry").ToString())%> 
                                 </td>
                                 <td>
-                                    <input class="easyui-textbox" style="width: 30px; margin: 2px 2px 2px 2px;" id="filling_<%# Eval("id") %>_score" name="filling_<%# Eval("id") %>_score" type="text" />
+                                    <input class="easyui-textbox" style="width: 30px; margin: 2px 2px 2px 2px;" id="paper_<%=paper_id %>_filling_<%# Eval("id") %>_score"  type="text" />
                                 </td>
                             </tr>
                             <tr>
@@ -244,10 +264,10 @@
                                 <td rowspan="2" style="text-align: center"><%# Eval("id") %></td>
                                 <td><%# Eval("title") %></td>
                                 <td>
-                                    <textarea  rows="10" style="width: 98%; height: 100%" id="qa_<%# Eval("id") %>_answer"></textarea>
+                                    <textarea  rows="10" style="width: 98%; height: 100%" id="paper_<%=paper_id %>_qa_<%# Eval("id") %>_answer"></textarea>
                                 </td>
                                 <td>
-                                    <input class="easyui-textbox" style="width: 30px; margin: 2px 2px 2px 2px;" id="qa_<%# Eval("id") %>_score" name="qa_<%# Eval("id") %>_score" type="text" />
+                                    <input class="easyui-textbox" style="width: 30px; margin: 2px 2px 2px 2px;" id="paper_<%=paper_id %>_qa_<%# Eval("id") %>_score"  type="text" />
 
                                 </td>
                             </tr>

@@ -9,9 +9,12 @@ namespace ksxt.Admin
 {
     public partial class index : CustomPage
     {
+        
         protected void Page_Load(object sender, EventArgs e)
         {          
             labName.Text = logonUser;
+
+            //logonUserType =
         }
     }
 }

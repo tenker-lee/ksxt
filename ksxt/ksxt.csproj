@@ -437,6 +437,7 @@
     <Content Include="Admin\HandlerPaper.ashx" />
     <Content Include="HandlerPublicFun.ashx" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
+    <Content Include="Image\head.png" />
     <Content Include="logon.aspx" />
     <Content Include="logout.aspx" />
     <Content Include="Scripts\easyloader.js" />

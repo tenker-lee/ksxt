@@ -11,9 +11,11 @@ namespace ksxt
 
     public partial class ShowPaper : CustomPage
     {
+        protected string paper_id;
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            string paper_id = Request.QueryString["paperid"];
+            paper_id = Request.QueryString["paperid"];
 
             if (paper_id == null || paper_id == "") { return; }
 

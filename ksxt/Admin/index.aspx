@@ -55,7 +55,7 @@
     </script>
 </head>
 <body class="easyui-layout">
-        <div id="head" data-options="region:'north'" style="padding: 5px; width: auto; height: 40px">
+        <div id="head" data-options="region:'north'" style="padding: 5px; width: auto; height: 50px;background-image:url('../Image/head.png');background-repeat:no-repeat">
             <table style="width: 100%;">
                 <tr>
                     <td style="width:50%">&nbsp;</td>
