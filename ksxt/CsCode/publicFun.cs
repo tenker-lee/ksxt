@@ -191,6 +191,27 @@ namespace ksxt
             return strArry;
         }
 
+        public static string dtToids(DataTable dt,string colNamt)
+        {
+            try {
+                string sids = "";
+   
+                foreach (DataRow dr in dt.Rows) {
+                    sids += dr["title_id"].ToString();
+                    sids += ",";
+                }
+                if (sids.Length != 0) {
+                    sids = sids.Remove(sids.Length - 1);
+                }
+
+                return sids;
+               
+            }
+            catch {
+                return "";
+            }
+        }
+
     }
 
 }

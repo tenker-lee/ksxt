@@ -94,7 +94,8 @@ namespace ksxt
                     dbCommand.CommandText = sql;
                     dbCommand.ExecuteNonQuery();
                 }
-                sQLiteTransaction.Commit();                
+                sQLiteTransaction.Commit();
+                
             }
             catch (Exception e)
             {

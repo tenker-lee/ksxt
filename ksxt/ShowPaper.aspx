@@ -16,20 +16,16 @@
             border-right: 1px solid #95B8E7;
             border-bottom: 1px solid #95B8E7
         }
-
-            .table-c table td {
-                border-left: 1px solid #95B8E7;
-                border-top: 1px solid #95B8E7
-            }
-
+        .table-c table td {
+            border-left: 1px solid #95B8E7;
+            border-top: 1px solid #95B8E7
+        }
         .auto-style5 {
             width: 87px;
         }
-
         .auto-style7 {
             height: 20px;
         }
-
         .auto-style9 {
             width: 34px;
         }
@@ -43,8 +39,7 @@
             //选择框
             $("input[type=radio]").click(function () {
                 //选项题
-                alert($(this).attr('id'));
-
+                //alert($(this).attr('id'));
                 //$(this).attr('checked', false);
             });
             //填空 评分
@@ -163,7 +158,7 @@
                                 <td rowspan="2" style="text-align: center"><%# Eval("id") %></td>
                                 <td><%# Eval("title") %></td>
                                 <td>
-                                    <input id="paper_<%=paper_id %>_choice_<%# Eval("id") %>_answer_0" name="choice_<%# Eval("id") %>_answer" type="radio" value="0"  /><label for="paper_<%=paper_id %>_choice_<%# Eval("id") %>_answer_0">A:<%# ReadArryString(Eval("select_arry").ToString(),0) %></label>
+                                    <input id="paper_<%=paper_id %>_choice_<%# Eval("id") %>_answer_0" name="choice_<%# Eval("id") %>_answer" type="radio" value="0"   /><label for="paper_<%=paper_id %>_choice_<%# Eval("id") %>_answer_0">A:<%# ReadArryString(Eval("select_arry").ToString(),0) %></label>
                                     <br />
                                     <input id="paper_<%=paper_id %>_choice_<%# Eval("id") %>_answer_1"  name="choice_<%# Eval("id") %>_answer" type="radio" value="1"  /><label for="paper_<%=paper_id %>_choice_<%# Eval("id") %>_answer_1">B:<%# ReadArryString(Eval("select_arry").ToString(),1) %></label>
                                     <br />

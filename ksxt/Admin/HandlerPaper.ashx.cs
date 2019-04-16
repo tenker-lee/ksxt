@@ -152,13 +152,13 @@ namespace ksxt.Admin
                 newDr["v_id"] = dr["id"];           
 
                 newDr["v_title"] = dr["title"];
-                newDr["v_choice_id_arry"] = dr["choice_id_arry"];
+                newDr["v_choice_id_arry"] = publicFun.dtToids(ExecuteQueryData(string.Format("select * from tb_title_list where paper_id='{0}' and type='choice' order by title_id", dr["id"])), "title_id");
                 newDr["v_choice_score"] = dr["choice_score"];
-                newDr["v_filling_id_arry"] = dr["filling_id_arry"];
+                newDr["v_filling_id_arry"] = publicFun.dtToids(ExecuteQueryData(string.Format("select * from tb_title_list where paper_id='{0}' and type='filling' order by title_id", dr["id"])), "title_id");
                 newDr["v_filling_score"] = dr["filling_score"];
-                newDr["v_judge_id_arry"] = dr["judge_id_arry"];
+                newDr["v_judge_id_arry"] = publicFun.dtToids(ExecuteQueryData(string.Format("select * from tb_title_list where paper_id='{0}' and type='judge' order by title_id", dr["id"])), "title_id");
                 newDr["v_judge_score"] = dr["judge_score"];
-                newDr["v_qa_id_arry"] = dr["qa_id_arry"];
+                newDr["v_qa_id_arry"] = publicFun.dtToids(ExecuteQueryData(string.Format("select * from tb_title_list where paper_id='{0}' and type='qa' order by title_id", dr["id"])), "title_id");
                 newDr["v_qa_score"] = dr["qa_score"];
                 newDr["v_start_time"] = dr["start_time"];
                 newDr["v_end_time"] = dr["end_time"];
@@ -233,42 +233,44 @@ namespace ksxt.Admin
             {
                 WriteResponse(context, -1, "无此试卷");
                 return;
-            }
-
-            string[] choice = publicFun.StringToArry(dt.Rows[0]["choice_id_arry"].ToString());
-
-            List<string> list = choice.ToList<string>();
-
-            if (!choice.Contains(title_id))
+            }                 
+               
+            if (optType == "add")
             {
-                if (optType == "add")
+                string[] sqls = {
+                    string.Format("delete from tb_title_list where paper_id='{0}' and title_id='{1}' and type='choice'", paper_id, title_id),
+                    string.Format("insert into tb_title_list(paper_id,title_id,type)values({0},{1},'choice')", paper_id, title_id)
+                };
+           
+                int code = ExecuteTransaction(sqls);
+                if (code < 0)
                 {
-                    list.Add(title_id);
-                    list.Sort();
-                    int code = ExecuteNoQuery("update tb_papers set choice_id_arry='" + publicFun.ArryToString(list.ToArray()) + "' where id=" + paper_id);
-                    if (code < 0)
-                    {
-                        WriteResponse(context, -2, dbError);
-                        return;
-                    }
+                    WriteResponse(context, -2, dbError);
+                    return;
                 }
             }
-            else
+            else if  (optType == "del")
             {
-                if (optType == "del")
+                int code = ExecuteNoQuery(string.Format("delete from tb_title_list where paper_id='{0}' and title_id='{1}' and type='choice'", paper_id, title_id));
+                if (code < 0)
                 {
-                    list.Remove(title_id);
-                    list.Sort();
-                    int code = ExecuteNoQuery("update tb_papers set choice_id_arry='" + publicFun.ArryToString(list.ToArray()) + "' where id=" + paper_id);
-                    if (code < 0)
-                    {
-                        WriteResponse(context, -2, dbError);
-                        return;
-                    }
+                    WriteResponse(context, -2, dbError);
+                    return;
                 }
             }
 
-            WriteResponse(context, 0,"操作成功","\"title_list\":\""+ publicFun.ArryToString(list.ToArray()) + "\"");
+            dt = ExecuteQueryData(string.Format("select * from tb_title_list where paper_id='{0}' and type='choice' order by title_id", paper_id, title_id));
+
+            string stitle = "";
+            foreach(DataRow dr in dt.Rows) {
+                stitle += dr["title_id"].ToString();
+                stitle += ",";
+            }
+            if (stitle.Length != 0) {
+                stitle = stitle.Remove(stitle.Length - 1);
+            }
+            
+            WriteResponse(context, 0,"操作成功","\"title_list\":\""+ stitle + "\"");
         }
 
         void AddFillingToPaper(HttpContext context) {
@@ -291,40 +293,38 @@ namespace ksxt.Admin
                 return;
             }
 
-            string[] choice = publicFun.StringToArry(dt.Rows[0]["filling_id_arry"].ToString());
+            if (optType == "add") {
+                string[] sqls = {
+                    string.Format("delete from tb_title_list where paper_id='{0}' and title_id='{1}' and type='filling'", paper_id, title_id),
+                    string.Format("insert into tb_title_list(paper_id,title_id,type)values({0},{1},'filling')", paper_id, title_id)
+                };
 
-            List<string> list = choice.ToList<string>();
-
-            if (!choice.Contains(title_id))
-            {
-                if (optType == "add")
-                {
-                    list.Add(title_id);
-                    list.Sort();
-                    int code = ExecuteNoQuery("update tb_papers set filling_id_arry='" + publicFun.ArryToString(list.ToArray()) + "' where id=" + paper_id);
-                    if (code < 0)
-                    {
-                        WriteResponse(context, -2, dbError);
-                        return;
-                    }
+                int code = ExecuteTransaction(sqls);
+                if (code < 0) {
+                    WriteResponse(context, -2, dbError);
+                    return;
                 }
             }
-            else
-            {
-                if (optType == "del")
-                {
-                    list.Remove(title_id);
-                    list.Sort();
-                    int code = ExecuteNoQuery("update tb_papers set filling_id_arry='" + publicFun.ArryToString(list.ToArray()) + "' where id=" + paper_id);
-                    if (code < 0)
-                    {
-                        WriteResponse(context, -2, dbError);
-                        return;
-                    }
+            else if (optType == "del") {
+                int code = ExecuteNoQuery(string.Format("delete from tb_title_list where paper_id='{0}' and title_id='{1}' and type='filling'", paper_id, title_id));
+                if (code < 0) {
+                    WriteResponse(context, -2, dbError);
+                    return;
                 }
             }
 
-            WriteResponse(context, 0, "操作成功", "\"title_list\":\"" + publicFun.ArryToString(list.ToArray()) + "\"");
+            dt = ExecuteQueryData(string.Format("select * from tb_title_list where paper_id='{0}' and type='filling' order by title_id", paper_id, title_id));
+
+            string stitle = "";
+            foreach (DataRow dr in dt.Rows) {
+                stitle += dr["title_id"].ToString();
+                stitle += ",";
+            }
+            if (stitle.Length != 0) {
+                stitle = stitle.Remove(stitle.Length - 1);
+            }
+
+            WriteResponse(context, 0, "操作成功", "\"title_list\":\"" + stitle + "\"");
         }
 
         void AddJudgeToPaper(HttpContext context) {
@@ -347,40 +347,38 @@ namespace ksxt.Admin
                 return;
             }
 
-            string[] choice = publicFun.StringToArry(dt.Rows[0]["judge_id_arry"].ToString());
+            if (optType == "add") {
+                string[] sqls = {
+                    string.Format("delete from tb_title_list where paper_id='{0}' and title_id='{1}' and type='judge'", paper_id, title_id),
+                    string.Format("insert into tb_title_list(paper_id,title_id,type)values({0},{1},'judge')", paper_id, title_id)
+                };
 
-            List<string> list = choice.ToList<string>();
-
-            if (!choice.Contains(title_id))
-            {
-                if (optType == "add")
-                {
-                    list.Add(title_id);
-                    list.Sort();
-                    int code = ExecuteNoQuery("update tb_papers set judge_id_arry='" + publicFun.ArryToString(list.ToArray()) + "' where id=" + paper_id);
-                    if (code < 0)
-                    {
-                        WriteResponse(context, -2, dbError);
-                        return;
-                    }
+                int code = ExecuteTransaction(sqls);
+                if (code < 0) {
+                    WriteResponse(context, -2, dbError);
+                    return;
                 }
             }
-            else
-            {
-                if (optType == "del")
-                {
-                    list.Remove(title_id);
-                    list.Sort();
-                    int code = ExecuteNoQuery("update tb_papers set judge_id_arry='" + publicFun.ArryToString(list.ToArray()) + "' where id=" + paper_id);
-                    if (code < 0)
-                    {
-                        WriteResponse(context, -2, dbError);
-                        return;
-                    }
+            else if (optType == "del") {
+                int code = ExecuteNoQuery(string.Format("delete from tb_title_list where paper_id='{0}' and title_id='{1}' and type='judge'", paper_id, title_id));
+                if (code < 0) {
+                    WriteResponse(context, -2, dbError);
+                    return;
                 }
             }
 
-            WriteResponse(context, 0, "操作成功", "\"title_list\":\"" + publicFun.ArryToString(list.ToArray()) + "\"");
+            dt = ExecuteQueryData(string.Format("select * from tb_title_list where paper_id='{0}' and type='judge' order by title_id", paper_id, title_id));
+
+            string stitle = "";
+            foreach (DataRow dr in dt.Rows) {
+                stitle += dr["title_id"].ToString();
+                stitle += ",";
+            }
+            if (stitle.Length != 0) {
+                stitle = stitle.Remove(stitle.Length - 1);
+            }
+
+            WriteResponse(context, 0, "操作成功", "\"title_list\":\"" + stitle + "\"");
         }
 
         void AddQaToPaper(HttpContext context) {
@@ -403,40 +401,38 @@ namespace ksxt.Admin
                 return;
             }
 
-            string[] choice = publicFun.StringToArry(dt.Rows[0]["qa_id_arry"].ToString());
+            if (optType == "add") {
+                string[] sqls = {
+                    string.Format("delete from tb_title_list where paper_id='{0}' and title_id='{1}' and type='qa'", paper_id, title_id),
+                    string.Format("insert into tb_title_list(paper_id,title_id,type)values({0},{1},'qa')", paper_id, title_id)
+                };
 
-            List<string> list = choice.ToList<string>();
-
-            if (!choice.Contains(title_id))
-            {
-                if (optType == "add")
-                {
-                    list.Add(title_id);
-                    list.Sort();
-                    int code = ExecuteNoQuery("update tb_papers set qa_id_arry='" + publicFun.ArryToString(list.ToArray()) + "' where id=" + paper_id);
-                    if (code < 0)
-                    {
-                        WriteResponse(context, -2, dbError);
-                        return;
-                    }
+                int code = ExecuteTransaction(sqls);
+                if (code < 0) {
+                    WriteResponse(context, -2, dbError);
+                    return;
                 }
             }
-            else
-            {
-                if (optType == "del")
-                {
-                    list.Remove(title_id);
-                    list.Sort();
-                    int code = ExecuteNoQuery("update tb_papers set qa_id_arry='" + publicFun.ArryToString(list.ToArray()) + "' where id=" + paper_id);
-                    if (code < 0)
-                    {
-                        WriteResponse(context, -2, dbError);
-                        return;
-                    }
+            else if (optType == "del") {
+                int code = ExecuteNoQuery(string.Format("delete from tb_title_list where paper_id='{0}' and title_id='{1}' and type='qa'", paper_id, title_id));
+                if (code < 0) {
+                    WriteResponse(context, -2, dbError);
+                    return;
                 }
             }
 
-            WriteResponse(context, 0, "操作成功", "\"title_list\":\"" + publicFun.ArryToString(list.ToArray()) + "\"");
+            dt = ExecuteQueryData(string.Format("select * from tb_title_list where paper_id='{0}' and type='qa' order by title_id", paper_id, title_id));
+
+            string stitle = "";
+            foreach (DataRow dr in dt.Rows) {
+                stitle += dr["title_id"].ToString();
+                stitle += ",";
+            }
+            if (stitle.Length != 0) {
+                stitle = stitle.Remove(stitle.Length - 1);
+            }
+
+            WriteResponse(context, 0, "操作成功", "\"title_list\":\"" + stitle + "\"");
         }
 
         protected override void Default(HttpContext context)

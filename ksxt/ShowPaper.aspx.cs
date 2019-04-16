@@ -11,13 +11,27 @@ namespace ksxt
 
     public partial class ShowPaper : CustomPage
     {
-        protected string paper_id;
+        protected string paper_id=string.Empty;
+
+        protected string user_id=string.Empty;
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            paper_id = Request.QueryString["paperid"];
 
-            if (paper_id == null || paper_id == "") { return; }
+            paper_id = Request.QueryString["paperid"];
+            paper_id = paper_id == null ? "":paper_id;
+
+            user_id = Request.QueryString["userid"];
+            user_id = user_id == null ? "" : user_id;
+
+            if (paper_id == null || paper_id == "") {
+                return;
+            }
+
+            DataTable us = dbBase.ExecuteQueryData("select * from tb_users where id=" + user_id);
+            if (us.Rows.Count > 0) {
+                lab_user.Text = us.Rows[0]["name"].ToString();
+            }
 
             DataTable dt = dbBase.ExecuteQueryData("select * from tb_papers where id=" + paper_id);
 
@@ -36,44 +50,61 @@ namespace ksxt
             lab_filling_score.Text = filling_score.ToString();
             lab_qa_score.Text = qa_score.ToString();
 
-            int[] singles = publicFun.StringToNumArry(dt.Rows[0]["choice_id_arry"].ToString());
-            int[] fillings = publicFun.StringToNumArry(dt.Rows[0]["filling_id_arry"].ToString());
-            int[] judges = publicFun.StringToNumArry(dt.Rows[0]["judge_id_arry"].ToString());
-            int[] qas = publicFun.StringToNumArry(dt.Rows[0]["qa_id_arry"].ToString());
+            string sqlChoice = string.Format(@"select tb_title_list.id AS ee,tb_choice.* 
+                                                from 
+                                                tb_title_list,tb_choice 
+                                                where 
+                                                tb_choice.id = tb_title_list.title_id and paper_id='{0}' and type='choice'", paper_id);
+            string sqlFilling = string.Format(@"select tb_filling.* 
+                                                from 
+                                                tb_title_list,tb_filling 
+                                                where 
+                                                tb_filling.id = tb_title_list.title_id and paper_id='{0}' and type='filling'", paper_id);
+            string sqlJudge= string.Format(@"select tb_judge.* 
+                                                from tb_title_list,tb_judge 
+                                                where 
+                                                tb_judge.id = tb_title_list.title_id and paper_id='{0}' and type='judge'", paper_id);
+            string sqlQa= string.Format(@"select tb_qa.*  
+                                                from tb_title_list ,tb_qa
+                                                where 
+                                                tb_qa.id = tb_title_list.title_id and paper_id='{0}' and type='qa'", paper_id);
 
-            lab_qa_count.Text = qas.Length.ToString();
-            lab_judge_count.Text = judges.Length.ToString();
-            lab_filling_count.Text = fillings.Length.ToString();
-            lab_choice_count.Text = singles.Length.ToString();
+            DataTable dtSingles = dbBase.ExecuteQueryData(sqlChoice);
+            DataTable dtFillings = dbBase.ExecuteQueryData(sqlFilling);
+            DataTable dtJudges = dbBase.ExecuteQueryData(sqlJudge);
+            DataTable dtQas = dbBase.ExecuteQueryData(sqlQa);
+            
+            lab_qa_count.Text = dtQas.Rows.Count.ToString();
+            lab_judge_count.Text = dtJudges.Rows.Count.ToString();
+            lab_filling_count.Text = dtFillings.Rows.Count.ToString();
+            lab_choice_count.Text = dtSingles.Rows.Count.ToString();
 
-            lab_choice_total.Text = (choice_score * singles.Length).ToString();
-            lab_judge_total.Text = (judge_score * judges.Length).ToString();
-            lab_filling_total.Text = (filling_score * fillings.Length).ToString();
-            lab_qa_total.Text = (qa_score * qas.Length).ToString();
+            lab_choice_total.Text = (choice_score * dtSingles.Rows.Count).ToString();
+            lab_judge_total.Text = (judge_score * dtJudges.Rows.Count).ToString();
+            lab_filling_total.Text = (filling_score * dtFillings.Rows.Count).ToString();
+            lab_qa_total.Text = (qa_score * dtQas.Rows.Count).ToString();
 
-            lab_total_score_paper.Text = (choice_score * singles.Length + judge_score * judges.Length
-                + filling_score * fillings.Length + qa_score * qas.Length).ToString();
+            lab_total_score_paper.Text = (choice_score * dtSingles.Rows.Count + judge_score * dtJudges.Rows.Count
+                + filling_score * dtFillings.Rows.Count + qa_score * dtQas.Rows.Count).ToString();
 
             labTime.Text = dt.Rows[0]["start_time"].ToString() + "-" + dt.Rows[0]["end_time"].ToString();
 
-            lab_user.Text = logonUser;
+            //DataTable dt_singles = GetChoices(singles);
 
-            DataTable dt_singles = GetChoices(singles);
-
-            repChoice.DataSource = dt_singles;
+            repChoice.DataSource = dtSingles;
             repChoice.DataBind();
 
-            DataTable dt_judges = GetJudges(judges);
+            //DataTable dt_judges = GetJudges(judges);
 
-            repJudge.DataSource = dt_judges;
+            repJudge.DataSource = dtJudges;
             repJudge.DataBind();
 
-            DataTable dt_fillings = GetFillings(fillings);
-            repFilling.DataSource = dt_fillings;
+            //DataTable dt_fillings = GetFillings(fillings);
+            repFilling.DataSource = dtFillings;
             repFilling.DataBind();
 
-            DataTable dt_qas = GetQas(qas);
-            repQa.DataSource = dt_qas;
+            //DataTable dt_qas = GetQas(qas);
+            repQa.DataSource = dtQas;
             repQa.DataBind();
 
         }
