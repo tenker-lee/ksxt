@@ -50,24 +50,29 @@ namespace ksxt
             lab_filling_score.Text = filling_score.ToString();
             lab_qa_score.Text = qa_score.ToString();
 
-            string sqlChoice = string.Format(@"select tb_title_list.id AS ee,tb_choice.* 
-                                                from 
-                                                tb_title_list,tb_choice 
-                                                where 
-                                                tb_choice.id = tb_title_list.title_id and paper_id='{0}' and type='choice'", paper_id);
-            string sqlFilling = string.Format(@"select tb_filling.* 
-                                                from 
-                                                tb_title_list,tb_filling 
-                                                where 
-                                                tb_filling.id = tb_title_list.title_id and paper_id='{0}' and type='filling'", paper_id);
-            string sqlJudge= string.Format(@"select tb_judge.* 
-                                                from tb_title_list,tb_judge 
-                                                where 
-                                                tb_judge.id = tb_title_list.title_id and paper_id='{0}' and type='judge'", paper_id);
-            string sqlQa= string.Format(@"select tb_qa.*  
-                                                from tb_title_list ,tb_qa
-                                                where 
-                                                tb_qa.id = tb_title_list.title_id and paper_id='{0}' and type='qa'", paper_id);
+            string sqlChoice = string.Format(@"SELECT  t.paper_id,t.type,c.id,c.title,c.select_arry,c.answer_arry,a.user_id,a.value,a.score 
+                                                FROM tb_title_list as t 
+                                                INNER JOIN tb_choice as c on t.title_id=c.id
+                                                LEFT JOIN tb_answer_list as a on a.title_list_id=t.id
+                                                WHERE t.type='choice' and t.paper_id='{0}'", paper_id);
+
+            string sqlFilling = string.Format(@"SELECT  t.paper_id,t.type,f.id,f.title,f.answer_arry,a.user_id,a.value,a.score 
+                                                FROM tb_title_list as t 
+                                                INNER JOIN tb_filling as f on t.title_id=f.id
+                                                LEFT JOIN tb_answer_list as a on a.title_list_id=t.id
+                                                WHERE t.type='filling' and t.paper_id='{0}'", paper_id);
+
+            string sqlJudge= string.Format(@"SELECT  t.paper_id,t.type,j.id,j.title,j.answer_arry,a.user_id,a.value,a.score 
+                                             FROM tb_title_list as t 
+                                             INNER JOIN tb_judge as j on t.title_id=j.id
+                                             LEFT JOIN tb_answer_list as a on a.title_list_id=t.id
+                                             WHERE t.type='judge' and t.paper_id='{0}'", paper_id);
+
+            string sqlQa= string.Format(@"SELECT  t.paper_id,t.type,q.id,q.title,q.answer,a.user_id,a.value,a.score 
+                                            FROM tb_title_list as t 
+                                            INNER JOIN tb_qa as q on t.title_id=q.id
+                                            LEFT JOIN tb_answer_list as a on a.title_list_id=t.id
+                                            WHERE t.type='qa' and t.paper_id='{0}'", paper_id);
 
             DataTable dtSingles = dbBase.ExecuteQueryData(sqlChoice);
             DataTable dtFillings = dbBase.ExecuteQueryData(sqlFilling);

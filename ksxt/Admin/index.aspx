@@ -98,7 +98,19 @@
                         <li style="height: 30px"><a href="javascript:void(0);" name="addPanel"
 														hreflang="">试卷列表</a></li>
                     </ul>
-                </div>               
+                </div>          
+                <div title="已考试卷" data-options="collapsible:true,iconcls:'icon-reload'" style="padding: 10px;">
+                    <ul>
+                        <li style="height: 30px"><a href="javascript:void(0);" name="addPanel"
+														hreflang="">试卷列表</a></li>
+                    </ul>
+                </div>       
+                <div title="待考试卷" data-options="collapsible:true,iconcls:'icon-reload'" style="padding: 10px;">
+                    <ul>
+                        <li style="height: 30px"><a href="javascript:void(0);" name="addPanel"
+														hreflang="">试卷列表</a></li>
+                    </ul>
+                </div>        
             </div>
         </div>
         <div id="center" data-options="region:'center'">

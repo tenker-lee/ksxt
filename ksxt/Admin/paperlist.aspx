@@ -193,10 +193,10 @@
                 <th data-options="field:'v_filling_score', align:'center'">填空分值</th>
                 <th data-options="field:'v_judge_score', align:'center'">判断分值</th>
                 <th data-options="field:'v_qa_score', align:'center'">简答分值</th>
-                <th data-options="field:'v_start_time', align:'center',width:100">开始时间</th>
-                <th data-options="field:'v_end_time', align:'center',width:100">结束时间</th>
+                <th data-options="field:'v_start_time', align:'center',width:130">开始时间</th>
+                <th data-options="field:'v_end_time', align:'center',width:130">结束时间</th>
                 <th data-options="field:'v_create_name', align:'center',width:70">创建人</th>
-                <th data-options="field:'v_create_time', align:'center',width:120">创建时间</th>
+                <th data-options="field:'v_create_time', align:'center',width:130">创建时间</th>
                 <th data-options="field:'v_oporate',formatter:formatOper, align:'center'">操作</th>
             </tr>
         </thead>
