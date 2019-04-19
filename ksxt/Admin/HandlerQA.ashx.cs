@@ -24,14 +24,12 @@ namespace ksxt.Admin
             string title = ReadFormStr(context, "f_title");
             string answer = ReadFormStr(context, "f_answer");
 
-            if (level == "" || title == "" || answer == "")
-            {
+            if (level == "" || title == "" || answer == "") {
                 WriteResponse(context, -1, "输出参数有误", "");
                 return;
             }
 
-            if (ExecuteQueryDataCount("select * from tb_qa where title='" + title + "'") > 0)
-            {
+            if (ExecuteQueryDataCount("select * from tb_qa where title='" + title + "'") > 0) {
                 WriteResponse(context, -1, "数据重复", "");
                 return;
             }
@@ -56,14 +54,12 @@ namespace ksxt.Admin
             string title = ReadFormStr(context, "f_title");
             string answer = ReadFormStr(context, "f_answer");
 
-            if (level == "" || title == "")
-            {
+            if (level == "" || title == "") {
                 WriteResponse(context, -1, "输出参数有误", "");
                 return;
             }
 
-            if (level == "" || title == "" || answer == "")
-            {
+            if (level == "" || title == "" || answer == "") {
                 WriteResponse(context, -1, "输出参数有误", "");
                 return;
             }
@@ -112,8 +108,7 @@ namespace ksxt.Admin
             dtView.Columns.Add("v_create_name");
             dtView.Columns.Add("v_create_time");
 
-            foreach (DataRow dr in dt.Rows)
-            {
+            foreach (DataRow dr in dt.Rows) {
                 DataRow newDr = dtView.NewRow();
                 newDr["v_id"] = dr["id"];
                 string lev = dr["level"].ToString();
@@ -150,8 +145,7 @@ namespace ksxt.Admin
         {
             string s_id = ReadFormStr(context, "s_id");
 
-            if (s_id == "")
-            {
+            if (s_id == "") {
                 WriteResponse(context, -1, "查询失败", "");
                 return;
             }
@@ -163,8 +157,7 @@ namespace ksxt.Admin
 
             DataTable dataTable = ExecuteQueryData("select * from tb_qa where id=" + s_id);
 
-            if (dataTable.Rows.Count > 0)
-            {
+            if (dataTable.Rows.Count > 0) {
                 title = dataTable.Rows[0]["title"].ToString();
                 level = dataTable.Rows[0]["level"].ToString();
 

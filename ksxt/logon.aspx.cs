@@ -13,9 +13,8 @@ namespace ksxt
         protected void Page_Load(object sender, EventArgs e)
         {
 
-            if(txtName.Text.Trim()=="" || txtPassword.Text.Trim() == "")
-            {
-               // Response.Write("<script>alert('请先登录系统!!!')</script>");
+            if (txtName.Text.Trim() == "" || txtPassword.Text.Trim() == "") {
+                // Response.Write("<script>alert('请先登录系统!!!')</script>");
                 return;
             }
 
@@ -25,8 +24,7 @@ namespace ksxt
 
             DataTable dt = dbBase.ExecuteQueryData(sql);
 
-            if (dt.Rows.Count == 0)
-            {
+            if (dt.Rows.Count == 0) {
                 Response.Write("<script>alert('帐号或密码不正确!!!')</script>");
                 return;
             }

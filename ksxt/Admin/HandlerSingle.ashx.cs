@@ -13,39 +13,37 @@ namespace ksxt.Admin
     /// <summary>
     /// HandlerSingle 的摘要说明
     /// </summary>
-    public class HandlerSingle :HandleBase, IHttpHandler, IRequiresSessionState
+    public class HandlerSingle : HandleBase, IHttpHandler, IRequiresSessionState
     {
         public void ProcessRequest(HttpContext context)
         {
             PreProcess(context);
-        }        
+        }
 
         override protected void Add(HttpContext context)
         {
-            string level = ReadFormStr(context, "f_level"); 
-            string title = ReadFormStr(context, "f_title"); 
+            string level = ReadFormStr(context, "f_level");
+            string title = ReadFormStr(context, "f_title");
             string selectA = ReadFormStr(context, "f_selectA");
-            string selectB = ReadFormStr(context, "f_selectB"); 
-            string selectC = ReadFormStr(context, "f_selectC"); 
-            string selectD = ReadFormStr(context, "f_selectD"); 
+            string selectB = ReadFormStr(context, "f_selectB");
+            string selectC = ReadFormStr(context, "f_selectC");
+            string selectD = ReadFormStr(context, "f_selectD");
             string answer = ReadFormStr(context, "f_singleAnswer");
-            if(level=="" || title=="" || selectA=="" 
-                || selectB=="" || selectC==""||selectD==""||answer=="")
-            {
+            if (level == "" || title == "" || selectA == ""
+                || selectB == "" || selectC == "" || selectD == "" || answer == "") {
                 WriteResponse(context, -1, "输出参数有误", "");
                 return;
             }
 
-            if (ExecuteQueryDataCount("select * from tb_choice where title='" + title + "'") > 0)
-            {
+            if (ExecuteQueryDataCount("select * from tb_choice where title='" + title + "'") > 0) {
                 WriteResponse(context, -1, "数据重复", "");
                 return;
             }
 
             string sqlFormat = @"insert into tb_choice(level,title,select_arry,answer_arry,create_name,create_time)values(
                                                         '{0}','{1}','{2}','{3}','{4}','{5}')";
-            string selectStrs = selectA +","+ selectB + "," + selectC + "," + selectD;
-            string sql = string.Format(sqlFormat, level,title, selectStrs, answer,logonUser,publicFun.GetDateString(DateTime.Now));
+            string selectStrs = selectA + "," + selectB + "," + selectC + "," + selectD;
+            string sql = string.Format(sqlFormat, level, title, selectStrs, answer, logonUser, publicFun.GetDateString(DateTime.Now));
 
             int code = ExecuteNoQuery(sql);
 
@@ -66,16 +64,15 @@ namespace ksxt.Admin
             string selectC = ReadFormStr(context, "f_selectC");
             string selectD = ReadFormStr(context, "f_selectD");
             string answer = ReadFormStr(context, "f_singleAnswer");
-            if (edit_id == "" || level == "" || title == "" 
-                || selectA == "" || selectB == "" 
-                || selectC == "" || selectD == "" || answer == "")
-            {
+            if (edit_id == "" || level == "" || title == ""
+                || selectA == "" || selectB == ""
+                || selectC == "" || selectD == "" || answer == "") {
                 WriteResponse(context, -1, "输出参数有误", "");
                 return;
             }
             string sqlFormat = @"update tb_choice set level='{0}',title='{1}',select_arry='{2}',answer_arry='{3}',create_name='{4}',create_time='{5}' where id={6}";
             string selectStrs = selectA + "," + selectB + "," + selectC + "," + selectD;
-            string sql = string.Format(sqlFormat, level, title, selectStrs, answer, logonUser, publicFun.GetDateString(DateTime.Now),edit_id);
+            string sql = string.Format(sqlFormat, level, title, selectStrs, answer, logonUser, publicFun.GetDateString(DateTime.Now), edit_id);
 
             int code = ExecuteNoQuery(sql);
 
@@ -119,16 +116,15 @@ namespace ksxt.Admin
             dtView.Columns.Add("v_create_name");
             dtView.Columns.Add("v_create_time");
 
-            foreach(DataRow dr in dt.Rows)
-            {
-                DataRow newDr =  dtView.NewRow();
+            foreach (DataRow dr in dt.Rows) {
+                DataRow newDr = dtView.NewRow();
                 newDr["v_id"] = dr["id"];
                 string lev = dr["level"].ToString();
-                if(lev=="1")
-                    newDr["v_level"] ="初级";
-                else if(lev=="2")
+                if (lev == "1")
+                    newDr["v_level"] = "初级";
+                else if (lev == "2")
                     newDr["v_level"] = "中级";
-                else if(lev=="3")
+                else if (lev == "3")
                     newDr["v_level"] = "高级";
                 else
                     newDr["v_level"] = "无";
@@ -140,8 +136,7 @@ namespace ksxt.Admin
                 selStr = "";
                 int i = 0;
                 char a = 'A';
-                foreach (string s in arry)
-                {
+                foreach (string s in arry) {
                     selStr += (char)(a + i);
                     selStr += ":";
                     selStr += s;
@@ -150,18 +145,15 @@ namespace ksxt.Admin
                 }
                 newDr["v_select_arry"] = selStr;
 
-                string anserSel =  dr["answer_arry"].ToString();
+                string anserSel = dr["answer_arry"].ToString();
                 string[] arryAswer = publicFun.StringToArry(anserSel);
                 anserSel = "";
                 i = 0;
                 a = 'A';
-                foreach (string s in arryAswer)
-                {
+                foreach (string s in arryAswer) {
                     int iAnser = 0;
-                    if (int.TryParse(s, out iAnser))
-                    {
-                        if (iAnser < 5)
-                        {
+                    if (int.TryParse(s, out iAnser)) {
+                        if (iAnser < 5) {
                             anserSel += (char)(a + iAnser);
                             anserSel += ",";
                         }
@@ -175,27 +167,27 @@ namespace ksxt.Admin
                 newDr["v_create_time"] = dr["create_time"];
 
                 dtView.Rows.Add(newDr);
-            }          
+            }
             //转JSON
             string dtJson = publicFun.DataTableToJson(dtView);
 
-            string listJson = "\"total\":"+ ExecuteQueryDataCount("select * from tb_choice") +",\"rows\":";
+            string listJson = "\"total\":" + ExecuteQueryDataCount("select * from tb_choice") + ",\"rows\":";
 
             listJson += dtJson;
 
             WriteResponse(context, 0, "查询成功", listJson);
-        }              
+        }
 
-        override protected void Default(HttpContext context) {            
-                WriteResponse(context, 0, "hello", "\"total\":0,\"rows\":[]");           
+        override protected void Default(HttpContext context)
+        {
+            WriteResponse(context, 0, "hello", "\"total\":0,\"rows\":[]");
         }
 
         void SearchById(HttpContext context)
         {
             string s_id = ReadFormStr(context, "s_id");
 
-            if (s_id == "")
-            {
+            if (s_id == "") {
                 WriteResponse(context, -1, "查询失败", "");
                 return;
             }
@@ -208,8 +200,7 @@ namespace ksxt.Admin
 
             DataTable dataTable = ExecuteQueryData("select * from tb_choice where id=" + s_id);
 
-            if (dataTable.Rows.Count > 0)
-            {
+            if (dataTable.Rows.Count > 0) {
                 title = dataTable.Rows[0]["title"].ToString();
                 level = dataTable.Rows[0]["level"].ToString();
 
@@ -217,7 +208,7 @@ namespace ksxt.Admin
                 s_arry = publicFun.StringToArry(selects); ;
 
                 string answers = dataTable.Rows[0]["answer_arry"].ToString();
-                s_answer = publicFun.StringToArry(answers);               
+                s_answer = publicFun.StringToArry(answers);
             }
 
             string json = string.Format(responseFormat, title, level, s_arry[0], s_arry[1], s_arry[2], s_arry[3], s_answer[0]);

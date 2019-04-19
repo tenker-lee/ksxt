@@ -30,20 +30,17 @@ namespace ksxt.Admin
             string answerC = ReadFormStr(context, "f_answerC");
             string answerD = ReadFormStr(context, "f_answerD");
 
-            if (level == "" || title == "")
-            {
+            if (level == "" || title == "") {
                 WriteResponse(context, -1, "输出参数有误", "");
                 return;
             }
 
-            if (answerA == "" && answerB == "" && answerC == "" && answerD == "")
-            {
+            if (answerA == "" && answerB == "" && answerC == "" && answerD == "") {
                 WriteResponse(context, -1, "输出参数有误", "");
                 return;
             }
 
-            if (ExecuteQueryDataCount("select * from tb_filling where title='"+title+"'") > 0)
-            {
+            if (ExecuteQueryDataCount("select * from tb_filling where title='" + title + "'") > 0) {
                 WriteResponse(context, -1, "数据重复", "");
                 return;
             }
@@ -61,7 +58,7 @@ namespace ksxt.Admin
                 stringBuilder.Append(answerD + ",");
 
             if (stringBuilder[stringBuilder.Length - 1] == ',')
-                stringBuilder.Remove(stringBuilder.Length - 1,1);
+                stringBuilder.Remove(stringBuilder.Length - 1, 1);
 
             string sql = string.Format(sqlFormat, level, title, stringBuilder.ToString(), logonUser, publicFun.GetDateString(DateTime.Now));
 
@@ -85,13 +82,11 @@ namespace ksxt.Admin
             string answerC = ReadFormStr(context, "f_answerC");
             string answerD = ReadFormStr(context, "f_answerD");
 
-            if (level == "" || title == "")
-            {
+            if (level == "" || title == "") {
                 WriteResponse(context, -1, "输出参数有误", "");
                 return;
             }
-            if (answerA == "" && answerB == "" && answerC == "" && answerD == "")
-            {
+            if (answerA == "" && answerB == "" && answerC == "" && answerD == "") {
                 WriteResponse(context, -1, "输出参数有误", "");
                 return;
             }
@@ -132,7 +127,7 @@ namespace ksxt.Admin
             if (code >= 0)
                 WriteResponse(context, 0, "操作成功", "");
             else
-                WriteResponse(context, code,dbError, "");
+                WriteResponse(context, code, dbError, "");
         }
 
         protected override void Search(HttpContext context)
@@ -141,8 +136,8 @@ namespace ksxt.Admin
             int rows = publicFun.StringToInt(ReadFormStr(context, "rows"));
 
             DataTable dt;
-            if(page > 0  && rows > 0)            
-                dt = ExecuteQueryData("select * from tb_filling limit "+ rows + " offset "+ (page - 1)* rows);
+            if (page > 0 && rows > 0)
+                dt = ExecuteQueryData("select * from tb_filling limit " + rows + " offset " + (page - 1) * rows);
             else
                 dt = ExecuteQueryData("select * from tb_filling");
             //视图
@@ -154,8 +149,7 @@ namespace ksxt.Admin
             dtView.Columns.Add("v_create_name");
             dtView.Columns.Add("v_create_time");
 
-            foreach (DataRow dr in dt.Rows)
-            {
+            foreach (DataRow dr in dt.Rows) {
                 DataRow newDr = dtView.NewRow();
                 newDr["v_id"] = dr["id"];
                 string lev = dr["level"].ToString();
@@ -168,12 +162,12 @@ namespace ksxt.Admin
                 else
                     newDr["v_level"] = "无";
 
-                newDr["v_title"] = dr["title"];               
+                newDr["v_title"] = dr["title"];
 
                 string anserSel = dr["answer_arry"].ToString();
                 string[] arryAswer = publicFun.StringToArry(anserSel);
 
-                if (anserSel.Length != 0 && anserSel[anserSel.Length-1]==',')
+                if (anserSel.Length != 0 && anserSel[anserSel.Length - 1] == ',')
                     anserSel = anserSel.Remove(anserSel.Length - 1);
                 newDr["v_answer_arry"] = anserSel;
 
@@ -196,8 +190,7 @@ namespace ksxt.Admin
         {
             string s_id = ReadFormStr(context, "s_id");
 
-            if (s_id == "")
-            {
+            if (s_id == "") {
                 WriteResponse(context, -1, "查询失败", "");
                 return;
             }
@@ -210,16 +203,14 @@ namespace ksxt.Admin
 
             DataTable dataTable = ExecuteQueryData("select * from tb_filling where id=" + s_id);
 
-            if (dataTable.Rows.Count > 0)
-            {
+            if (dataTable.Rows.Count > 0) {
                 title = dataTable.Rows[0]["title"].ToString();
                 level = dataTable.Rows[0]["level"].ToString();
 
                 string answers = dataTable.Rows[0]["answer_arry"].ToString();
-                string []arry = publicFun.StringToArry(answers);
+                string[] arry = publicFun.StringToArry(answers);
 
-                for(int i = 0; i < arry.Length; i++)
-                {
+                for (int i = 0; i < arry.Length; i++) {
                     s_answer[i] = arry[i];
                 }
             }

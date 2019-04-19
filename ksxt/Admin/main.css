@@ -1,0 +1,18 @@
+﻿body {
+}
+a:link {
+    color: #0094ff
+}
+/* 未被访问的链接*/
+a:visited {
+    color: #0094ff
+}
+/* 已被访问过的链接*/
+a:hover {
+    color: #0094ff
+}
+/* 鼠标悬浮在上的链接*/
+a:active {
+    color: #0094ff
+}
+/* 鼠标点中激活链接*/

@@ -11,12 +11,7 @@
     <script src="../Scripts/locale/easyui-lang-zh_CN.js"></script>
     <link href="../Content/themes/default/easyui.css" rel="stylesheet" type="text/css" />
     <link href="../Content/themes/icon.css" rel="stylesheet" type="text/css" />
-    <style type="text/css">
-        a:link { color: #0094ff} /* 未被访问的链接*/
-        a:visited { color: #0094ff} /* 已被访问过的链接*/
-        a:hover {color: #0094ff} /* 鼠标悬浮在上的链接*/
-        a:active {color: #0094ff} /* 鼠标点中激活链接*/
-    </style>
+    <link href="main.css" rel="stylesheet" type="text/css" />
     <script  type="text/javascript">
         $(document).ready(function () {            
             $("a[name='addPanel']").click(function () {
@@ -96,7 +91,7 @@
                 <div title="成绩管理" data-options="collapsible:true,iconcls:'icon-reload'" style="padding: 10px;">
                     <ul>
                         <li style="height: 30px"><a href="javascript:void(0);" name="addPanel"
-														hreflang="">试卷列表</a></li>
+														hreflang="checkpaper.aspx">成绩管理</a></li>
                     </ul>
                 </div>          
                 <div title="已考试卷" data-options="collapsible:true,iconcls:'icon-reload'" style="padding: 10px;">

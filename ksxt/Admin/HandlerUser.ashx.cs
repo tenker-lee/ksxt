@@ -23,31 +23,28 @@ namespace ksxt.Admin
             string name = ReadFormStr(context, "f_name");
             string password = ReadFormStr(context, "f_password");
             string password_confirm = ReadFormStr(context, "f_password_confirm");
-            
+
             string department = ReadFormStr(context, "f_department");
             string job = ReadFormStr(context, "f_job");
 
-            if (type == "" || name == "" || password == "")
-            {
+            if (type == "" || name == "" || password == "") {
                 WriteResponse(context, -1, "输出参数有误", "");
                 return;
             }
 
-            if(password != password_confirm)
-            {
+            if (password != password_confirm) {
                 WriteResponse(context, -1, "两次输入密码不一致", "");
                 return;
             }
 
-            if (ExecuteQueryDataCount("select * from tb_users where name='" + name + "'") > 0)
-            {
+            if (ExecuteQueryDataCount("select * from tb_users where name='" + name + "'") > 0) {
                 WriteResponse(context, -1, "数据重复", "");
                 return;
             }
 
             string sqlFormat = @"insert into tb_users(type,name,password,department,job_title,create_name,create_time)values(
                                                         '{0}','{1}','{2}','{3}','{4}','{5}','{6}')";
-            string sql = string.Format(sqlFormat, type, name, password, department, job,logonUser, publicFun.GetDateString(DateTime.Now));
+            string sql = string.Format(sqlFormat, type, name, password, department, job, logonUser, publicFun.GetDateString(DateTime.Now));
 
             int code = ExecuteNoQuery(sql);
 
@@ -67,8 +64,7 @@ namespace ksxt.Admin
             string department = ReadFormStr(context, "f_department");
             string job = ReadFormStr(context, "f_job");
 
-            if (type == "" || name == "" || password == "")
-            {
+            if (type == "" || name == "" || password == "") {
                 WriteResponse(context, -1, "输入参数有误", "");
                 return;
             }
@@ -120,11 +116,10 @@ namespace ksxt.Admin
             dtView.Columns.Add("v_create_name");
             dtView.Columns.Add("v_create_time");
 
-            foreach (DataRow dr in dt.Rows)
-            {
+            foreach (DataRow dr in dt.Rows) {
                 DataRow newDr = dtView.NewRow();
-                newDr["v_id"] = dr["id"];          
-                newDr["v_type"] = dr["type"].ToString()=="1"? "管理员" : "普通";
+                newDr["v_id"] = dr["id"];
+                newDr["v_type"] = dr["type"].ToString() == "1" ? "管理员" : "普通";
                 newDr["v_name"] = dr["name"];
                 newDr["v_password"] = dr["password"];
                 newDr["v_department"] = dr["department"];
@@ -147,8 +142,7 @@ namespace ksxt.Admin
         {
             string s_id = ReadFormStr(context, "s_id");
 
-            if (s_id == "")
-            {
+            if (s_id == "") {
                 WriteResponse(context, -1, "查询失败", "");
                 return;
             }
@@ -161,15 +155,14 @@ namespace ksxt.Admin
 
             DataTable dataTable = ExecuteQueryData("select * from tb_users where id=" + s_id);
 
-            if (dataTable.Rows.Count > 0)
-            {
+            if (dataTable.Rows.Count > 0) {
                 type = dataTable.Rows[0]["type"].ToString();
                 name = dataTable.Rows[0]["name"].ToString();
                 department = dataTable.Rows[0]["department"].ToString();
                 job = dataTable.Rows[0]["job_title"].ToString();
             }
 
-            string json = string.Format(responseFormat, type, name, department,job);
+            string json = string.Format(responseFormat, type, name, department, job);
 
             WriteResponse(context, 0, "操作成功", json);
         }

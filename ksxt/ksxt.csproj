@@ -84,9 +84,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Admin\checkpaper.aspx" />
     <Content Include="Admin\fillinglist.aspx" />
     <Content Include="Admin\index.aspx" />
     <Content Include="Admin\judgelist.aspx" />
+    <Content Include="Admin\main.css" />
     <Content Include="Admin\paperlist.aspx" />
     <Content Include="Admin\qalist.aspx" />
     <Content Include="Admin\singlist.aspx" />
@@ -436,6 +438,7 @@
     <Content Include="Admin\HandlerUser.ashx" />
     <Content Include="Admin\HandlerPaper.ashx" />
     <Content Include="HandlerPublicFun.ashx" />
+    <Content Include="Admin\HandlerCheckPaper.ashx" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="Image\head.png" />
     <Content Include="logon.aspx" />
@@ -478,12 +481,22 @@
     <Content Include="index.aspx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Admin\checkpaper.aspx.cs">
+      <DependentUpon>checkpaper.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\checkpaper.aspx.designer.cs">
+      <DependentUpon>checkpaper.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Admin\fillinglist.aspx.cs">
       <DependentUpon>fillinglist.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Admin\fillinglist.aspx.designer.cs">
       <DependentUpon>fillinglist.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\HandlerCheckPaper.ashx.cs">
+      <DependentUpon>HandlerCheckPaper.ashx</DependentUpon>
     </Compile>
     <Compile Include="Admin\HandlerFilling.ashx.cs">
       <DependentUpon>HandlerFilling.ashx</DependentUpon>

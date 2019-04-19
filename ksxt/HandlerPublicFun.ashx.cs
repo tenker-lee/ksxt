@@ -9,7 +9,7 @@ namespace ksxt
     /// <summary>
     /// HandlerPublicFun 的摘要说明
     /// </summary>
-    public class HandlerPublicFun : dbBase,IHttpHandler, IRequiresSessionState
+    public class HandlerPublicFun : dbBase, IHttpHandler, IRequiresSessionState
     {
         protected string ReadFormStr(HttpContext context, string itemName)
         {
@@ -23,23 +23,23 @@ namespace ksxt
         {
             string opt = context.Request.QueryString["opt"];
             if (opt == null)
-                opt = "";          
-         
+                opt = "";
+
             Type thisType = this.GetType();
             MethodInfo method = thisType.GetMethod(opt, BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
             if (method == null)
                 WriteResponse(context, 0, "hello", "");
             else
-                method.Invoke(this, new object[] { context });            
+                method.Invoke(this, new object[] { context });
         }
 
         private void GetDateTime(HttpContext context)
         {
             string dateStr = publicFun.GetDateString(DateTime.Now);
-            WriteResponse(context, 0, "查询成功", "\"now\":\""+dateStr+"\"");
+            WriteResponse(context, 0, "查询成功", "\"now\":\"" + dateStr + "\"");
         }
 
-        private void WriteResponse(HttpContext context, int stateCode, string msg="操作成功", string usrStr="")
+        private void WriteResponse(HttpContext context, int stateCode, string msg = "操作成功", string usrStr = "")
         {
             StringBuilder stringBuilder = new StringBuilder();
             context.Response.Clear();
@@ -53,8 +53,7 @@ namespace ksxt
             stringBuilder.Append(msg);
             stringBuilder.Append("\"");
 
-            if (usrStr != null && usrStr != "")
-            {
+            if (usrStr != null && usrStr != "") {
                 stringBuilder.Append(",");
                 stringBuilder.Append(usrStr);
             }
@@ -80,33 +79,8 @@ namespace ksxt
             WriteResponse(context, 0, "操作成功", "");
         }
 
-        private void UpdateChoiceAnswers(HttpContext context) {
-
-            string answer = ReadFormStr(context,"answer");
-            string userid = ReadFormStr(context, "userid");
-            string paperid = ReadFormStr(context, "paperid");
-            string titileid = ReadFormStr(context, "titleid");
-
-            string sqlFormat = "delete from tb_answer_list where user_id={0} and paper_id={1} and title_id={2}";
-            string sql = string.Format(sqlFormat, userid, paperid, titileid);
-
-            int code = ExecuteNoQuery(sql);
-            if(code < 0)
-            {
-                WriteResponse(context, -1, dbError);
-                return;
-            }
-
-            sqlFormat = "insert into tb_answer_list(paper_id,user_id,title_id,type,value)values({0},{1},{2},'choice','{3}')";
-            sql = string.Format(sqlFormat, paperid,userid, titileid,answer);
-            code = ExecuteNoQuery(sql);
-            if (code < 0)
-                WriteResponse(context, -1, dbError);
-            else
-                WriteResponse(context, 0);
-        }
-
-        private void UpdateFillingAnswers(HttpContext context) {
+        private void UpdateChoiceAnswers(HttpContext context)
+        {
 
             string answer = ReadFormStr(context, "answer");
             string userid = ReadFormStr(context, "userid");
@@ -117,8 +91,33 @@ namespace ksxt
             string sql = string.Format(sqlFormat, userid, paperid, titileid);
 
             int code = ExecuteNoQuery(sql);
+            if (code < 0) {
+                WriteResponse(context, -1, dbError);
+                return;
+            }
+
+            sqlFormat = "insert into tb_answer_list(paper_id,user_id,title_id,type,value)values({0},{1},{2},'choice','{3}')";
+            sql = string.Format(sqlFormat, paperid, userid, titileid, answer);
+            code = ExecuteNoQuery(sql);
             if (code < 0)
-            {
+                WriteResponse(context, -1, dbError);
+            else
+                WriteResponse(context, 0);
+        }
+
+        private void UpdateFillingAnswers(HttpContext context)
+        {
+
+            string answer = ReadFormStr(context, "answer");
+            string userid = ReadFormStr(context, "userid");
+            string paperid = ReadFormStr(context, "paperid");
+            string titileid = ReadFormStr(context, "titleid");
+
+            string sqlFormat = "delete from tb_answer_list where user_id={0} and paper_id={1} and title_id={2}";
+            string sql = string.Format(sqlFormat, userid, paperid, titileid);
+
+            int code = ExecuteNoQuery(sql);
+            if (code < 0) {
                 WriteResponse(context, -1, dbError);
                 return;
             }
@@ -132,7 +131,8 @@ namespace ksxt
                 WriteResponse(context, 0);
         }
 
-        private void UpdateJudgeAnswers(HttpContext context) {
+        private void UpdateJudgeAnswers(HttpContext context)
+        {
 
             string answer = ReadFormStr(context, "answer");
             string userid = ReadFormStr(context, "userid");
@@ -143,8 +143,7 @@ namespace ksxt
             string sql = string.Format(sqlFormat, userid, paperid, titileid);
 
             int code = ExecuteNoQuery(sql);
-            if (code < 0)
-            {
+            if (code < 0) {
                 WriteResponse(context, -1, dbError);
                 return;
             }
@@ -158,7 +157,8 @@ namespace ksxt
                 WriteResponse(context, 0);
         }
 
-        private void UpdateQaAnswers(HttpContext context) {
+        private void UpdateQaAnswers(HttpContext context)
+        {
 
             string answer = ReadFormStr(context, "answer");
             string userid = ReadFormStr(context, "userid");
@@ -169,8 +169,7 @@ namespace ksxt
             string sql = string.Format(sqlFormat, userid, paperid, titileid);
 
             int code = ExecuteNoQuery(sql);
-            if (code < 0)
-            {
+            if (code < 0) {
                 WriteResponse(context, -1, dbError);
                 return;
             }
@@ -191,14 +190,12 @@ namespace ksxt
             string new_pass = ReadFormStr(context, "new_pass");
             string new_pass_confirm = ReadFormStr(context, "new_pass_confirm");
 
-            if(user == "" || old_pass == "" || new_pass == "")
-            {
+            if (user == "" || old_pass == "" || new_pass == "") {
                 WriteResponse(context, -1, "输入参数错误");
                 return;
             }
 
-            if(new_pass != new_pass_confirm)
-            {
+            if (new_pass != new_pass_confirm) {
                 WriteResponse(context, -1, "密码验证失败");
                 return;
             }

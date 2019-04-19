@@ -11,12 +11,7 @@
     <script src="../Scripts/locale/easyui-lang-zh_CN.js"></script>
     <link href="../Content/themes/default/easyui.css" rel="stylesheet" type="text/css" />
     <link href="../Content/themes/icon.css" rel="stylesheet" type="text/css" />
-    <style type="text/css">
-        a:link { color: #0094ff} /* 未被访问的链接*/
-        a:visited { color: #0094ff} /* 已被访问过的链接*/
-        a:hover {color: #0094ff} /* 鼠标悬浮在上的链接*/
-        a:active {color: #0094ff} /* 鼠标点中激活链接*/
-    </style>
+    <link href="main.css" rel="stylesheet" type="text/css" />
     <script>
         $(document).ready(function () {
             $('#tt').datagrid({

@@ -28,33 +28,29 @@ namespace ksxt.Admin
             string start_time = ReadFormStr(context, "f_start_time");
             string end_time = ReadFormStr(context, "f_end_time");
 
-            if (title == "" || start_time == "" || end_time == "")
-            {
+            if (title == "" || start_time == "" || end_time == "") {
                 WriteResponse(context, -1, "输入参数有误", "");
                 return;
             }
 
-            if (choice_score == "" || filling_score == "" || judge_score == "" || qa_score=="")
-            {
+            if (choice_score == "" || filling_score == "" || judge_score == "" || qa_score == "") {
                 WriteResponse(context, -1, "输入参数有误", "");
                 return;
             }
-            if (ExecuteQueryDataCount("select * from tb_papers where title='" + title + "'") > 0)
-            {
+            if (ExecuteQueryDataCount("select * from tb_papers where title='" + title + "'") > 0) {
                 WriteResponse(context, -1, "数据重复", "");
                 return;
             }
 
-            TimeSpan timeSpan =  publicFun.GetDateTimeFromStr(end_time) - publicFun.GetDateTimeFromStr(start_time);
-            if (timeSpan.TotalMinutes > 120 || timeSpan.TotalMinutes < 30)
-            {
+            TimeSpan timeSpan = publicFun.GetDateTimeFromStr(end_time) - publicFun.GetDateTimeFromStr(start_time);
+            if (timeSpan.TotalMinutes > 120 || timeSpan.TotalMinutes < 30) {
                 WriteResponse(context, -1, "时间在[30-120]分钟之间", "");
                 return;
             }
 
             string sqlFormat = @"insert into tb_papers(title,choice_score,filling_score,judge_score,qa_score,start_time,end_time,create_name,create_time)values(
                                                         '{0}',{1},{2},{3},{4},'{5}','{6}','{7}','{8}')";
-            string sql = string.Format(sqlFormat, title, 
+            string sql = string.Format(sqlFormat, title,
                                        publicFun.StringToInt(choice_score), publicFun.StringToInt(filling_score), publicFun.StringToInt(judge_score), publicFun.StringToInt(qa_score),
                 start_time, end_time, logonUser, publicFun.GetDateString(DateTime.Now));
 
@@ -78,14 +74,12 @@ namespace ksxt.Admin
             string start_time = ReadFormStr(context, "f_start_time");
             string end_time = ReadFormStr(context, "f_end_time");
 
-            if (title == "" || start_time == "" || end_time == "")
-            {
+            if (title == "" || start_time == "" || end_time == "") {
                 WriteResponse(context, -1, "输入参数有误", "");
                 return;
             }
 
-            if (choice_score == "" || filling_score == "" || judge_score == "" || qa_score == "")
-            {
+            if (choice_score == "" || filling_score == "" || judge_score == "" || qa_score == "") {
                 WriteResponse(context, -1, "输入参数有误", "");
                 return;
             }
@@ -93,7 +87,7 @@ namespace ksxt.Admin
             string sqlFormat = @"update tb_papers set title='{0}',choice_score={1},filling_score={2},judge_score={3},qa_score={4},start_time='{5}',end_time='{6}',create_name='{7}',create_time='{8}' where id={9}";
 
             string sql = string.Format(sqlFormat, title, publicFun.StringToInt(choice_score), publicFun.StringToInt(filling_score), publicFun.StringToInt(judge_score), publicFun.StringToInt(qa_score),
-                start_time,end_time, logonUser, publicFun.GetDateString(DateTime.Now), edit_id);
+                start_time, end_time, logonUser, publicFun.GetDateString(DateTime.Now), edit_id);
 
             int code = ExecuteNoQuery(sql);
 
@@ -146,10 +140,9 @@ namespace ksxt.Admin
             dtView.Columns.Add("v_create_name");
             dtView.Columns.Add("v_create_time");
 
-            foreach (DataRow dr in dt.Rows)
-            {
+            foreach (DataRow dr in dt.Rows) {
                 DataRow newDr = dtView.NewRow();
-                newDr["v_id"] = dr["id"];           
+                newDr["v_id"] = dr["id"];
 
                 newDr["v_title"] = dr["title"];
                 newDr["v_choice_id_arry"] = publicFun.dtToids(ExecuteQueryData(string.Format("select * from tb_title_list where paper_id='{0}' and type='choice' order by title_id", dr["id"])), "title_id");
@@ -182,13 +175,12 @@ namespace ksxt.Admin
         {
             string s_id = ReadFormStr(context, "s_id");
 
-            if (s_id == "")
-            {
+            if (s_id == "") {
                 WriteResponse(context, -1, "查询失败", "");
                 return;
             }
             string title = "";
-            string choice_score="";
+            string choice_score = "";
             string filling_score = "";
             string judge_score = "";
             string qa_score = "";
@@ -199,8 +191,7 @@ namespace ksxt.Admin
 
             DataTable dataTable = ExecuteQueryData("select * from tb_papers where id=" + s_id);
 
-            if (dataTable.Rows.Count > 0)
-            {
+            if (dataTable.Rows.Count > 0) {
                 title = dataTable.Rows[0]["title"].ToString();
                 choice_score = dataTable.Rows[0]["choice_score"].ToString();
                 filling_score = dataTable.Rows[0]["filling_score"].ToString();
@@ -210,50 +201,45 @@ namespace ksxt.Admin
                 end_time = dataTable.Rows[0]["end_time"].ToString();
             }
 
-            string json = string.Format(responseFormat, title, choice_score, filling_score, judge_score, qa_score,start_time, end_time);
+            string json = string.Format(responseFormat, title, choice_score, filling_score, judge_score, qa_score, start_time, end_time);
 
             WriteResponse(context, 0, "操作成功", json);
         }
 
-        void AddChoiceToPaper(HttpContext context) {
+        void AddChoiceToPaper(HttpContext context)
+        {
 
             string optType = ReadFormStr(context, "optType");
             string paper_id = ReadFormStr(context, "paper_id");
             string title_id = ReadFormStr(context, "title_id");
 
-            if(optType=="" || paper_id=="" || title_id == "")
-            {
+            if (optType == "" || paper_id == "" || title_id == "") {
                 WriteResponse(context, -1, "参数错误");
                 return;
             }
 
             DataTable dt = ExecuteQueryData("select * from tb_papers where id=" + paper_id);
 
-            if (dt.Rows.Count < 1)
-            {
+            if (dt.Rows.Count < 1) {
                 WriteResponse(context, -1, "无此试卷");
                 return;
-            }                 
-               
-            if (optType == "add")
-            {
+            }
+
+            if (optType == "add") {
                 string[] sqls = {
                     string.Format("delete from tb_title_list where paper_id='{0}' and title_id='{1}' and type='choice'", paper_id, title_id),
                     string.Format("insert into tb_title_list(paper_id,title_id,type)values({0},{1},'choice')", paper_id, title_id)
                 };
-           
+
                 int code = ExecuteTransaction(sqls);
-                if (code < 0)
-                {
+                if (code < 0) {
                     WriteResponse(context, -2, dbError);
                     return;
                 }
             }
-            else if  (optType == "del")
-            {
+            else if (optType == "del") {
                 int code = ExecuteNoQuery(string.Format("delete from tb_title_list where paper_id='{0}' and title_id='{1}' and type='choice'", paper_id, title_id));
-                if (code < 0)
-                {
+                if (code < 0) {
                     WriteResponse(context, -2, dbError);
                     return;
                 }
@@ -262,33 +248,32 @@ namespace ksxt.Admin
             dt = ExecuteQueryData(string.Format("select * from tb_title_list where paper_id='{0}' and type='choice' order by title_id", paper_id, title_id));
 
             string stitle = "";
-            foreach(DataRow dr in dt.Rows) {
+            foreach (DataRow dr in dt.Rows) {
                 stitle += dr["title_id"].ToString();
                 stitle += ",";
             }
             if (stitle.Length != 0) {
                 stitle = stitle.Remove(stitle.Length - 1);
             }
-            
-            WriteResponse(context, 0,"操作成功","\"title_list\":\""+ stitle + "\"");
+
+            WriteResponse(context, 0, "操作成功", "\"title_list\":\"" + stitle + "\"");
         }
 
-        void AddFillingToPaper(HttpContext context) {
+        void AddFillingToPaper(HttpContext context)
+        {
 
             string optType = ReadFormStr(context, "optType");
             string paper_id = ReadFormStr(context, "paper_id");
             string title_id = ReadFormStr(context, "title_id");
 
-            if (optType == "" || paper_id == "" || title_id == "")
-            {
+            if (optType == "" || paper_id == "" || title_id == "") {
                 WriteResponse(context, -1, "参数错误");
                 return;
             }
 
             DataTable dt = ExecuteQueryData("select * from tb_papers where id=" + paper_id);
 
-            if (dt.Rows.Count < 1)
-            {
+            if (dt.Rows.Count < 1) {
                 WriteResponse(context, -1, "无此试卷");
                 return;
             }
@@ -327,22 +312,21 @@ namespace ksxt.Admin
             WriteResponse(context, 0, "操作成功", "\"title_list\":\"" + stitle + "\"");
         }
 
-        void AddJudgeToPaper(HttpContext context) {
+        void AddJudgeToPaper(HttpContext context)
+        {
 
             string optType = ReadFormStr(context, "optType");
             string paper_id = ReadFormStr(context, "paper_id");
             string title_id = ReadFormStr(context, "title_id");
 
-            if (optType == "" || paper_id == "" || title_id == "")
-            {
+            if (optType == "" || paper_id == "" || title_id == "") {
                 WriteResponse(context, -1, "参数错误");
                 return;
             }
 
             DataTable dt = ExecuteQueryData("select * from tb_papers where id=" + paper_id);
 
-            if (dt.Rows.Count < 1)
-            {
+            if (dt.Rows.Count < 1) {
                 WriteResponse(context, -1, "无此试卷");
                 return;
             }
@@ -381,22 +365,21 @@ namespace ksxt.Admin
             WriteResponse(context, 0, "操作成功", "\"title_list\":\"" + stitle + "\"");
         }
 
-        void AddQaToPaper(HttpContext context) {
+        void AddQaToPaper(HttpContext context)
+        {
 
             string optType = ReadFormStr(context, "optType");
             string paper_id = ReadFormStr(context, "paper_id");
             string title_id = ReadFormStr(context, "title_id");
 
-            if (optType == "" || paper_id == "" || title_id == "")
-            {
+            if (optType == "" || paper_id == "" || title_id == "") {
                 WriteResponse(context, -1, "参数错误");
                 return;
             }
 
             DataTable dt = ExecuteQueryData("select * from tb_papers where id=" + paper_id);
 
-            if (dt.Rows.Count < 1)
-            {
+            if (dt.Rows.Count < 1) {
                 WriteResponse(context, -1, "无此试卷");
                 return;
             }
