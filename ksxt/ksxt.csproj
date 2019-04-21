@@ -89,8 +89,10 @@
     <Content Include="Admin\index.aspx" />
     <Content Include="Admin\judgelist.aspx" />
     <Content Include="Admin\main.css" />
+    <Content Include="Admin\mypaper.aspx" />
     <Content Include="Admin\paperlist.aspx" />
     <Content Include="Admin\qalist.aspx" />
+    <Content Include="Admin\radompaper.aspx" />
     <Content Include="Admin\singlist.aspx" />
     <Content Include="Admin\userlist.aspx" />
     <Content Include="changePassword.aspx" />
@@ -439,6 +441,7 @@
     <Content Include="Admin\HandlerPaper.ashx" />
     <Content Include="HandlerPublicFun.ashx" />
     <Content Include="Admin\HandlerCheckPaper.ashx" />
+    <Content Include="Admin\HandlerMyPaper.ashx" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="Image\head.png" />
     <Content Include="logon.aspx" />
@@ -504,6 +507,9 @@
     <Compile Include="Admin\HandlerJudge.ashx.cs">
       <DependentUpon>HandlerJudge.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Admin\HandlerMyPaper.ashx.cs">
+      <DependentUpon>HandlerMyPaper.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Admin\HandlerPaper.ashx.cs">
       <DependentUpon>HandlerPaper.ashx</DependentUpon>
     </Compile>
@@ -530,6 +536,13 @@
     <Compile Include="Admin\judgelist.aspx.designer.cs">
       <DependentUpon>judgelist.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Admin\mypaper.aspx.cs">
+      <DependentUpon>mypaper.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\mypaper.aspx.designer.cs">
+      <DependentUpon>mypaper.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Admin\paperlist.aspx.cs">
       <DependentUpon>paperlist.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -543,6 +556,13 @@
     </Compile>
     <Compile Include="Admin\qalist.aspx.designer.cs">
       <DependentUpon>qalist.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\radompaper.aspx.cs">
+      <DependentUpon>radompaper.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\radompaper.aspx.designer.cs">
+      <DependentUpon>radompaper.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\singlist.aspx.cs">
       <DependentUpon>singlist.aspx</DependentUpon>

@@ -19,8 +19,9 @@
             });
             //$("#changePass").attr("target", "_blank"); 
         });
-        function addPanel(title,url) {
-            if ($("#panel").tabs("exists", title)) {
+        function addPanel(title, url) {
+            $('title').text('' + title)
+            if ($("#panel").tabs("exists", title)) {                
 		        $("#panel").tabs("select", title);
 		        var tab = $("#panel").tabs("getSelected");
 		        $("#panel").tabs("update",
@@ -94,16 +95,16 @@
 														hreflang="checkpaper.aspx">成绩管理</a></li>
                     </ul>
                 </div>          
-                <div title="已考试卷" data-options="collapsible:true,iconcls:'icon-reload'" style="padding: 10px;">
-                    <ul>
-                        <li style="height: 30px"><a href="javascript:void(0);" name="addPanel"
-														hreflang="">试卷列表</a></li>
-                    </ul>
-                </div>       
                 <div title="待考试卷" data-options="collapsible:true,iconcls:'icon-reload'" style="padding: 10px;">
                     <ul>
                         <li style="height: 30px"><a href="javascript:void(0);" name="addPanel"
-														hreflang="">试卷列表</a></li>
+														hreflang="mypaper.aspx">待考试卷</a></li>
+                    </ul>
+                </div>       
+                <div title="试卷练习" data-options="collapsible:true,iconcls:'icon-reload'" style="padding: 10px;">
+                    <ul>
+                        <li style="height: 30px"><a href="javascript:void(0);" name="addPanel"
+														hreflang="radompaper.aspx">试卷练习</a></li>
                     </ul>
                 </div>        
             </div>
