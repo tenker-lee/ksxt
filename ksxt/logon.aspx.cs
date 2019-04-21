@@ -31,9 +31,11 @@ namespace ksxt
 
             string user = dt.Rows[0]["name"].ToString();
             string type = dt.Rows[0]["type"].ToString();
+            string id = dt.Rows[0]["id"].ToString();
 
             Session["logonUser"] = user;
             Session["logonUserType"] = type;
+            Session["logonId"] = id;
 
             if (type == "1")
                 Response.Redirect("~/Admin/index.aspx");

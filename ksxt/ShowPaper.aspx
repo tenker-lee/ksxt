@@ -55,7 +55,31 @@
             });  
             
         });       
+        //上传结果
+        function updateAnswerList(answerStr) {
+             $.ajax({
+                        url: 'HandlerPublicFun.ashx?opt=UpdateAnswerList',
+                        type: "POST",
+                        data: { "answerStr": answerStr },
+                        success: function (data) {
+                            var result = JSON.parse(data);
+                            if (result.stateCode == 0) {
+                                //$.messager.show({
+                                //    title: '提示',
+                                //    msg: result.msg,
+                                //    timeout: 5000,
+                                //    showType: 'slide'
+                                //});
+                            }
+                            else {
+                                $.messager.alert('警告', result.msg);
 
+                            }
+                            
+                        }
+            });
+            
+        }
     </script>
 </head>
 <body>

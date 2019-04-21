@@ -9,6 +9,7 @@ namespace ksxt
     {
         public string logonUser { set; get; }
         public string logonUserType { set; get; }
+        public string logonId { set; get; }
 
         protected override void OnInit(EventArgs e)
         {
@@ -16,6 +17,7 @@ namespace ksxt
 
             logonUser = Session["logonUser"] == null ? "" : Session["logonUser"].ToString();
             logonUserType = Session["logonUserType"] == null ? "" : Session["logonUserType"].ToString();
+            logonId = Session["logonId"] == null ? "" : Session["logonId"].ToString();
 
             if (logonUser == "")
                 Response.Redirect("~/logon.aspx");

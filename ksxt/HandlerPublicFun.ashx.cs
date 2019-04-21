@@ -77,105 +77,25 @@ namespace ksxt
             if (context.Request.QueryString["logonUserType"] != null)
                 context.Session["logonUserType"] = context.Request.QueryString["logonUserType"].ToString();
             WriteResponse(context, 0, "操作成功", "");
-        }
+        }                    
+               
 
-        private void UpdateChoiceAnswers(HttpContext context)
+        private void UpdateAnswerList(HttpContext context)
         {
-
             string answer = ReadFormStr(context, "answer");
             string userid = ReadFormStr(context, "userid");
-            string paperid = ReadFormStr(context, "paperid");
             string titileid = ReadFormStr(context, "titleid");
 
-            string sqlFormat = "delete from tb_answer_list where user_id={0} and paper_id={1} and title_id={2}";
-            string sql = string.Format(sqlFormat, userid, paperid, titileid);
+            string sqlFormat = "delete from tb_answer_list where user_id={0} and id={1} ";
+            string sql = string.Format(sqlFormat, userid,  titileid);
 
             int code = ExecuteNoQuery(sql);
             if (code < 0) {
                 WriteResponse(context, -1, dbError);
                 return;
             }
-
-            sqlFormat = "insert into tb_answer_list(paper_id,user_id,title_id,type,value)values({0},{1},{2},'choice','{3}')";
-            sql = string.Format(sqlFormat, paperid, userid, titileid, answer);
-            code = ExecuteNoQuery(sql);
-            if (code < 0)
-                WriteResponse(context, -1, dbError);
-            else
-                WriteResponse(context, 0);
-        }
-
-        private void UpdateFillingAnswers(HttpContext context)
-        {
-
-            string answer = ReadFormStr(context, "answer");
-            string userid = ReadFormStr(context, "userid");
-            string paperid = ReadFormStr(context, "paperid");
-            string titileid = ReadFormStr(context, "titleid");
-
-            string sqlFormat = "delete from tb_answer_list where user_id={0} and paper_id={1} and title_id={2}";
-            string sql = string.Format(sqlFormat, userid, paperid, titileid);
-
-            int code = ExecuteNoQuery(sql);
-            if (code < 0) {
-                WriteResponse(context, -1, dbError);
-                return;
-            }
-
-            sqlFormat = "insert into tb_answer_list(paper_id,user_id,title_id,type,value)values({0},{1},{2},'filling','{3}')";
-            sql = string.Format(sqlFormat, paperid, userid, titileid, answer);
-            code = ExecuteNoQuery(sql);
-            if (code < 0)
-                WriteResponse(context, -1, dbError);
-            else
-                WriteResponse(context, 0);
-        }
-
-        private void UpdateJudgeAnswers(HttpContext context)
-        {
-
-            string answer = ReadFormStr(context, "answer");
-            string userid = ReadFormStr(context, "userid");
-            string paperid = ReadFormStr(context, "paperid");
-            string titileid = ReadFormStr(context, "titleid");
-
-            string sqlFormat = "delete from tb_answer_list where user_id={0} and paper_id={1} and title_id={2}";
-            string sql = string.Format(sqlFormat, userid, paperid, titileid);
-
-            int code = ExecuteNoQuery(sql);
-            if (code < 0) {
-                WriteResponse(context, -1, dbError);
-                return;
-            }
-
-            sqlFormat = "insert into tb_answer_list(paper_id,user_id,title_id,type,value)values({0},{1},{2},'judge','{3}')";
-            sql = string.Format(sqlFormat, paperid, userid, titileid, answer);
-            code = ExecuteNoQuery(sql);
-            if (code < 0)
-                WriteResponse(context, -1, dbError);
-            else
-                WriteResponse(context, 0);
-        }
-
-        private void UpdateQaAnswers(HttpContext context)
-        {
-
-            string answer = ReadFormStr(context, "answer");
-            string userid = ReadFormStr(context, "userid");
-            string paperid = ReadFormStr(context, "paperid");
-            string titileid = ReadFormStr(context, "titleid");
-
-            string sqlFormat = "delete from tb_answer_list where user_id={0} and paper_id={1} and title_id={2}";
-            string sql = string.Format(sqlFormat, userid, paperid, titileid);
-
-            int code = ExecuteNoQuery(sql);
-            if (code < 0) {
-                WriteResponse(context, -1, dbError);
-                return;
-            }
-
-            sqlFormat = "insert into tb_answer_list(paper_id,user_id,title_id,type,value)values({0},{1},{2},'qa','{3}')";
-            sql = string.Format(sqlFormat, paperid, userid, titileid, answer);
+            sqlFormat = @"insert into tb_answer_list(title_list_id,user_id,value)values({0},{1},{2})";
+            sql = string.Format(sqlFormat, titileid, userid, answer);
             code = ExecuteNoQuery(sql);
             if (code < 0)
                 WriteResponse(context, -1, dbError);
