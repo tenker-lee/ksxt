@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Text;
 using System.Web;
 using System.Web.SessionState;
+using System.Text.RegularExpressions;
 
 namespace ksxt
 {
@@ -11,6 +12,8 @@ namespace ksxt
     /// </summary>
     public class HandlerPublicFun : dbBase, IHttpHandler, IRequiresSessionState
     {
+        private string user_id = "";
+
         protected string ReadFormStr(HttpContext context, string itemName)
         {
             if (context.Request.Form[itemName] == null)
@@ -21,6 +24,8 @@ namespace ksxt
 
         public void ProcessRequest(HttpContext context)
         {
+            user_id = context.Session["logonId"].ToString();
+
             string opt = context.Request.QueryString["opt"];
             if (opt == null)
                 opt = "";
@@ -82,26 +87,43 @@ namespace ksxt
 
         private void UpdateAnswerList(HttpContext context)
         {
-            string answer = ReadFormStr(context, "answer");
-            string userid = ReadFormStr(context, "userid");
-            string titileid = ReadFormStr(context, "titleid");
+            string answerStr = ReadFormStr(context, "answerStr");
+            string answer = ReadFormStr(context, "value");
 
-            string sqlFormat = "delete from tb_answer_list where user_id={0} and id={1} ";
-            string sql = string.Format(sqlFormat, userid,  titileid);
+            string type="";
+            string  titleid="";
+            string value ="";
 
-            int code = ExecuteNoQuery(sql);
-            if (code < 0) {
-                WriteResponse(context, -1, dbError);
-                return;
+            MatchCollection matchCollection = Regex.Matches(answerStr, "^(?<type>\\S+)_(?<titleid>\\d+)_answer_(?<value>\\d+)$");
+            if (matchCollection.Count > 0) {
+                type = matchCollection[0].Groups["type"].Value;
+                titleid = matchCollection[0].Groups["titleid"].Value;
+                value = matchCollection[0].Groups["value"].Value;
+            }                      
+           
+            string sqlFormat,sql;
+            int code;
+
+            if (user_id != "") {
+
+                sqlFormat = "delete from tb_answer_list where user_id={0} and title_list_id={1} ";
+                sql = string.Format(sqlFormat, user_id, titleid);
+
+                code = ExecuteNoQuery(sql);
+                if (code < 0) {
+                    WriteResponse(context, -1, dbError);
+                    return;
+                }
             }
+            // 插入答案
             sqlFormat = @"insert into tb_answer_list(title_list_id,user_id,value)values({0},{1},{2})";
-            sql = string.Format(sqlFormat, titileid, userid, answer);
+            sql = string.Format(sqlFormat, titleid, user_id, value);
             code = ExecuteNoQuery(sql);
             if (code < 0)
                 WriteResponse(context, -1, dbError);
             else
                 WriteResponse(context, 0);
-        }
+        }                
 
         private void ChangePassword(HttpContext context)
         {

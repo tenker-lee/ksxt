@@ -14,7 +14,7 @@ namespace ksxt.Admin
     {
         public void ProcessRequest(HttpContext context)
         {
-            PreProcess(context);
+            PreProcess(context); 
         }
 
         protected override void Add(HttpContext context)

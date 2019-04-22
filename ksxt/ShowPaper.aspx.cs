@@ -50,25 +50,25 @@ namespace ksxt
             lab_filling_score.Text = filling_score.ToString();
             lab_qa_score.Text = qa_score.ToString();
 
-            string sqlChoice = string.Format(@"SELECT  t.paper_id,t.type,c.id,c.title,c.select_arry,c.answer_arry,a.user_id,a.value,a.score 
+            string sqlChoice = string.Format(@"SELECT t.id as tid,t.paper_id,t.type,c.id,c.title,c.select_arry,c.answer_arry,a.user_id,a.value,a.score 
                                                 FROM tb_title_list as t 
                                                 INNER JOIN tb_choice as c on t.title_id=c.id
                                                 LEFT JOIN tb_answer_list as a on a.title_list_id=t.id
                                                 WHERE t.type='choice' and t.paper_id='{0}'", paper_id);
 
-            string sqlFilling = string.Format(@"SELECT  t.paper_id,t.type,f.id,f.title,f.answer_arry,a.user_id,a.value,a.score 
+            string sqlFilling = string.Format(@"SELECT t.id as tid,t.paper_id,t.type,f.id,f.title,f.answer_arry,a.user_id,a.value,a.score 
                                                 FROM tb_title_list as t 
                                                 INNER JOIN tb_filling as f on t.title_id=f.id
                                                 LEFT JOIN tb_answer_list as a on a.title_list_id=t.id
                                                 WHERE t.type='filling' and t.paper_id='{0}'", paper_id);
 
-            string sqlJudge= string.Format(@"SELECT  t.paper_id,t.type,j.id,j.title,j.answer_arry,a.user_id,a.value,a.score 
+            string sqlJudge= string.Format(@"SELECT t.id as tid,t.paper_id,t.type,j.id,j.title,j.answer_arry,a.user_id,a.value,a.score 
                                              FROM tb_title_list as t 
                                              INNER JOIN tb_judge as j on t.title_id=j.id
                                              LEFT JOIN tb_answer_list as a on a.title_list_id=t.id
                                              WHERE t.type='judge' and t.paper_id='{0}'", paper_id);
 
-            string sqlQa= string.Format(@"SELECT  t.paper_id,t.type,q.id,q.title,q.answer,a.user_id,a.value,a.score 
+            string sqlQa= string.Format(@"SELECT t.id as tid,t.paper_id,t.type,q.id,q.title,q.answer,a.user_id,a.value,a.score 
                                             FROM tb_title_list as t 
                                             INNER JOIN tb_qa as q on t.title_id=q.id
                                             LEFT JOIN tb_answer_list as a on a.title_list_id=t.id
