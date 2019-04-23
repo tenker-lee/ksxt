@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>考试</title>
+    <title></title>
     <script src="Scripts/jquery-2.1.0.js"></script>
     <script src="Scripts/jquery.easyui-1.4.5.js"></script>
     <script src="Scripts/locale/easyui-lang-zh_CN.js"></script>
@@ -56,18 +56,18 @@
                //alert(length);
                //updateAnswerList($(this).attr('id'),length);
             });  
-            
-             $('textarea').onblur(function(){  
-               var length = $(this).val();
-               alert(length);
-               //updateAnswerList($(this).attr('id'),length);
+            //简答框
+            $('textarea').onblur(function(){  
+                var length = $(this).val();
+                //alert(length);
+                updateAnswerList($(this).attr('id'),length);
             });  
             
         });       
         //上传结果
         function updateAnswerList(answerStr,value) {
              $.ajax({
-                        url: 'HandlerPublicFun.ashx?opt=UpdateAnswerList',
+                 url: 'HandlerPublicFun.ashx?opt=UpdateAnswerList',
                  type: "POST",
                  data: { "answerStr": answerStr, "value": value },
                         success: function (data) {
@@ -82,17 +82,17 @@
                             }
                             else {
                                 $.messager.alert('警告', result.msg);
-
                             }
                             
                         }
             });
             
         }
-
+        //???
         function onqaChange(obj) {
             var dom = $(obj)
-            alert(dom.attr('id') + dom.val());
+            updateAnswerList(dom.attr('id'),dom.val() );
+            //alert(dom.attr('id') + dom.val());
         }
     </script>
 </head>

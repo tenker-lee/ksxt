@@ -15,6 +15,8 @@ namespace ksxt
 
         protected string user_id=string.Empty;
 
+        protected bool enableEdit = true;
+
         protected void Page_Load(object sender, EventArgs e)
         {
 
@@ -136,9 +138,7 @@ namespace ksxt
             {
                 htmlStr += "<input class=\"easyui-textbox\" style=\"margin: 2px 2px 2px 2px;width:80px\" id=\"filling_" + id+"_answer_"+i+ "\" name=\"_answer_2\" type=\"text\"/>&nbsp";
             }
-            if (1 > 0) {
-
-            }
+            
             return htmlStr;
         }
 
