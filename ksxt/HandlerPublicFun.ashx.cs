@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.SessionState;
 using System.Text.RegularExpressions;
 using System.Data;
+using System.Collections.Generic;
 
 namespace ksxt
 {
@@ -25,7 +26,13 @@ namespace ksxt
 
         public void ProcessRequest(HttpContext context)
         {
-            user_id = context.Session["logonId"].ToString();
+            try {
+                user_id = context.Session["logonId"].ToString();
+            }
+            catch (Exception ex) {
+                WriteResponse(context, -1, "请重新登录", "");
+                return;
+            }
 
             string opt = context.Request.QueryString["opt"];
             if (opt == null)
@@ -94,8 +101,7 @@ namespace ksxt
             string  titleid="";
             string value ="";
             string valuetype = "";
-
-            string regStr = "^(?<type>\\S+)_(?<titleid>\\d+)_(?<valtype>answer|score)(?!_(?<value>\\d+))?$";
+            string regStr = "(?<type>\\S+)_(?<titleid>\\d+)_(?<valtype>answer|score)(_(?<value>\\d+))?";
             MatchCollection matchCollection = Regex.Matches(answerStr, regStr);
             if (matchCollection.Count > 0) {
                 type = matchCollection[0].Groups["type"].Value;
@@ -108,16 +114,7 @@ namespace ksxt
                     UpdateScore(context, titleid, user_id, answer);
                     return;
                 }
-                else {
-                    //先删除原来项
-                    string sqlFormat = "delete from tb_answer_list where user_id={0} and title_list_id={1} ";
-                    string sql = string.Format(sqlFormat, user_id, titleid);
-
-                    int code = ExecuteNoQuery(sql);
-                    if (code < 0) {
-                        WriteResponse(context, -1, dbError);
-                        return;
-                    }
+                else {                    
                     if (type == "choice") {
                         InsertAnswerChoice(context, titleid, user_id, value);
                     }
@@ -125,7 +122,7 @@ namespace ksxt
                         InsertAnswerJudge(context, titleid, user_id, value);
                     }
                     else if (type == "filling") {
-                        InsertAnswerFilling(context, titleid, user_id, answer);
+                        InsertAnswerFilling(context, titleid, user_id,value, answer);
                     }
                     else if (type == "qa") {
                         InsertAnswerQa(context, titleid, user_id, answer);
@@ -143,65 +140,142 @@ namespace ksxt
             DataTable dt =  ExecuteQueryData(string.Format(@"SELECT p.choice_score,c.answer_arry
                                                 FROM tb_title_list as t
                                                 INNER JOIN tb_choice as c on t.title_id = c.id
-                                                INNER JOIN tb_paper as p on p.id = t.paper_id
-                                                WHERE t.type = 'choice' and t.title_list_id ={0}", title_list_id));
+                                                INNER JOIN tb_papers as p on p.id = t.paper_id
+                                                WHERE t.type = 'choice' and t.id ={0}", title_list_id));
             int score = 0;
             if (dt.Rows.Count > 0) {
                 if(dt.Rows[0]["answer_arry"].ToString()==value) {
                     int.TryParse(dt.Rows[0]["choice_score"].ToString(), out score);
                 }
             }
-            string sqlFormat = @"insert into tb_answer_list(title_list_id,user_id,value,score)values({0},{1},{2},{3})";
-            string sql = string.Format(sqlFormat, title_list_id, user_id, value,score);
-            int code = ExecuteNoQuery(sql);
-            if (code < 0)
-                WriteResponse(context, -1, dbError);
-            else
-                WriteResponse(context, 0);
+
+            dt = ExecuteQueryData(string.Format(@"SELECT value
+                                                            FROM tb_answer_list 
+                                                            WHERE title_list_id={0} and user_id={1}", title_list_id, user_id));
+
+            if (dt.Rows.Count > 0) {
+                string sqlFormat = @"update  tb_answer_list set value={0},score={1} where  title_list_id={2} and user_id={3}";
+                string sql = string.Format(sqlFormat, value, score,title_list_id, user_id);
+                int code = ExecuteNoQuery(sql);
+                if (code < 0)
+                    WriteResponse(context, -1, dbError);
+                else
+                    WriteResponse(context, 0, "答案录入成功");
+            }
+            else {
+                string sqlFormat = @"insert into tb_answer_list(title_list_id,user_id,value,score)values('{0}','{1}','{2}','{3}')";
+                string sql = string.Format(sqlFormat, title_list_id, user_id, value, score);
+                int code = ExecuteNoQuery(sql);
+                if (code < 0)
+                    WriteResponse(context, -1, dbError);
+                else
+                    WriteResponse(context, 0, "答案录入成功");
+            }
         }
 
         private void InsertAnswerJudge(HttpContext context, string title_list_id, string user_id, string value)
         {
             DataTable dt = ExecuteQueryData(string.Format(@"SELECT p.judge_score,c.answer_arry
                                                 FROM tb_title_list as t
-                                                INNER JOIN tb_choice as c on t.title_id = c.id
-                                                INNER JOIN tb_paper as p on p.id = t.paper_id
-                                                WHERE t.type = 'judge' and t.title_list_id ={0}", title_list_id));
+                                                INNER JOIN tb_judge as c on t.title_id = c.id
+                                                INNER JOIN tb_papers as p on p.id = t.paper_id
+                                                WHERE t.type = 'judge' and t.id ={0}", title_list_id));
             int score = 0;
             if (dt.Rows.Count > 0) {
                 if (dt.Rows[0]["answer_arry"].ToString() == value) {
                     int.TryParse(dt.Rows[0]["judge_score"].ToString(), out score);
                 }
             }
-            string sqlFormat = @"insert into tb_answer_list(title_list_id,user_id,value,score)values({0},{1},{2},{3})";
-            string sql = string.Format(sqlFormat, title_list_id, user_id, value,score);
-            int code = ExecuteNoQuery(sql);
-            if (code < 0)
-                WriteResponse(context, -1, dbError);
-            else
-                WriteResponse(context, 0);
+            dt = ExecuteQueryData(string.Format(@"SELECT value
+                                                            FROM tb_answer_list 
+                                                            WHERE title_list_id={0} and user_id={1}", title_list_id, user_id));
+            if (dt.Rows.Count > 0) {
+                string sqlFormat = @"update  tb_answer_list set value={0},score={1} where  title_list_id={2} and user_id={3}";
+                string sql = string.Format(sqlFormat, value, score, title_list_id, user_id);
+                int code = ExecuteNoQuery(sql);
+                if (code < 0)
+                    WriteResponse(context, -1, dbError);
+                else
+                    WriteResponse(context, 0, "答案录入成功");
+            }
+            else {
+                string sqlFormat = @"insert into tb_answer_list(title_list_id,user_id,value,score)values({0},{1},{2},{3})";
+                string sql = string.Format(sqlFormat, title_list_id, user_id, value, score);
+                int code = ExecuteNoQuery(sql);
+                if (code < 0)
+                    WriteResponse(context, -1, dbError);
+                else
+                    WriteResponse(context, 0, "答案录入成功");
+            }
         }
         
-        private void InsertAnswerFilling(HttpContext context, string title_list_id, string user_id, string value)
+        private void InsertAnswerFilling(HttpContext context, string title_list_id, string user_id, string index,string answer)
         {
-            string sqlFormat = @"insert into tb_answer_list(title_list_id,user_id,value)values({0},{1},{2})";
-            string sql = string.Format(sqlFormat, title_list_id, user_id, value);
-            int code = ExecuteNoQuery(sql);
-            if (code < 0)
-                WriteResponse(context, -1, dbError);
-            else
-                WriteResponse(context, 0);
+            DataTable dt = ExecuteQueryData(string.Format(@"SELECT value
+                                                            FROM tb_answer_list 
+                                                            WHERE title_list_id={0} and user_id={1}", title_list_id, user_id));
+            if (dt.Rows.Count > 0) {
+                string oldV = dt.Rows[0]["value"].ToString();
+                string []vslues = oldV.Split(',');
+                List<string> outV = new List<string>();
+                int count = Math.Max(vslues.Length, int.Parse(index)+1);
+                for(int i = 0; i < count; i++) {
+                    if (i == int.Parse(index)) {
+                        outV.Add(answer);
+                    }
+                    else {
+                        if (i < vslues.Length) {
+                            outV.Add(vslues[i]);
+                        }
+                        else {
+                            outV.Add("");
+                        }
+                    }
+                }
+                answer = string.Join(",",outV.ToArray());
+
+                string sqlFormat = @"update  tb_answer_list set value='{0}' where title_list_id={1} and user_id={2}";
+                string sql = string.Format(sqlFormat, answer,  title_list_id, user_id);
+                int code = ExecuteNoQuery(sql);
+                if (code < 0)
+                    WriteResponse(context, -1, dbError);
+                else
+                    WriteResponse(context, 0, "答案录入成功");
+            }
+            else {
+                string sqlFormat = @"insert into tb_answer_list(title_list_id,user_id,value)values('{0}','{1}','{2}')";
+                string sql = string.Format(sqlFormat, title_list_id, user_id, answer);
+                int code = ExecuteNoQuery(sql);
+                if (code < 0)
+                    WriteResponse(context, -1, dbError);
+                else
+                    WriteResponse(context, 0, "答案录入成功");
+            }
         }
 
         private void InsertAnswerQa(HttpContext context, string title_list_id, string user_id, string value)
         {
-            string sqlFormat = @"insert into tb_answer_list(title_list_id,user_id,value)values({0},{1},{2})";
-            string sql = string.Format(sqlFormat, title_list_id, user_id, value);
-            int code = ExecuteNoQuery(sql);
-            if (code < 0)
-                WriteResponse(context, -1, dbError);
-            else
-                WriteResponse(context, 0);
+            DataTable dt = ExecuteQueryData(string.Format(@"SELECT value
+                                                            FROM tb_answer_list 
+                                                            WHERE title_list_id={0} and user_id={1}", title_list_id, user_id));
+            if (dt.Rows.Count > 0) {
+                string sqlFormat = @"update  tb_answer_list set value='{0}' where  title_list_id={1} and user_id={2}";
+                string sql = string.Format(sqlFormat, value,  title_list_id, user_id);
+                int code = ExecuteNoQuery(sql);
+                if (code < 0)
+                    WriteResponse(context, -1, dbError);
+                else
+                    WriteResponse(context, 0, "答案录入成功");
+            }
+            else {
+                string sqlFormat = @"insert into tb_answer_list(title_list_id,user_id,value)values({0},{1},{2})";
+                string sql = string.Format(sqlFormat, title_list_id, user_id, value);
+                int code = ExecuteNoQuery(sql);
+                if (code < 0)
+                    WriteResponse(context, -1, dbError);
+                else
+                    WriteResponse(context, 0,"答案录入成功");
+            }
         }
 
         private void UpdateScore(HttpContext context, string title_list_id, string user_id,string score)
@@ -211,10 +285,11 @@ namespace ksxt
             int code = ExecuteNoQuery(sql);
 
             if (code < 0)
-                WriteResponse(context, -1, dbError);
+                WriteResponse(context, -1, "评分失败" + dbError);
             else
-                WriteResponse(context, 0);
+                WriteResponse(context, 0,"评分成功");
         }
+                
 
         private void ChangePassword(HttpContext context)
         {
