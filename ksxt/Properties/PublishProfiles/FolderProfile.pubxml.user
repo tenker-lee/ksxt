@@ -9,14 +9,23 @@
     <_PublishTargetUrl>D:\ksxt\ksxt\ksxt\bin\Release\Publish</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
+    <File Include="Admin/checkpaper.aspx">
+      <publishTime>04/21/2019 22:20:29</publishTime>
+    </File>
     <File Include="Admin/fillinglist.aspx">
-      <publishTime>01/25/2019 20:02:04</publishTime>
+      <publishTime>04/19/2019 22:44:04</publishTime>
+    </File>
+    <File Include="Admin/HandlerCheckPaper.ashx">
+      <publishTime>04/19/2019 22:41:14</publishTime>
     </File>
     <File Include="Admin/HandlerFilling.ashx">
       <publishTime>01/18/2019 23:09:34</publishTime>
     </File>
     <File Include="Admin/HandlerJudge.ashx">
       <publishTime>01/15/2019 20:20:51</publishTime>
+    </File>
+    <File Include="Admin/HandlerMyPaper.ashx">
+      <publishTime>04/21/2019 22:25:28</publishTime>
     </File>
     <File Include="Admin/HandlerPaper.ashx">
       <publishTime>01/15/2019 20:20:51</publishTime>
@@ -31,31 +40,40 @@
       <publishTime>01/15/2019 20:20:51</publishTime>
     </File>
     <File Include="Admin/index.aspx">
-      <publishTime>03/19/2019 20:27:33</publishTime>
+      <publishTime>04/21/2019 21:39:37</publishTime>
     </File>
     <File Include="Admin/judgelist.aspx">
-      <publishTime>01/25/2019 20:02:04</publishTime>
+      <publishTime>04/19/2019 22:44:36</publishTime>
+    </File>
+    <File Include="Admin/main.css">
+      <publishTime>04/19/2019 22:31:57</publishTime>
+    </File>
+    <File Include="Admin/mypaper.aspx">
+      <publishTime>04/21/2019 23:00:13</publishTime>
     </File>
     <File Include="Admin/paperlist.aspx">
-      <publishTime>01/26/2019 22:58:34</publishTime>
+      <publishTime>04/19/2019 22:33:05</publishTime>
     </File>
     <File Include="Admin/qalist.aspx">
-      <publishTime>01/25/2019 20:02:04</publishTime>
+      <publishTime>04/19/2019 22:44:57</publishTime>
+    </File>
+    <File Include="Admin/radompaper.aspx">
+      <publishTime>04/21/2019 21:33:03</publishTime>
     </File>
     <File Include="Admin/singlist.aspx">
-      <publishTime>01/25/2019 20:02:04</publishTime>
+      <publishTime>04/19/2019 22:45:16</publishTime>
     </File>
     <File Include="Admin/userlist.aspx">
-      <publishTime>01/25/2019 20:02:04</publishTime>
+      <publishTime>04/19/2019 22:33:27</publishTime>
     </File>
     <File Include="App_Data/ksxt.db">
-      <publishTime>04/01/2019 23:02:38</publishTime>
+      <publishTime>04/24/2019 22:01:53</publishTime>
     </File>
     <File Include="bin/ksxt.dll">
-      <publishTime>04/16/2019 20:45:11</publishTime>
+      <publishTime>04/24/2019 22:35:50</publishTime>
     </File>
     <File Include="bin/ksxt.pdb">
-      <publishTime>04/16/2019 20:45:11</publishTime>
+      <publishTime>04/24/2019 22:35:50</publishTime>
     </File>
     <File Include="bin/log4net.dll">
       <publishTime>03/08/2017 19:26:22</publishTime>
@@ -1255,7 +1273,7 @@
       <publishTime>01/15/2019 20:20:52</publishTime>
     </File>
     <File Include="Image/head.png">
-      <publishTime>03/18/2019 21:41:04</publishTime>
+      <publishTime>04/16/2019 22:07:03</publishTime>
     </File>
     <File Include="index.aspx">
       <publishTime>01/25/2019 20:02:04</publishTime>
@@ -1363,7 +1381,7 @@
       <publishTime>12/16/2018 16:59:28</publishTime>
     </File>
     <File Include="ShowPaper.aspx">
-      <publishTime>03/19/2019 23:25:07</publishTime>
+      <publishTime>04/24/2019 21:31:38</publishTime>
     </File>
     <File Include="Web.config">
       <publishTime>01/27/2019 20:57:04</publishTime>

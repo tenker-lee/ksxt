@@ -10,7 +10,6 @@ namespace ksxt
 
     public class publicFun
     {
-
         public static bool ArryCompare(string arryStr1,string arryStr2)
         {
             bool bret = false;
@@ -212,6 +211,20 @@ namespace ksxt
             }
         }
 
+    }
+
+    public static class extFunction
+    {
+        public static int toInteger(this string s)
+        {
+            int o = 0;
+            if(int.TryParse(s,out o)) {
+                return o;
+            }
+            else {
+                return 0;
+            }
+        }
     }
 
 }

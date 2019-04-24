@@ -95,6 +95,29 @@
             updateAnswerList(dom.attr('id'),dom.val() );
             //alert(dom.attr('id') + dom.val());
         }
+        function saveCheckPaper(paper_id,user_id) {
+            $.ajax({
+                 url: 'HandlerPublicFun.ashx?opt=SaveCheckPaper',
+                 type: "POST",
+                 data: { "paperId": paper_id, "userId": user_id },
+                        success: function (data) {
+                            var result = JSON.parse(data);
+                            if (result.stateCode == 0) {
+                                //$.messager.show({
+                                //    title: '提示',
+                                //    msg: result.msg,
+                                //    timeout: 5000,
+                                //    showType: 'slide'
+                                //});
+                                $.messager.alert('警告', result.msg);
+                            }
+                            else {
+                                $.messager.alert('警告', result.msg);
+                            }
+                            
+                        }
+            });
+        }
     </script>
 </head>
 <body>
@@ -197,21 +220,21 @@
                                 <td rowspan="2" style="text-align: center"><%# Eval("id") %></td>
                                 <td><%# Eval("title") %></td>
                                 <td>
-                                    <input id="choice_<%# Eval("tid") %>_answer_0" name="choice_<%# Eval("tid") %>_answer" type="radio" value="0"   /><label for="choice_<%# Eval("tid") %>_answer_0">A:<%# ReadArryString(Eval("select_arry").ToString(),0) %></label>
+                                    <input id="choice_<%# Eval("tid") %>_answer_0" <% =enableEdit?"": "disabled=\"disabled\""%>  name="choice_<%# Eval("tid") %>_answer" type="radio" value="0" <%# Eval("value").ToString()=="0"?"checked=\"checked\"":"" %>  /><label for="choice_<%# Eval("tid") %>_answer_0">A:<%# ReadArryString(Eval("select_arry").ToString(),0) %></label>
                                     <br />
-                                    <input id="choice_<%# Eval("tid") %>_answer_1"  name="choice_<%# Eval("tid") %>_answer" type="radio" value="1"  /><label for="choice_<%# Eval("tid") %>_answer_1">B:<%# ReadArryString(Eval("select_arry").ToString(),1) %></label>
+                                    <input id="choice_<%# Eval("tid") %>_answer_1" <% =enableEdit?"": "disabled=\"disabled\""%>  name="choice_<%# Eval("tid") %>_answer" type="radio" value="1" <%# Eval("value").ToString()=="1"?"checked=\"checked\"":"" %>  /><label for="choice_<%# Eval("tid") %>_answer_1">B:<%# ReadArryString(Eval("select_arry").ToString(),1) %></label>
                                     <br />
-                                    <input id="choice_<%# Eval("tid") %>_answer_2"  name="choice_<%# Eval("tid") %>_answer" type="radio" value="2"  /><label for="choice_<%# Eval("tid") %>_answer_2">C:<%# ReadArryString(Eval("select_arry").ToString(),2) %></label>
+                                    <input id="choice_<%# Eval("tid") %>_answer_2" <% =enableEdit?"": "disabled=\"disabled\""%>  name="choice_<%# Eval("tid") %>_answer" type="radio" value="2" <%# Eval("value").ToString()=="2"?"checked=\"checked\"":"" %>  /><label for="choice_<%# Eval("tid") %>_answer_2">C:<%# ReadArryString(Eval("select_arry").ToString(),2) %></label>
                                     <br />
-                                    <input id="choice_<%# Eval("tid") %>_answer_3"  name="choice_<%# Eval("tid") %>_answer" type="radio" value="3"  /><label for="choice_<%# Eval("tid") %>_answer_3">D:<%# ReadArryString(Eval("select_arry").ToString(),3) %></label>
+                                    <input id="choice_<%# Eval("tid") %>_answer_3" <% =enableEdit?"": "disabled=\"disabled\""%>  name="choice_<%# Eval("tid") %>_answer" type="radio" value="3" <%# Eval("value").ToString()=="3"?"checked=\"checked\"":"" %>  /><label for="choice_<%# Eval("tid") %>_answer_3">D:<%# ReadArryString(Eval("select_arry").ToString(),3) %></label>
                                 </td>
                                 <td>
-                                    <input class="easyui-textbox" style="width: 30px; margin: 2px 2px 2px 2px;" id="choice_<%#Eval("tid") %>_score"  type="text" />
+                                    <input class="easyui-textbox" style="width: 30px; margin: 2px 2px 2px 2px;" id="choice_<%#Eval("tid") %>_score"  <%=grade?"type=\"text\"":"type=\"hidden\"" %>   value="<%# Eval("score") %>"/>
 
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="3">参考答案:<%# choiceAnswerTochar( Eval("answer_arry").ToString()) %></td>
+                                <td colspan="3">参考答案:<%# showAnswer ? choiceAnswerTochar(Eval("answer_arry").ToString()):"" %></td>
                             </tr>
                         </ItemTemplate>
                         <FooterTemplate>
@@ -235,16 +258,16 @@
                                 <td rowspan="2" style="text-align: center"><%# Eval("id") %></td>
                                 <td><%# Eval("title") %></td>
                                 <td>
-                                    <input id="judge_<%# Eval("tid") %>_answer_0" name="judge_<%# Eval("tid") %>_answer" type="radio" value="0" /><label for="judge_<%# Eval("tid") %>_answer_0">错误</label><br />
-                                    <input id="judge_<%# Eval("tid") %>_answer_1" name="judge_<%# Eval("tid") %>_answer" type="radio" value="1" /><label for="judge_<%# Eval("tid") %>_answer_1">正确</label><br />
+                                    <input id="judge_<%# Eval("tid") %>_answer_0" <% =enableEdit?"": "disabled=\"disabled\""%>  name="judge_<%# Eval("tid") %>_answer" type="radio" value="0" <%# Eval("value").ToString()=="0"?"checked=\"checked\"":"" %> /><label for="judge_<%# Eval("tid") %>_answer_0">错误</label><br />
+                                    <input id="judge_<%# Eval("tid") %>_answer_1" <% =enableEdit?"": "disabled=\"disabled\""%> name="judge_<%# Eval("tid") %>_answer" type="radio" value="1" <%# Eval("value").ToString()=="1"?"checked=\"checked\"":"" %> /><label for="judge_<%# Eval("tid") %>_answer_1">正确</label><br />
                                 </td>
                                 <td>
-                                    <input class="easyui-textbox" style="width: 30px; margin: 2px 2px 2px 2px;" id="judge_<%# Eval("tid") %>_score" type="text" />
+                                    <input class="easyui-textbox" style="width: 30px; margin: 2px 2px 2px 2px;" id="judge_<%# Eval("tid") %>_score" <%=grade?"type=\"text\"":"type=\"hidden\"" %> value="<%# Eval("score") %>"/>
 
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="3">参考答案:<%# Eval("answer_arry").ToString() == "1" ? "正确" : "错误"  %></td>
+                                <td colspan="3">参考答案:<%# showAnswer? Eval("answer_arry").ToString() == "1" ? "正确" : "错误" :"" %></td>
                             </tr>
                         </ItemTemplate>
                         <FooterTemplate>
@@ -267,14 +290,14 @@
                             <tr>
                                 <td rowspan="2" style="text-align: center"><%# Eval("id") %></td>
                                 <td><%# Eval("title") %></td>
-                                <td>&nbsp<%#fillingHtml(int.Parse(Eval("tid").ToString()),Eval("answer_arry").ToString())%> 
+                                <td>&nbsp<%#fillingHtml(int.Parse(Eval("tid").ToString()),Eval("answer_arry").ToString(),Eval("value").ToString())%> 
                                 </td>
                                 <td>
-                                    <input class="easyui-textbox" style="width: 30px; margin: 2px 2px 2px 2px;" id="filling_<%# Eval("tid") %>_score"  type="text" />
+                                    <input class="easyui-textbox" style="width: 30px; margin: 2px 2px 2px 2px;" id="filling_<%# Eval("tid") %>_score"  <%=grade?"type=\"text\"":"type=\"hidden\"" %> value="<%# Eval("score") %>" />
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="3">参考答案:<%# Eval("answer_arry") %></td>
+                                <td colspan="3">参考答案:<%# showAnswer? Eval("answer_arry") :"" %></td>
                             </tr>
                         </ItemTemplate>
                         <FooterTemplate>
@@ -298,17 +321,17 @@
                                 <td rowspan="2" style="text-align: center"><%# Eval("id") %></td>
                                 <td><%# Eval("title") %></td>
                                 <td>
-                                    <textarea  rows="10" style="width: 98%; height: 100%" id="qa_<%# Eval("tid") %>_answer_0" onblur="onqaChange(this)"></textarea>
+                                    <textarea  rows="10" style="width: 98%; height: 100%" id="qa_<%# Eval("tid") %>_answer_0" <% =enableEdit?"": "disabled=\"disabled\""%> onblur="onqaChange(this)"><%# Eval("value") %></textarea>
                                 </td>
                                 <td>
-                                    <input class="easyui-textbox" style="width: 30px; margin: 2px 2px 2px 2px;" id="qa_<%# Eval("tid") %>_score"  type="text" />
+                                    <input class="easyui-textbox" style="width: 30px; margin: 2px 2px 2px 2px;" id="qa_<%# Eval("tid") %>_score"    <%=grade?"type=\"text\"":"type=\"hidden\"" %> value="<%# Eval("score") %>" />
 
                                     
 
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="3">参考答案:<%# Eval("answer") %></td>
+                                <td colspan="3">参考答案:<%# showAnswer? Eval("answer") :""%></td>
                             </tr>
                         </ItemTemplate>
                         <FooterTemplate>
@@ -318,7 +341,7 @@
                 </div>
             </div>
             <div style="margin: 0 auto; width: 100%; text-align: center; padding: 5px; margin-top: 5px">
-                <a id="btnConfirm" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="#" onclick="">提交</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a id="btnConfirm" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="#" onclick="saveCheckPaper(<%=paper_id %>,<%=user_id %>)">提交</a>&nbsp;&nbsp;&nbsp;&nbsp;
                 <a id="btnClose" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="#" onclick="closeWin()">关闭</a>
             </div>
         </div>

@@ -15,6 +15,8 @@ namespace ksxt
     public class HandlerPublicFun : dbBase, IHttpHandler, IRequiresSessionState
     {
         private string user_id = "";
+        private string logonName = "";
+        private string logonType = "";
 
         protected string ReadFormStr(HttpContext context, string itemName)
         {
@@ -28,6 +30,8 @@ namespace ksxt
         {
             try {
                 user_id = context.Session["logonId"].ToString();
+                logonName = context.Session["logonUser"] == null ? "" : context.Session["logonUser"].ToString();
+                logonType = context.Session["logonUserType"] == null ? "" : context.Session["logonUser"].ToString();
             }
             catch (Exception ex) {
                 WriteResponse(context, -1, "请重新登录", "");
@@ -290,6 +294,37 @@ namespace ksxt
                 WriteResponse(context, 0,"评分成功");
         }
                 
+        protected void SaveCheckPaper(HttpContext context)
+        {
+            string user_id= ReadFormStr(context, "userId");
+            string paper_id = ReadFormStr(context, "paperId");
+
+            string sqlFormat = @"SELECT sum(score) from tb_title_list as t INNER JOIN tb_answer_list as a on t.id = a.title_list_id
+                                                   where t.paper_id = '{0}' and a.user_id = '{1}'";
+            string sql = string.Format(sqlFormat, paper_id, user_id);
+            DataTable dt = ExecuteQueryData(sql);
+            if (dt.Rows.Count < 0) {
+                WriteResponse(context, -1, "计算成绩失败!!" + dbError);
+            }
+            else {
+                //先删除
+                ExecuteNoQuery(string.Format("delete from tb_check_paper WHERE user_id='{0}' and paper_id='{1}'",user_id,paper_id));
+
+                sqlFormat = @"INSERT INTO tb_check_paper(user_id,paper_id,total_score,check_state,check_name,check_time)
+                                                  values('{0}','{1}','{2}','{3}','{4}','{5}') ";
+                string state = logonType == "1"?"已评分":"未评分";
+                sql = string.Format(sqlFormat,user_id,paper_id,dt.Rows[0][0].ToString(), state, logonName,publicFun.GetDateString(DateTime.Now));
+                int code = ExecuteNoQuery(sql);
+                if(code <0 ) {
+                    WriteResponse(context, -1, dbError);
+                }
+                else {
+                    WriteResponse(context, 0, "保存成绩成功");
+                }
+
+            }
+           
+        }
 
         private void ChangePassword(HttpContext context)
         {
