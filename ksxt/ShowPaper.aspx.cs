@@ -23,9 +23,18 @@ namespace ksxt
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            showAnswer = false;
-            enableEdit = false;
-            grade = false;
+            //showAnswer = false;
+            //enableEdit = false;
+            //grade = false;
+            if (logonUserType != "1") {
+                //非管理员只能编辑
+                grade = false;
+            }
+            else {
+                //管理员不能考试
+                enableEdit = false;
+            }
+            
 
             if (!string.IsNullOrEmpty(Request.QueryString["paperid"])) {
                 paper_id = Request.QueryString["paperid"];
@@ -66,6 +75,7 @@ namespace ksxt
             int filling_score = publicFun.StringToInt(dt.Rows[0]["filling_score"].ToString());
             int qa_score = publicFun.StringToInt(dt.Rows[0]["qa_score"].ToString());
 
+            //标题
             lab_title.Text = "试卷名:" + dt.Rows[0]["title"].ToString();
 
             lab_choice_score.Text = choice_score.ToString();
@@ -74,10 +84,10 @@ namespace ksxt
             lab_qa_score.Text = qa_score.ToString();
 
             string sqlChoice = string.Format(@"SELECT t.id as tid,t.paper_id,t.type,c.id,c.title,c.select_arry,c.answer_arry,a.user_id,a.value,a.score 
-                                                FROM tb_title_list as t 
-                                                INNER JOIN tb_choice as c on t.title_id=c.id
-                                                LEFT JOIN (SELECT * from tb_answer_list where tb_answer_list.user_id='{0}') as a on a.title_list_id=t.id
-                                                WHERE t.type='choice' and t.paper_id='{1}'",user_id, paper_id);
+                                               FROM tb_title_list as t 
+                                               INNER JOIN tb_choice as c on t.title_id=c.id
+                                               LEFT JOIN (SELECT * from tb_answer_list where tb_answer_list.user_id='{0}') as a on a.title_list_id=t.id
+                                               WHERE t.type='choice' and t.paper_id='{1}'",user_id, paper_id);
 
             string sqlFilling = string.Format(@"SELECT t.id as tid,t.paper_id,t.type,f.id,f.title,f.answer_arry,a.user_id,a.value,a.score 
                                                 FROM tb_title_list as t 
@@ -92,10 +102,10 @@ namespace ksxt
                                              WHERE t.type='judge' and t.paper_id='{1}'",user_id ,paper_id);
 
             string sqlQa= string.Format(@"SELECT t.id as tid,t.paper_id,t.type,q.id,q.title,q.answer,a.user_id,a.value,a.score 
-                                            FROM tb_title_list as t 
-                                            INNER JOIN tb_qa as q on t.title_id=q.id
-                                            LEFT JOIN (SELECT * from tb_answer_list where tb_answer_list.user_id='{0}') as a on a.title_list_id=t.id
-                                            WHERE t.type='qa' and t.paper_id='{1}'",user_id, paper_id);
+                                          FROM tb_title_list as t 
+                                          INNER JOIN tb_qa as q on t.title_id=q.id
+                                          LEFT JOIN (SELECT * from tb_answer_list where tb_answer_list.user_id='{0}') as a on a.title_list_id=t.id
+                                          WHERE t.type='qa' and t.paper_id='{1}'",user_id, paper_id);
 
             DataTable dtSingles = dbBase.ExecuteQueryData(sqlChoice);
             DataTable dtFillings = dbBase.ExecuteQueryData(sqlFilling);
@@ -116,7 +126,6 @@ namespace ksxt
                 + filling_score * dtFillings.Rows.Count + qa_score * dtQas.Rows.Count).ToString();
 
             labTime.Text = dt.Rows[0]["start_time"].ToString() + "-" + dt.Rows[0]["end_time"].ToString();
-
             //DataTable dt_singles = GetChoices(singles);
 
             repChoice.DataSource = dtSingles;
@@ -134,7 +143,6 @@ namespace ksxt
             //DataTable dt_qas = GetQas(qas);
             repQa.DataSource = dtQas;
             repQa.DataBind();
-
         }
 
         protected string choiceAnswerTochar(string answer)
@@ -166,7 +174,7 @@ namespace ksxt
                 if (i < answers.Length) {
                     s = answers[i];
                 }
-                htmlStr += "<input class=\"easyui-textbox\" style=\"margin: 2px 2px 2px 2px;width:80px\" id=\"filling_" + id+"_answer_"+i+ "\"" + disb+" name=\"_answer_2\" type=\"text\" value=\" "+ s+"\"/>&nbsp";
+                htmlStr += "<input class=\"easyui-textbox\" style=\"margin: 2px 2px 2px 2px;width:80px\" id=\"filling_" + id +"_answer_"+i+ "\"" + disb +" name=\"_answer_2\" type=\"text\" value=\" "+ s+"\"/>&nbsp";
             }
             
             return htmlStr;

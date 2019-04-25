@@ -65,6 +65,7 @@
         </div>
         <div id="left" data-options="region:'west',split:true" style="width: 130px;">
             <div class="easyui-accordion" data-options="animate:true" style="width: auto; height: auto;">
+                <% if(logonUserType == "1") { %>
                 <div title="帐户管理" data-options="collapsible:true,iconcls:'icon-reload'" style="overflow: auto; padding: 10px;">
                     <ul>
                         <li style="height: 30px;font:200"><a href="javascript:void(0);" name="addPanel"
@@ -89,6 +90,7 @@
 														hreflang="paperlist.aspx">试卷列表</a></li>
                     </ul>
                 </div>
+                <% } %>
                 <div title="成绩管理" data-options="collapsible:true,iconcls:'icon-reload'" style="padding: 10px;">
                     <ul>
                         <li style="height: 30px"><a href="javascript:void(0);" name="addPanel"

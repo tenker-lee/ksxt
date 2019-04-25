@@ -38,16 +38,27 @@ namespace ksxt.Admin
             int page = publicFun.StringToInt(ReadFormStr(context, "page"));
             int rows = publicFun.StringToInt(ReadFormStr(context, "rows"));
 
+            string search = " 1=1 ";
+
+            if (string.IsNullOrEmpty(logonId)) {
+                WriteResponse(context, 0, "登录超时请重新登录1!", "");
+                return;
+            }
+            else {
+                if(logonUserType!="1")
+                    search="  ch.user_id=\""+ logonId + "\"";
+            }
+
             DataTable dt;
             if (page > 0 && rows > 0)
                 dt = ExecuteQueryData(@"select ch.*,p.title, u.name 
                                         from 
                                         tb_check_paper as ch INNER join tb_papers as p on p.id=ch.paper_id 
-                                        left join tb_users as u on ch.user_id=u.id limit " + rows + " offset " + (page - 1) * rows);
+                                        left join tb_users as u on ch.user_id=u.id where "+search+" limit " + rows + " offset " + (page - 1) * rows);
             else
                 dt = ExecuteQueryData(@"select ch.*,p.title, u.name 
                                         from tb_check_paper as ch INNER join tb_papers as p on p.id=ch.paper_id 
-                                        left join tb_users as u on ch.user_id=u.id");
+                                        left join tb_users as u on ch.user_id=u.id where " + search + "");
 
             //视图
             DataTable dtView = new DataTable();

@@ -12,22 +12,24 @@ namespace ksxt
     /// <summary>
     /// HandlerPublicFun 的摘要说明
     /// </summary>
-    public class HandlerPublicFun : dbBase, IHttpHandler, IRequiresSessionState
+    public class HandlerPublicFun : HandleBase, IHttpHandler, IRequiresSessionState
     {
         private string user_id = "";
         private string logonName = "";
         private string logonType = "";
 
-        protected string ReadFormStr(HttpContext context, string itemName)
-        {
-            if (context.Request.Form[itemName] == null)
-                return "";
-            else
-                return context.Request.Form[itemName];
-        }
+        //protected string ReadFormStr(HttpContext context, string itemName)
+        //{
+        //    if (context.Request.Form[itemName] == null)
+        //        return "";
+        //    else
+        //        return context.Request.Form[itemName];
+        //}
 
         public void ProcessRequest(HttpContext context)
         {
+            PreProcess(context);
+            /*
             try {
                 user_id = context.Session["logonId"].ToString();
                 logonName = context.Session["logonUser"] == null ? "" : context.Session["logonUser"].ToString();
@@ -48,6 +50,7 @@ namespace ksxt
                 WriteResponse(context, 0, "hello", "");
             else
                 method.Invoke(this, new object[] { context });
+                */
         }
 
         private void GetDateTime(HttpContext context)
@@ -56,29 +59,29 @@ namespace ksxt
             WriteResponse(context, 0, "查询成功", "\"now\":\"" + dateStr + "\"");
         }
 
-        private void WriteResponse(HttpContext context, int stateCode, string msg = "操作成功", string usrStr = "")
-        {
-            StringBuilder stringBuilder = new StringBuilder();
-            context.Response.Clear();
+        //private void WriteResponse(HttpContext context, int stateCode, string msg = "操作成功", string usrStr = "")
+        //{
+        //    StringBuilder stringBuilder = new StringBuilder();
+        //    context.Response.Clear();
 
-            stringBuilder.Append("{");
-            stringBuilder.Append("\"stateCode\":");
-            stringBuilder.Append(stateCode.ToString());
-            stringBuilder.Append(",");
+        //    stringBuilder.Append("{");
+        //    stringBuilder.Append("\"stateCode\":");
+        //    stringBuilder.Append(stateCode.ToString());
+        //    stringBuilder.Append(",");
 
-            stringBuilder.Append("\"msg\":\"");
-            stringBuilder.Append(msg);
-            stringBuilder.Append("\"");
+        //    stringBuilder.Append("\"msg\":\"");
+        //    stringBuilder.Append(msg);
+        //    stringBuilder.Append("\"");
 
-            if (usrStr != null && usrStr != "") {
-                stringBuilder.Append(",");
-                stringBuilder.Append(usrStr);
-            }
+        //    if (usrStr != null && usrStr != "") {
+        //        stringBuilder.Append(",");
+        //        stringBuilder.Append(usrStr);
+        //    }
 
-            stringBuilder.Append("}");
+        //    stringBuilder.Append("}");
 
-            context.Response.Write(stringBuilder.ToString());
-        }
+        //    context.Response.Write(stringBuilder.ToString());
+        //}
 
         private void GetLogonInfo(HttpContext context)
         {
@@ -352,6 +355,31 @@ namespace ksxt
                 WriteResponse(context, -1, dbError);
             else
                 WriteResponse(context, 0);
+        }
+
+        protected override void Add(HttpContext context)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void Edit(HttpContext context)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void Delete(HttpContext context)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void Search(HttpContext context)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void Default(HttpContext context)
+        {
+            throw new NotImplementedException();
         }
 
         public bool IsReusable

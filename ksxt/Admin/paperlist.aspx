@@ -163,7 +163,7 @@
         }
         function formatOper(val, row, index) {
             //alert(row.v_id);
-            var str = "<a target=\"_blank\" href=\"../ShowPaper.aspx?paperid=" + row.v_id + "\">详细</a>";
+            var str = "<a target=\"_blank\" href=\"../ShowPaper.aspx?paperid=" + row.v_id + "&opt=view\">详细</a>";
             str = str + "&nbsp&nbsp&nbsp";
             return str;
         }        

@@ -13,10 +13,15 @@ namespace ksxt
 
         protected string logonUserType { set; get; } = "";
 
+        protected string logonId { set; get; } = "";
+
+
         protected void PreProcess(HttpContext context)
         {
-            if (!checkPermission(context))
-                WriteResponse(context ,-2, "权限验证失败", "");
+            if (!checkPermission(context)) {
+                WriteResponse(context, -2, "登录超时,请重新登录!", "");
+                return;
+            }
             string opt = context.Request.QueryString["opt"];
             if (opt == null)
                 opt = "";
@@ -45,12 +50,17 @@ namespace ksxt
         {
             logonUser = context.Session["logonUser"]==null?"": context.Session["logonUser"].ToString();
 
-            logonUserType = context.Session["logonUserType"] == null ? "" : context.Session["logonUser"].ToString();
+            logonUserType = context.Session["logonUserType"] == null ? "" : context.Session["logonUserType"].ToString();
 
-            if (logonUserType != "1")
-            {
-                WriteResponse(context,-2, "权限错误,无法进行操作", "");
-                //return false;
+            logonId = context.Session["logonId"] == null ? "" : context.Session["logonId"].ToString();
+            
+            //if (logonUserType != "1")
+            //{
+            //    WriteResponse(context,-2, "权限错误,无法进行操作", "");
+            //    //return false;
+            //}
+            if(logonId=="" || logonUser == "" || logonUserType == "") {
+                return false;
             }
             return true;
         }

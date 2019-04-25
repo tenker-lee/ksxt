@@ -40,7 +40,7 @@ namespace ksxt
             if (type == "1")
                 Response.Redirect("~/Admin/index.aspx");
             else
-                Response.Redirect("~/index.aspx");
+                Response.Redirect("~/Admin/index.aspx");
 
         }
     }

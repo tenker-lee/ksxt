@@ -79,7 +79,13 @@ namespace ksxt.Admin
                 newDr["v_create_name"] = dr["create_name"];
                 newDr["v_create_time"] = dr["create_time"];
 
-                dtView.Rows.Add(newDr);
+                DateTime start = publicFun.GetDateTimeFromStr(dr["start_time"].ToString());
+                DateTime end = publicFun.GetDateTimeFromStr(dr["end_time"].ToString());
+                DateTime n = DateTime.Now;
+
+                if (n > start && n <= end) {
+                    dtView.Rows.Add(newDr);
+                }
             }
             //转JSON
             string dtJson = publicFun.DataTableToJson(dtView);
