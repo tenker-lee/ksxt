@@ -51,19 +51,22 @@ namespace ksxt.Admin
 
             DataTable dt;
             if (page > 0 && rows > 0)
-                dt = ExecuteQueryData(@"select ch.*,p.title, u.name 
+                dt = ExecuteQueryData(@"select ch.*,p.title, u.name,u.id as uid,u.type
                                         from 
                                         tb_check_paper as ch INNER join tb_papers as p on p.id=ch.paper_id 
-                                        left join tb_users as u on ch.user_id=u.id where "+search+" limit " + rows + " offset " + (page - 1) * rows);
+                                        left join tb_users as u on ch.user_id=u.id where "+search+" order by title limit " + rows + " offset " + (page - 1) * rows);
             else
-                dt = ExecuteQueryData(@"select ch.*,p.title, u.name 
+                dt = ExecuteQueryData(@"select ch.*,p.title, u.name ,uid as uid 
                                         from tb_check_paper as ch INNER join tb_papers as p on p.id=ch.paper_id 
-                                        left join tb_users as u on ch.user_id=u.id where " + search + "");
+                                        left join tb_users as u on ch.user_id=u.id where " + search + " order by title");
 
             //视图
             DataTable dtView = new DataTable();
             dtView.Columns.Add("v_id");
+            dtView.Columns.Add("v_paper_id");
             dtView.Columns.Add("v_title");
+            dtView.Columns.Add("v_uid");
+            dtView.Columns.Add("v_utype");
             dtView.Columns.Add("v_user_name");
             dtView.Columns.Add("v_total_score");
             dtView.Columns.Add("v_check_state");
@@ -73,7 +76,10 @@ namespace ksxt.Admin
             foreach (DataRow dr in dt.Rows) {
                 DataRow newDr = dtView.NewRow();
                 newDr["v_id"] = dr["id"];
+                newDr["v_paper_id"] = dr["paper_id"];
                 newDr["v_title"] = dr["title"];
+                newDr["v_uid"] = dr["uid"];
+                newDr["v_utype"] = logonUserType ;
                 newDr["v_user_name"] = dr["name"];
                 newDr["v_total_score"] =dr["total_score"] ;
                 newDr["v_check_state"] = dr["check_state"];

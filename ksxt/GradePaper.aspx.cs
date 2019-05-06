@@ -9,7 +9,7 @@ using System.Data;
 namespace ksxt
 {
 
-    public partial class ShowPaper : CustomPage
+    public partial class GradePaper : CustomPage
     {
         protected string paper_id=string.Empty;
 
@@ -25,18 +25,9 @@ namespace ksxt
         {
             //showAnswer = false;
             //enableEdit = false;
-            //grade = false;
-          
-            //非管理员只能编辑
-            grade = false;       
-            //管理员不能考试
-            enableEdit = false;
-          
-            if (!string.IsNullOrEmpty(Request.QueryString["opt"])) {
-                if (Request.QueryString["opt"] == "view") {
-                    grade = false;
-                }
-            }
+            //grade = false;   
+            enableEdit = false;            
+           
             if (!string.IsNullOrEmpty(Request.QueryString["paperid"])) {
                 paper_id = Request.QueryString["paperid"];
             }
@@ -51,20 +42,25 @@ namespace ksxt
             }                       
 
             if (paper_id == null || paper_id == "") {
+                Response.Write("paper_id null");
+                return;
+            }
+            if (user_id == "") {
+                Response.Write("user_id null");
                 return;
             }
 
-            //DataTable us = dbBase.ExecuteQueryData("select * from tb_users where id=" + user_id);
-            //if (us.Rows.Count > 0) {
-            //    lab_user.Text = us.Rows[0]["name"].ToString();
-            //}
+            DataTable us = dbBase.ExecuteQueryData("select * from tb_users where id=" + user_id);
+            if (us.Rows.Count > 0) {
+                lab_user.Text = us.Rows[0]["name"].ToString();
+            }
 
-            //DataTable ch = dbBase.ExecuteQueryData(string.Format(@"SELECT tb_check_paper.*,tb_users.name from tb_check_paper INNER JOIN  tb_users  on tb_check_paper.user_id=tb_users.id
+            DataTable ch = dbBase.ExecuteQueryData(string.Format(@"SELECT tb_check_paper.*,tb_users.name from tb_check_paper INNER JOIN  tb_users  on tb_check_paper.user_id=tb_users.id
 
-            //                                                  WHERE paper_id = '{0}' and user_id = '{1}'", paper_id,user_id));
-            //if (ch.Rows.Count > 0) {
-            //    lab_total_score.Text = ch.Rows[0]["total_score"].ToString();
-            //}
+                                                              WHERE paper_id = '{0}' and user_id = '{1}'", paper_id,user_id));
+            if (ch.Rows.Count > 0) {
+                lab_total_score.Text = ch.Rows[0]["total_score"].ToString();
+            }
 
             DataTable dt = dbBase.ExecuteQueryData("select * from tb_papers where id=" + paper_id);
 
@@ -84,25 +80,29 @@ namespace ksxt
             lab_filling_score.Text = filling_score.ToString();
             lab_qa_score.Text = qa_score.ToString();
 
-            string sqlChoice = string.Format(@"SELECT t.id as tid,t.paper_id,t.type,c.id,c.title,c.select_arry,c.answer_arry 
+            string sqlChoice = string.Format(@"SELECT t.id as tid,t.paper_id,t.type,c.id,c.title,c.select_arry,c.answer_arry,a.user_id,a.value,a.score 
                                                FROM tb_title_list as t 
-                                               INNER JOIN tb_choice as c on t.title_id=c.id                                              
-                                               WHERE t.type='choice' and t.paper_id='{0}'", paper_id);
+                                               INNER JOIN tb_choice as c on t.title_id=c.id
+                                               LEFT JOIN (SELECT * from tb_answer_list where tb_answer_list.user_id='{0}') as a on a.title_list_id=t.id
+                                               WHERE t.type='choice' and t.paper_id='{1}'",user_id, paper_id);
 
-            string sqlFilling = string.Format(@"SELECT t.id as tid,t.paper_id,t.type,f.id,f.title,f.answer_arry 
+            string sqlFilling = string.Format(@"SELECT t.id as tid,t.paper_id,t.type,f.id,f.title,f.answer_arry,a.user_id,a.value,a.score 
                                                 FROM tb_title_list as t 
-                                                INNER JOIN tb_filling as f on t.title_id=f.id                                               
-                                                WHERE t.type='filling' and t.paper_id='{0}'", paper_id);
+                                                INNER JOIN tb_filling as f on t.title_id=f.id
+                                                LEFT JOIN (SELECT * from tb_answer_list where tb_answer_list.user_id='{0}') as a on a.title_list_id=t.id
+                                                WHERE t.type='filling' and t.paper_id='{1}'",user_id, paper_id);
 
-            string sqlJudge= string.Format(@"SELECT t.id as tid,t.paper_id,t.type,j.id,j.title,j.answer_arry
+            string sqlJudge= string.Format(@"SELECT t.id as tid,t.paper_id,t.type,j.id,j.title,j.answer_arry,a.user_id,a.value,a.score 
                                              FROM tb_title_list as t 
-                                             INNER JOIN tb_judge as j on t.title_id=j.id                                           
-                                             WHERE t.type='judge' and t.paper_id='{0}'",paper_id);
+                                             INNER JOIN tb_judge as j on t.title_id=j.id
+                                             LEFT JOIN (SELECT * from tb_answer_list where tb_answer_list.user_id='{0}') as a on a.title_list_id=t.id
+                                             WHERE t.type='judge' and t.paper_id='{1}'",user_id ,paper_id);
 
-            string sqlQa= string.Format(@"SELECT t.id as tid,t.paper_id,t.type,q.id,q.title,q.answer
+            string sqlQa= string.Format(@"SELECT t.id as tid,t.paper_id,t.type,q.id,q.title,q.answer,a.user_id,a.value,a.score 
                                           FROM tb_title_list as t 
-                                          INNER JOIN tb_qa as q on t.title_id=q.id                                         
-                                          WHERE t.type='qa' and t.paper_id='{0}'", paper_id);
+                                          INNER JOIN tb_qa as q on t.title_id=q.id
+                                          LEFT JOIN (SELECT * from tb_answer_list where tb_answer_list.user_id='{0}') as a on a.title_list_id=t.id
+                                          WHERE t.type='qa' and t.paper_id='{1}'",user_id, paper_id);
 
             DataTable dtSingles = dbBase.ExecuteQueryData(sqlChoice);
             DataTable dtFillings = dbBase.ExecuteQueryData(sqlFilling);
@@ -156,24 +156,23 @@ namespace ksxt
                 return "";
         }
 
-        protected string fillingHtml(int id,string strArry,string value)
+        protected string fillingHtml(int id, int uid, string strArry, string value)
         {
-            string [] arry = publicFun.StringToArry(strArry);
+            string[] arry = publicFun.StringToArry(strArry);
             string[] answers = value.Split(',');
 
             string disb = enableEdit ? "" : " disabled =\"disabled\"";
 
             string htmlStr = "";
             string s = "";
-            for (int i = 0; i < arry.Length; i++)
-            {
+            for (int i = 0; i < arry.Length; i++) {
                 s = "";
                 if (i < answers.Length) {
                     s = answers[i];
                 }
-                htmlStr += "<input class=\"easyui-textbox\" style=\"margin: 2px 2px 2px 2px;width:80px\" id=\"filling_" + id +"_answer_"+i+ "\"" + disb +" name=\"_answer_2\" type=\"text\" value=\" "+ s+"\"/>&nbsp";
+                htmlStr += "<input class=\"easyui-textbox\" style=\"margin: 2px 2px 2px 2px;width:80px\" id=\"filling_" + id + "_" + uid + "_answer_" + i + "\"" + disb + " name=\"_answer_2\" type=\"text\" value=\" " + s + "\"/>&nbsp";
             }
-            
+
             return htmlStr;
         }
 

@@ -14,9 +14,9 @@ namespace ksxt
     /// </summary>
     public class HandlerPublicFun : HandleBase, IHttpHandler, IRequiresSessionState
     {
-        private string user_id = "";
-        private string logonName = "";
-        private string logonType = "";
+        //private string user_id = "";
+        //private string logonName = "";
+        //private string logonType = "";
 
         //protected string ReadFormStr(HttpContext context, string itemName)
         //{
@@ -101,38 +101,43 @@ namespace ksxt
 
         private void UpdateAnswerList(HttpContext context)
         {
+            //if (ExecuteQueryDataCount(@"SELECT * from tb_papers WHERE  end_time>'2019-04-26 0:0:0'") < 1) {
+            //    WriteResponse(context, -1, "考试时间已过,请交卷!");
+            //}
             string answerStr = ReadFormStr(context, "answerStr");
+            //输入文本
             string answer = ReadFormStr(context, "value");
-
             string type="";
-            string  titleid="";
+            string titleid="";
+            string userid = "";
             string value ="";
             string valuetype = "";
-            string regStr = "(?<type>\\S+)_(?<titleid>\\d+)_(?<valtype>answer|score)(_(?<value>\\d+))?";
+            string regStr = "(?<type>\\S+)_(?<titleid>\\d+)_(?<userid>\\d+)_(?<valtype>answer|score)(_(?<value>\\d+))?";
             MatchCollection matchCollection = Regex.Matches(answerStr, regStr);
             if (matchCollection.Count > 0) {
                 type = matchCollection[0].Groups["type"].Value;
                 titleid = matchCollection[0].Groups["titleid"].Value;
+                userid = matchCollection[0].Groups["userid"].Value;
                 value = matchCollection[0].Groups["value"].Value;
                 valuetype= matchCollection[0].Groups["valtype"].Value;
             }                                
-            if (user_id != "") {
+            if (logonId != "") {
                 if (valuetype == "score") {
-                    UpdateScore(context, titleid, user_id, answer);
+                    UpdateScore(context, titleid, userid, answer);
                     return;
                 }
                 else {                    
                     if (type == "choice") {
-                        InsertAnswerChoice(context, titleid, user_id, value);
+                        InsertAnswerChoice(context, titleid, userid, value);
                     }
                     else if (type == "judge") {
-                        InsertAnswerJudge(context, titleid, user_id, value);
+                        InsertAnswerJudge(context, titleid, userid, value);
                     }
                     else if (type == "filling") {
-                        InsertAnswerFilling(context, titleid, user_id,value, answer);
+                        InsertAnswerFilling(context, titleid, userid, value, answer);
                     }
                     else if (type == "qa") {
-                        InsertAnswerQa(context, titleid, user_id, answer);
+                        InsertAnswerQa(context, titleid, userid, answer);
                     }
                 }
             }
@@ -275,7 +280,7 @@ namespace ksxt
                     WriteResponse(context, 0, "答案录入成功");
             }
             else {
-                string sqlFormat = @"insert into tb_answer_list(title_list_id,user_id,value)values({0},{1},{2})";
+                string sqlFormat = @"insert into tb_answer_list(title_list_id,user_id,value)values('{0}','{1}','{2}')";
                 string sql = string.Format(sqlFormat, title_list_id, user_id, value);
                 int code = ExecuteNoQuery(sql);
                 if (code < 0)
@@ -315,8 +320,9 @@ namespace ksxt
 
                 sqlFormat = @"INSERT INTO tb_check_paper(user_id,paper_id,total_score,check_state,check_name,check_time)
                                                   values('{0}','{1}','{2}','{3}','{4}','{5}') ";
-                string state = logonType == "1"?"已评分":"未评分";
-                sql = string.Format(sqlFormat,user_id,paper_id,dt.Rows[0][0].ToString(), state, logonName,publicFun.GetDateString(DateTime.Now));
+                string state = logonUserType == "1"?"已评分":"未评分";
+                string name = logonUserType == "1" ? logonUser : "";
+                sql = string.Format(sqlFormat,user_id,paper_id,dt.Rows[0][0].ToString(), state, name, publicFun.GetDateString(DateTime.Now));
                 int code = ExecuteNoQuery(sql);
                 if(code <0 ) {
                     WriteResponse(context, -1, dbError);

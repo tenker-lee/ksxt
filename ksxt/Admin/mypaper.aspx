@@ -36,7 +36,7 @@
             $('#tt').datagrid('reload');
         }
         function formatOper(val, row, index) {
-            var str = "<a target=\"_blank\" href=\"../ShowPaper.aspx?paperid=" + row.v_id + "\">开始考试</a>";
+            var str = "<a target=\"_blank\" href=\"../ExamPaper.aspx?paperid=" + row.v_id + "\">开始考试</a>";
             str = str + "&nbsp&nbsp&nbsp";
             return str;
         }        

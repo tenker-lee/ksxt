@@ -34,7 +34,15 @@
         function Search() {
             $('#tt').datagrid('reload');
         }
-
+        function formatOper(val, row, index) {
+            //alert(val);
+            if (val != "1")
+                return;
+            //alert(row.v_id);
+            var str = "<a target=\"_blank\" href=\"../GradePaper.aspx?paperid=" + row.v_paper_id + "&userid="+row.v_uid+"\">评分</a>";
+            str = str + "&nbsp&nbsp&nbsp";
+            return str;
+        }        
     </script>
 </head>
 <body>
@@ -51,12 +59,15 @@
             <tr>
                 <th data-options="field:'ck',checkbox:true"></th>
                 <th data-options="field:'v_id'">编号</th>
+                <th data-options="field:'v_paper_id'">试卷编号</th>
                 <th data-options="field:'v_title'">试卷名称</th>
+                <th data-options="field:'v_uid'">学生编号</th>
                 <th data-options="field:'v_user_name', align:'center',width:80">考生</th>
                 <th data-options="field:'v_total_score', align:'center',width:80">得分</th>
                 <th data-options="field:'v_check_state', align:'center',width:100">试卷状态</th>
                 <th data-options="field:'v_check_name', align:'center',width:100">评分人</th>
                 <th data-options="field:'v_check_time', align:'center',width:130">评分时间</th>
+                <th data-options="field:'v_utype',formatter:formatOper, align:'center'">操作</th>
             </tr>
         </thead>
     </table>
