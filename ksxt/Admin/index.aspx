@@ -106,7 +106,7 @@
                 <div title="试卷练习" data-options="collapsible:true,iconcls:'icon-reload'" style="padding: 10px;">
                     <ul>
                         <li style="height: 30px"><a href="javascript:void(0);" name="addPanel"
-														hreflang="radompaper.aspx">试卷练习</a></li>
+														hreflang="../TestPaper.aspx">试卷练习</a></li>
                     </ul>
                 </div>        
             </div>

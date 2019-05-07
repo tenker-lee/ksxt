@@ -479,6 +479,7 @@
     <Content Include="Scripts\locale\easyui-lang-zh_TW.js" />
     <Content Include="GradePaper.aspx" />
     <Content Include="ExamPaper.aspx" />
+    <Content Include="TestPaper.aspx" />
     <Content Include="ShowPaper.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -629,6 +630,13 @@
     </Compile>
     <Compile Include="ExamPaper.aspx.designer.cs">
       <DependentUpon>ExamPaper.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TestPaper.aspx.cs">
+      <DependentUpon>TestPaper.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TestPaper.aspx.designer.cs">
+      <DependentUpon>TestPaper.aspx</DependentUpon>
     </Compile>
     <Compile Include="ShowPaper.aspx.cs">
       <DependentUpon>ShowPaper.aspx</DependentUpon>

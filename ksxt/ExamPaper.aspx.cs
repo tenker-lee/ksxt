@@ -80,25 +80,25 @@ namespace ksxt
                                                FROM tb_title_list as t 
                                                INNER JOIN tb_choice as c on t.title_id=c.id
                                                LEFT JOIN (SELECT * from tb_answer_list where tb_answer_list.user_id='{0}') as a on a.title_list_id=t.id
-                                               WHERE t.type='choice' and t.paper_id='{1}'",user_id, paper_id);
+                                               WHERE t.type='choice' and t.paper_id='{1}' order by random()",user_id, paper_id);
 
             string sqlFilling = string.Format(@"SELECT t.id as tid,t.paper_id,t.type,f.id,f.title,f.answer_arry,a.user_id,a.value,a.score 
                                                 FROM tb_title_list as t 
                                                 INNER JOIN tb_filling as f on t.title_id=f.id
                                                 LEFT JOIN (SELECT * from tb_answer_list where tb_answer_list.user_id='{0}') as a on a.title_list_id=t.id
-                                                WHERE t.type='filling' and t.paper_id='{1}'",user_id, paper_id);
+                                                WHERE t.type='filling' and t.paper_id='{1}' order by random()", user_id, paper_id);
 
             string sqlJudge= string.Format(@"SELECT t.id as tid,t.paper_id,t.type,j.id,j.title,j.answer_arry,a.user_id,a.value,a.score 
                                              FROM tb_title_list as t 
                                              INNER JOIN tb_judge as j on t.title_id=j.id
                                              LEFT JOIN (SELECT * from tb_answer_list where tb_answer_list.user_id='{0}') as a on a.title_list_id=t.id
-                                             WHERE t.type='judge' and t.paper_id='{1}'",user_id ,paper_id);
+                                             WHERE t.type='judge' and t.paper_id='{1}' order by random()", user_id ,paper_id);
 
             string sqlQa= string.Format(@"SELECT t.id as tid,t.paper_id,t.type,q.id,q.title,q.answer,a.user_id,a.value,a.score 
                                           FROM tb_title_list as t 
                                           INNER JOIN tb_qa as q on t.title_id=q.id
                                           LEFT JOIN (SELECT * from tb_answer_list where tb_answer_list.user_id='{0}') as a on a.title_list_id=t.id
-                                          WHERE t.type='qa' and t.paper_id='{1}'",user_id, paper_id);
+                                          WHERE t.type='qa' and t.paper_id='{1}' order by random()", user_id, paper_id);
 
             DataTable dtSingles = dbBase.ExecuteQueryData(sqlChoice);
             DataTable dtFillings = dbBase.ExecuteQueryData(sqlFilling);

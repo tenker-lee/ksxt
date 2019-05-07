@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 
 namespace ksxt.Admin
 {
-    public partial class checkpaper : System.Web.UI.Page
+    public partial class checkpaper : CustomPage
     {
         protected void Page_Load(object sender, EventArgs e)
         {

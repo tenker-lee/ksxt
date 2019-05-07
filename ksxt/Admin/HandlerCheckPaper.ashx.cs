@@ -38,7 +38,17 @@ namespace ksxt.Admin
             int page = publicFun.StringToInt(ReadFormStr(context, "page"));
             int rows = publicFun.StringToInt(ReadFormStr(context, "rows"));
 
+            string papername = ReadFormStr(context, "name");
+            string paperid = ReadFormStr(context, "paperid");
+
             string search = " 1=1 ";
+
+            if (paperid != "") {
+                search += " and p.id='" + paperid + "' ";
+            }
+            if (papername != "") {
+                search += " and u.name like '%" + papername + "%'";
+            }
 
             if (string.IsNullOrEmpty(logonId)) {
                 WriteResponse(context, 0, "登录超时请重新登录1!", "");

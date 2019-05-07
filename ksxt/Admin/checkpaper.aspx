@@ -32,7 +32,16 @@
             });
         });
         function Search() {
+            var n = $('#search_name').textbox('getValue');
+            var pid = $('#search_paper_name').textbox('getValue');
+            $('#tt').datagrid({
+                queryParams: {
+                    name: n,
+                    paperid: pid
+                }
+            });
             $('#tt').datagrid('reload');
+            
         }
         function formatOper(val, row, index) {
             //alert(val);
