@@ -49,9 +49,17 @@
                 return;
             //alert(row.v_id);
             var str = "<a target=\"_blank\" href=\"../GradePaper.aspx?paperid=" + row.v_paper_id + "&userid="+row.v_uid+"\">评分</a>";
-            str = str + "&nbsp&nbsp&nbsp";
+            str = str + "&nbsp&nbsp&nbsp";                    
+
             return str;
         }        
+        function formatOper1(val, row, index) {
+             if (val != "1")
+                return;
+              var str = "<a target=\"_blank\" href=\"../ShowPaperDetail.aspx?paperid=" + row.v_paper_id + "&userid="+row.v_uid+"\">详情</a>";
+            str = str + "&nbsp&nbsp&nbsp";
+            return str;
+        }
     </script>
 </head>
 <body>
@@ -77,6 +85,7 @@
                 <th data-options="field:'v_check_name', align:'center',width:100">评分人</th>
                 <th data-options="field:'v_check_time', align:'center',width:130">评分时间</th>
                 <th data-options="field:'v_utype',formatter:formatOper, align:'center'">操作</th>
+                <th data-options="field:'v_paper_end',formatter:formatOper1, align:'center'">--</th>                
             </tr>
         </thead>
     </table>

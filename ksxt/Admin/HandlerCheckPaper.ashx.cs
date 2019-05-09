@@ -61,12 +61,12 @@ namespace ksxt.Admin
 
             DataTable dt;
             if (page > 0 && rows > 0)
-                dt = ExecuteQueryData(@"select ch.*,p.title, u.name,u.id as uid,u.type
+                dt = ExecuteQueryData(@"select ch.*,p.title,p.end_time, u.name,u.id as uid,u.type
                                         from 
                                         tb_check_paper as ch INNER join tb_papers as p on p.id=ch.paper_id 
-                                        left join tb_users as u on ch.user_id=u.id where "+search+" order by title limit " + rows + " offset " + (page - 1) * rows);
+                                        left join tb_users as u on ch.user_id=u.id where " + search+" order by title limit " + rows + " offset " + (page - 1) * rows);
             else
-                dt = ExecuteQueryData(@"select ch.*,p.title, u.name ,uid as uid 
+                dt = ExecuteQueryData(@"select ch.*,p.title,p.end_time, u.name ,uid as uid 
                                         from tb_check_paper as ch INNER join tb_papers as p on p.id=ch.paper_id 
                                         left join tb_users as u on ch.user_id=u.id where " + search + " order by title");
 
@@ -81,7 +81,9 @@ namespace ksxt.Admin
             dtView.Columns.Add("v_total_score");
             dtView.Columns.Add("v_check_state");
             dtView.Columns.Add("v_check_name");
-            dtView.Columns.Add("v_check_time");           
+            dtView.Columns.Add("v_check_time");
+            dtView.Columns.Add("v_paper_end");
+           
 
             foreach (DataRow dr in dt.Rows) {
                 DataRow newDr = dtView.NewRow();
@@ -95,6 +97,8 @@ namespace ksxt.Admin
                 newDr["v_check_state"] = dr["check_state"];
                 newDr["v_check_name"] = dr["check_name"];
                 newDr["v_check_time"] = dr["check_time"];
+                DateTime end = publicFun.GetDateTimeFromStr(dr["end_time"].ToString());
+                newDr["v_paper_end"] = DateTime.Now > end ? "1" : "0";
                 dtView.Rows.Add(newDr);
             }
             //转JSON

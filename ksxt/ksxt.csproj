@@ -439,6 +439,7 @@
     <Content Include="Admin\HandlerQA.ashx" />
     <Content Include="Admin\HandlerUser.ashx" />
     <Content Include="Admin\HandlerPaper.ashx" />
+    <Content Include="ShowPaperDetail.aspx" />
     <Content Include="HandlerPublicFun.ashx" />
     <Content Include="Admin\HandlerCheckPaper.ashx" />
     <Content Include="Admin\HandlerMyPaper.ashx" />
@@ -598,6 +599,13 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="CsCode\HandleBase.cs" />
+    <Compile Include="ShowPaperDetail.aspx.cs">
+      <DependentUpon>ShowPaperDetail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ShowPaperDetail.aspx.designer.cs">
+      <DependentUpon>ShowPaperDetail.aspx</DependentUpon>
+    </Compile>
     <Compile Include="HandlerPublicFun.ashx.cs">
       <DependentUpon>HandlerPublicFun.ashx</DependentUpon>
     </Compile>
