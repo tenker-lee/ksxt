@@ -82,8 +82,7 @@ namespace ksxt.Admin
             dtView.Columns.Add("v_check_state");
             dtView.Columns.Add("v_check_name");
             dtView.Columns.Add("v_check_time");
-            dtView.Columns.Add("v_paper_end");
-           
+            dtView.Columns.Add("v_paper_end");           
 
             foreach (DataRow dr in dt.Rows) {
                 DataRow newDr = dtView.NewRow();
