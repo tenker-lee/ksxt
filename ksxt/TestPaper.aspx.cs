@@ -176,7 +176,7 @@ namespace ksxt
 
         protected DataTable GetJudges()
         {
-            string sqlFormat = "SELECT * from tb_choice order by random() LIMIT 5";
+            string sqlFormat = "SELECT * from tb_judge order by random() LIMIT 5";
 
             string sql = string.Format(sqlFormat);
 

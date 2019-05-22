@@ -51,11 +51,11 @@
                //updateAnswerList($(this).attr('id'),length);
             });  
             //简答框
-            $('textarea').onblur(function(){  
-                var length = $(this).val();
-                //alert(length);
-                //updateAnswerList($(this).attr('id'),length);
-            });  
+            //$('textarea').onblur(function(){  
+            //    var length = $(this).val();
+            //    //alert(length);
+            //    //updateAnswerList($(this).attr('id'),length);
+            //});  
             
         });              
         //???
@@ -186,7 +186,7 @@
                                 <td rowspan="2" style="text-align: center"><%# Eval("id") %></td>
                                 <td><%# Eval("title") %></td>
                                 <td>
-                                    <textarea  rows="10" style="width: 98%; height: 100%" id="qa_<%# Eval("id") %>_answer_0" onblur="onqaChange(this)"></textarea>
+                                    <textarea  rows="10" style="width: 98%; height: 100%" id="qa_<%# Eval("id") %>_answer_0"></textarea>
                                 </td>
                                 <td>
                                     <input class="easyui-textbox" style="width: 30px; margin: 2px 2px 2px 2px;" id="qa_<%# Eval("id") %>_score"   />                                   
