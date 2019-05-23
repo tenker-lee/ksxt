@@ -147,13 +147,11 @@ namespace ksxt
             {
                 if (s1.Trim() != "")
                 {
-                    if (!list.Contains(s1.Trim()))
+                    //if (!list.Contains(s1.Trim()))
                         list.Add(s1.Trim());
                 }
             }
-
-            list.Sort();
-
+            
             return list.ToArray();
             
         }
