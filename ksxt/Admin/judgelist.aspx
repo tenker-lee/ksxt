@@ -28,6 +28,9 @@
                 onSelect: function (rowIndex, rowData) {
                 },
                 onLoadSuccess: function (data) {
+                                        $(".add").linkbutton({plain:true, iconCls:'icon-add' });
+                                                            $(".del").linkbutton({plain:true, iconCls:'icon-remove' });
+
                 }
             });
             $('#win').window({
@@ -56,6 +59,7 @@
                     $('#select_ids').textbox('setValue', rowData["v_judge_id_arry"]);
                 },
                 onLoadSuccess: function (data) {
+                    //$.parser.parse();
                 }
             });            
             $('#win_paper_list').window({
@@ -116,7 +120,7 @@
             return true;
         }
         function Search() {
-            $('#tt').datagrid('reload');
+            $('#tt').datagrid('reload');           
         }
         function Confirm() {
             if ($('#btnType').val() == "edit") {
@@ -195,10 +199,9 @@
             });            
         }
         function formatOper(val, row, index) {
-            //alert(row.v_id);
-            var str = "<a href=\"#\" onclick=\"AddToPaper('add'," + row.v_id + ")\"><i>添加到试卷</i></a>";
-            str = str + "&nbsp&nbsp&nbsp";
-            str = str + "<a href=\"#\" onclick=\"AddToPaper('del'," + row.v_id + ")\"><i>从试卷移除</i></a>";
+             var str = "<a href=\"#\" class=\"add\" onclick=\"AddToPaper('add'," + row.v_id + ")\"><i>添加</i></a>";
+            //str = str + "&nbsp&nbsp&nbsp";
+            str = str + "<a href=\"#\" class=\"del\" onclick=\"AddToPaper('del'," + row.v_id + ")\"><i>移除</i></a>";
             return str;
         }
         function AddToPaper(type, title_id) {
@@ -263,7 +266,8 @@
                 <th data-options="field:'v_answer', align:'center',width:50">答案</th>
                 <th data-options="field:'v_create_name', align:'center',width:80">创建人</th>
                 <th data-options="field:'v_create_time', align:'center',width:120">创建时间</th>
-                <th data-options="field:'v_oporate',formatter:formatOper, align:'center'">操作</th>
+                <th data-options="field:'v_oporate',formatter:formatOper, align:'center',width:120">操作 </th>
+              
             </tr>
         </thead>
     </table>

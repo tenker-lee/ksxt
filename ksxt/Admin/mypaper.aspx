@@ -29,6 +29,9 @@
                 },
                 onLoadSuccess: function (data) {
                     //alert("");
+                                                          $(".add").linkbutton({plain:true, iconCls:'icon-add' });
+                                                            $(".del").linkbutton({plain:true, iconCls:'icon-remove' });
+
                 }
             });
         });

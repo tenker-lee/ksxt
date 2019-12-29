@@ -28,6 +28,9 @@
                 onSelect: function (rowIndex, rowData) {
                 },
                 onLoadSuccess: function (data) {
+                                                          $(".add").linkbutton({plain:true, iconCls:'icon-add' });
+                                                            $(".del").linkbutton({plain:true, iconCls:'icon-remove' });
+
                 }
             });
         });
